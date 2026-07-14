@@ -1,0 +1,21 @@
+name: Deploy RPG (Self-hosted)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-rpg-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v5
+      - name: Deploy production
+        env:
+          APP_ROOT: /var/www/rpg
+          PM2_HOME: /var/www/.pm2
+        run: scripts/deploy-production.sh
