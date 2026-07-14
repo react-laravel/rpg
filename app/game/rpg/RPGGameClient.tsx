@@ -297,7 +297,7 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
 
   return (
     <div
-      className={`bg-background text-foreground flex flex-col [--rpg-content-inset:0.75rem] [--rpg-status-bar-block:2.25rem] sm:[--rpg-content-inset:1rem] sm:[--rpg-status-bar-block:3rem] ${
+      className={`bg-background text-foreground flex flex-col [--rpg-content-inset:0.75rem] [--rpg-status-bar-block:3rem] sm:[--rpg-content-inset:1rem] sm:[--rpg-status-bar-block:3rem] ${
         usePanelInnerScroll ? 'min-h-0 overflow-hidden overscroll-none' : 'min-h-screen'
       }`}
       style={
@@ -311,7 +311,7 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
 
       {/* 顶部状态栏 */}
       <header
-        className="border-border bg-card fixed right-0 left-0 z-20 border-b px-3 py-2 sm:px-4 sm:py-3"
+        className="border-border bg-card fixed right-0 left-0 z-[60] border-b px-3 py-2 sm:px-4 sm:py-3"
         style={{ top: 'var(--app-header-height, 50px)' }}
       >
         <div className="mx-auto max-w-7xl">
