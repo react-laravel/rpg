@@ -33,7 +33,7 @@ ln -sfn "$RELEASE" "$CURRENT"
 export PM2_HOME PM2_CWD="$CURRENT"
 pm2 startOrReload "$CURRENT/ecosystem.config.cjs" --only rpg-nextjs --update-env
 
-if ! curl -fsS --max-time 10 http://127.0.0.1:3008/ >/dev/null; then
+if ! curl -fsS --max-time 10 http://127.0.0.1:3010/ >/dev/null; then
   if [ -n "$PREVIOUS" ] && [ -d "$PREVIOUS" ]; then
     ln -sfn "$PREVIOUS" "$CURRENT"
     export PM2_CWD="$CURRENT"
