@@ -69,8 +69,8 @@ const MapDetailDialog = ({
   currentMap: MapDefinition | null
   isLoading: boolean
   onClose: () => void
-  onEnter: (id: number) => Promise<void>
-  onTeleport: (id: number) => Promise<void>
+  onEnter: (id: number) => Promise<boolean>
+  onTeleport: (id: number) => Promise<boolean>
 }) => {
   const disabledTeleport = isLoading || !character
 
@@ -150,16 +150,18 @@ export function MapPanel() {
 
   const handleEnter = useCallback(
     async (mapId: number) => {
-      await enterMap(mapId)
-      setSelectedMap(null)
+      const success = await enterMap(mapId)
+      if (success) setSelectedMap(null)
+      return success
     },
     [enterMap]
   )
 
   const handleTeleport = useCallback(
     async (mapId: number) => {
-      await teleportToMap(mapId)
-      setSelectedMap(null)
+      const success = await teleportToMap(mapId)
+      if (success) setSelectedMap(null)
+      return success
     },
     [teleportToMap]
   )

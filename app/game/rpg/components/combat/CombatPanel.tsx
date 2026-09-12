@@ -9,22 +9,28 @@ import {
 } from '../../types'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { CharacterSkill, SkillWithLearnedState } from '../../types'
-import type { MapDefinition } from '../../types'
 import { getMapBackgroundStyle } from '../../utils/mapBackground'
 import { BattleArena } from './BattleArena'
 import { BattleSkillBar, type SkillBarLayout } from './BattleSkillBar'
 import { CombatLogList } from './CombatLogList'
 import { VSSwords } from './VSSwords'
-import { getActName } from '../../utils/combat'
 import {
   getPrimaryCombatMonster,
   getPrimaryCombatMonsterId,
   normalizeCombatMonsterSlots,
 } from '../../utils/combatUtils'
 import { extractCombatLogId } from '../../stores/combatHelpers'
-import { MapCardMonsterAvatar } from './MapCardMonsterAvatar'
+import { CombatMapPicker } from './CombatMapPicker'
 import {
-  ChevronDown,
+  Dialog,
+  DialogContent,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog'
+import {
+  LoaderCircle,
   GalleryHorizontal,
   History,
   LayoutGrid,
@@ -33,7 +39,6 @@ import {
   Sparkles,
   X,
 } from 'lucide-react'
-import { DIFFICULTY_OPTIONS, DIFFICULTY_COLORS } from '../character/CharacterSelect'
 const SKILL_BAR_LAYOUT_KEY = 'rpg-skill-bar-layout'
 
 function readSkillBarLayout(): SkillBarLayout {
@@ -50,7 +55,10 @@ export function CombatPanel() {
   const isFighting = useGameStore(state => state.isFighting)
   const setShouldAutoCombat = useGameStore(state => state.setShouldAutoCombat)
   const stopCombat = useGameStore(state => state.stopCombat)
-  const isLoading = useGameStore(state => state.isLoading)
+  const combatAction = useGameStore(state => state.combatAction)
+  const pendingMapId = useGameStore(state => state.pendingMapId)
+  const error = useGameStore(state => state.error)
+  const isLoading = combatAction != null || pendingMapId != null
   const combatLogs = useGameStore(state => state.combatLogs)
   const combatResult = useGameStore(state => state.combatResult)
   const flushPendingCombatLog = useGameStore(state => state.flushPendingCombatLog)
@@ -63,12 +71,10 @@ export function CombatPanel() {
   const enabledSkillIds = useGameStore(state => state.enabledSkillIds)
   const toggleEnabledSkill = useGameStore(state => state.toggleEnabledSkill)
 
-  const [mapDropdownOpen, setMapDropdownOpen] = useState(false)
-  const [dropdownAct, setDropdownAct] = useState(() => currentMap?.act ?? 1)
-  const mapDropdownRef = useRef<HTMLDivElement>(null)
   const [showDeathDialog, setShowDeathDialog] = useState(false)
   const [skillBarLayout, setSkillBarLayout] = useState<SkillBarLayout>(() => readSkillBarLayout())
-  const lastAutoStoppedRef = useRef<boolean | undefined>(undefined)
+  const wasDeadRef = useRef(false)
+  const isCharacterDead = currentHp != null && currentHp <= 0 && (combatStats?.max_hp ?? 0) > 0
   const handleRoundVisualSettled = useCallback(() => {
     flushPendingCombatLog()
   }, [flushPendingCombatLog])
@@ -88,38 +94,19 @@ export function CombatPanel() {
     return () => clearTimeout(watchdog)
   }, [combatResult?.combat_log_id, isFighting])
 
-  // 监听战斗结果，检测角色死亡
   useEffect(() => {
-    if (combatResult?.auto_stopped && lastAutoStoppedRef.current !== combatResult.auto_stopped) {
-      lastAutoStoppedRef.current = combatResult.auto_stopped
-      // 使用 queueMicrotask 延迟 setState，避免 effect 中同步调用
-      queueMicrotask(() => {
-        setShowDeathDialog(true)
-      })
+    if (isCharacterDead && !wasDeadRef.current) {
+      queueMicrotask(() => setShowDeathDialog(true))
     }
-  }, [combatResult?.auto_stopped])
+    wasDeadRef.current = isCharacterDead
+  }, [isCharacterDead])
 
-  const mapsByAct = useMemo(() => {
-    const actMaps: Record<number, MapDefinition[]> = {}
-    for (const map of maps) {
-      if (!actMaps[map.act]) actMaps[map.act] = []
-      actMaps[map.act].push(map)
-    }
-    return actMaps
-  }, [maps])
-  const actOrder = useMemo(
-    () =>
-      Object.keys(mapsByAct)
-        .map(Number)
-        .sort((a, b) => a - b),
-    [mapsByAct]
-  )
-  const effectiveAct = actOrder.includes(dropdownAct) ? dropdownAct : (actOrder[0] ?? 1)
-  const displayActMaps = mapsByAct[effectiveAct] ?? []
+  const characterId = character?.id
+  const currentMapId = currentMap?.id
 
   // 刚注册角色进入战斗界面时，若无当前地图则默认进入第一张地图（按幕数、等级、id 排序）
   useEffect(() => {
-    if (!character || currentMap) return
+    if (!characterId || currentMapId) return
     let cancelled = false
     const ensureFirstMap = async () => {
       if (maps.length === 0) await fetchMaps()
@@ -136,30 +123,7 @@ export function CombatPanel() {
     return () => {
       cancelled = true
     }
-  }, [character, currentMap, maps.length, fetchMaps, enterMap])
-
-  useEffect(() => {
-    if (mapDropdownOpen && maps.length === 0) fetchMaps()
-  }, [mapDropdownOpen, maps.length, fetchMaps])
-
-  useEffect(() => {
-    if (!mapDropdownOpen) return
-    const onDocClick = (e: MouseEvent) => {
-      if (mapDropdownRef.current && !mapDropdownRef.current.contains(e.target as Node)) {
-        setMapDropdownOpen(false)
-      }
-    }
-    document.addEventListener('click', onDocClick)
-    return () => document.removeEventListener('click', onDocClick)
-  }, [mapDropdownOpen])
-
-  const handleSelectMap = useCallback(
-    async (mapId: number) => {
-      await enterMap(mapId)
-      setMapDropdownOpen(false)
-    },
-    [enterMap]
-  )
+  }, [characterId, currentMapId, maps.length, fetchMaps, enterMap])
 
   const learnedSkills = useMemo((): CharacterSkill[] => {
     const c = character
@@ -208,68 +172,34 @@ export function CombatPanel() {
 
   // 角色死亡时，点击只是复活，不自动开始战斗
   const handleRevive = async () => {
-    await revive()
-    setShowDeathDialog(false)
+    const success = await revive()
+    if (success) setShowDeathDialog(false)
   }
 
   const handleStopCombat = async () => {
     await stopCombat()
   }
 
-  const isCharacterDead = (currentHp ?? 0) <= 0 && (combatStats?.max_hp ?? 0) > 0
-  const handleCombatToggle =
-    (currentHp ?? 0) <= 0 ? handleRevive : isFighting ? handleStopCombat : handleStartCombat
+  const handleCombatToggle = isCharacterDead
+    ? handleRevive
+    : isFighting
+      ? handleStopCombat
+      : handleStartCombat
 
   return (
     <div className="space-y-3 sm:space-y-4">
       <div className="grid items-start gap-3 xl:grid-cols-[minmax(0,1.7fr)_minmax(19rem,0.8fr)] xl:gap-4">
         {/* 战场 */}
-        <section
-          className={`border-border bg-card relative rounded-lg border shadow-sm ${mapDropdownOpen ? 'overflow-visible' : 'overflow-hidden'}`}
-        >
-          {currentMap && (
-            <div
-              className="border-border/70 relative z-30 flex min-h-14 items-center justify-between gap-2 border-b bg-black/5 px-3 py-2 backdrop-blur-sm dark:bg-white/5 sm:px-4"
-              ref={mapDropdownRef}
-            >
-              <button
-                type="button"
-                onClick={() => {
-                  if (!mapDropdownOpen && currentMap?.act) setDropdownAct(currentMap.act)
-                  setMapDropdownOpen(prev => !prev)
-                }}
-                className="text-foreground hover:bg-muted/60 focus-visible:ring-ring flex min-w-0 flex-1 items-center gap-2 overflow-hidden rounded-md px-2 py-1.5 text-left transition-colors focus:outline-none focus-visible:ring-2"
-                aria-expanded={mapDropdownOpen}
-              >
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-sm font-semibold sm:text-base">
-                    {currentMap.name}
-                  </span>
-                  <span className="text-muted-foreground block text-[10px] leading-tight sm:text-xs">
-                    {getActName(currentMap.act)} · 点击切换地图
-                  </span>
+        <section className="border-border bg-card relative overflow-hidden rounded-xl border shadow-sm">
+          <div className="border-border/70 flex min-h-16 items-center justify-between gap-2 border-b px-2 py-2 sm:px-3">
+            <CombatMapPicker />
+            <div className="flex shrink-0 items-center gap-2">
+              {isFighting && currentRound > 0 && (
+                <span className="text-muted-foreground hidden rounded-md border px-2 py-1 text-xs tabular-nums sm:inline">
+                  第 {currentRound} 回合
                 </span>
-                {character &&
-                  character.difficulty_tier != null &&
-                  character.difficulty_tier >= 0 && (
-                    <span
-                      className={`hidden shrink-0 rounded px-1.5 py-0.5 text-[10px] font-semibold text-white sm:inline ${DIFFICULTY_COLORS[character.difficulty_tier] || 'bg-green-600'}`}
-                    >
-                      {DIFFICULTY_OPTIONS.find(o => o.tier === character.difficulty_tier)?.label ??
-                        '普通'}
-                    </span>
-                  )}
-                <ChevronDown
-                  className={`text-muted-foreground h-4 w-4 shrink-0 transition-transform ${mapDropdownOpen ? 'rotate-180' : ''}`}
-                />
-              </button>
-
-              <div className="flex shrink-0 items-center gap-2">
-                {isFighting && currentRound > 0 && (
-                  <span className="border-border bg-background/70 hidden rounded border px-2 py-1 text-xs tabular-nums sm:inline">
-                    第 {currentRound} 回合
-                  </span>
-                )}
+              )}
+              {currentMap && (
                 <VSSwords
                   isFighting={isFighting}
                   isLoading={isLoading}
@@ -277,85 +207,9 @@ export function CombatPanel() {
                   onToggle={handleCombatToggle}
                   variant="inline"
                 />
-              </div>
-
-              {mapDropdownOpen && (
-                <div className="absolute top-full right-0 left-0 z-40 mt-1 flex h-[min(76vh,32rem)] w-full overflow-hidden rounded-lg border border-white/10 bg-neutral-950/95 shadow-2xl backdrop-blur-md">
-                  {/* 左侧：幕数列表 */}
-                  <div className="flex min-h-0 w-16 shrink-0 flex-col overflow-y-auto overscroll-contain border-r border-white/10">
-                    {actOrder.map(actNum => (
-                      <button
-                        key={actNum}
-                        type="button"
-                        onClick={() => setDropdownAct(actNum)}
-                        className={`flex h-12 shrink-0 items-center justify-center border-b border-white/10 text-xs ${
-                          effectiveAct === actNum
-                            ? 'bg-primary text-white'
-                            : 'text-gray-400 hover:bg-white/10'
-                        }`}
-                      >
-                        {getActName(actNum)}
-                      </button>
-                    ))}
-                  </div>
-                  {/* 右侧：地图列表 */}
-                  <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3">
-                    {displayActMaps.map(map => {
-                      const isCurrentMap = currentMap?.id === map.id
-
-                      // 计算怪物等级范围（仅从怪物定义取，无等级限制）
-                      const monsterLevels = map.monsters?.map(m => m.level) ?? []
-                      const minMonsterLevel =
-                        monsterLevels.length > 0 ? Math.min(...monsterLevels) : null
-                      const maxMonsterLevel =
-                        monsterLevels.length > 0 ? Math.max(...monsterLevels) : null
-                      const levelText =
-                        minMonsterLevel != null && maxMonsterLevel != null
-                          ? `Lv.${minMonsterLevel}-${maxMonsterLevel}`
-                          : '—'
-
-                      return (
-                        <button
-                          key={map.id}
-                          type="button"
-                          aria-current={isCurrentMap ? 'true' : undefined}
-                          onClick={() => {
-                            if (!isCurrentMap) {
-                              handleSelectMap(map.id)
-                              setMapDropdownOpen(false)
-                            }
-                          }}
-                          className={`mb-3 flex min-h-24 w-full items-center justify-between gap-4 rounded-lg p-3 text-left transition-all enabled:cursor-pointer sm:min-h-28 sm:p-4 ${
-                            isCurrentMap ? 'ring-primary ring-2' : 'hover:bg-white/10'
-                          }`}
-                          style={getMapBackgroundStyle(map, { fill: true })}
-                        >
-                          <div className="min-w-0 flex-1">
-                            <div className="text-base font-medium text-white sm:text-lg">
-                              {map.name}
-                            </div>
-                            <div className="mt-1 text-sm text-gray-300">怪物 {levelText}</div>
-                          </div>
-                          {map.monsters?.length ? (
-                            <div className="flex shrink-0 items-center gap-1.5">
-                              {map.monsters.slice(0, 4).map(m => (
-                                <MapCardMonsterAvatar
-                                  key={m.id}
-                                  icon={m.icon}
-                                  name={m.name}
-                                  large
-                                />
-                              ))}
-                            </div>
-                          ) : null}
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
               )}
             </div>
-          )}
+          </div>
 
           {currentMap ? (
             <div
@@ -401,7 +255,7 @@ export function CombatPanel() {
         </section>
 
         {/* 作战侧栏 */}
-        <aside className="flex min-w-0 flex-col gap-3 xl:sticky xl:top-[calc(var(--app-header-height,50px)+4.5rem)] xl:max-h-[calc(100dvh-var(--app-header-height,50px)-5.5rem)]">
+        <aside className="flex min-w-0 flex-col gap-3 xl:max-h-[calc(100dvh-var(--app-header-height,0px)-var(--rpg-status-bar-block)-2rem)]">
           {currentMap && activeSkills.length > 0 && (
             <section className="border-border bg-card rounded-lg border p-3 shadow-sm sm:p-4">
               <div className="mb-2 flex items-center justify-between gap-2">
@@ -438,7 +292,7 @@ export function CombatPanel() {
                 skillCooldowns={skillCooldowns}
                 enabledSkillIds={enabledSkillIds}
                 onSkillToggle={toggleEnabledSkill}
-                disabled={showDeathDialog}
+                disabled={isCharacterDead || isLoading}
                 layout={skillBarLayout}
               />
             </section>
@@ -461,37 +315,57 @@ export function CombatPanel() {
         </aside>
       </div>
 
-      {/* 死亡弹窗 */}
-      {showDeathDialog && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-          <div className="border-border bg-card w-full max-w-sm rounded-lg border p-6 text-center shadow-2xl">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-500/15 text-red-500">
-              <Skull className="h-7 w-7" />
-            </div>
-            <h3 className="text-foreground mb-2 text-xl font-bold">角色已死亡</h3>
-            <p className="text-muted-foreground mb-6">你的角色在战斗中不幸阵亡，战斗已自动停止。</p>
-            <div className="space-y-3">
-              <button
-                onClick={async () => {
-                  await revive()
-                  setShowDeathDialog(false)
-                }}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring flex w-full items-center justify-center gap-2 rounded-md py-2.5 font-medium focus:outline-none focus-visible:ring-2"
-              >
-                <RotateCcw className="h-4 w-4" />
-                复活
-              </button>
-              <button
-                onClick={() => setShowDeathDialog(false)}
-                className="border-border text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring flex w-full items-center justify-center gap-2 rounded-md border py-2.5 font-medium focus:outline-none focus-visible:ring-2"
-              >
-                <X className="h-4 w-4" />
-                暂时关闭
-              </button>
-            </div>
+      <Dialog
+        open={showDeathDialog}
+        onOpenChange={open => {
+          if (!isLoading) setShowDeathDialog(open)
+        }}
+      >
+        <DialogPortal>
+          <DialogOverlay />
+        </DialogPortal>
+        <DialogContent
+          className="w-[calc(100%-2rem)] max-w-sm rounded-xl p-6 text-center"
+          onEscapeKeyDown={event => {
+            if (isLoading) event.preventDefault()
+          }}
+        >
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-500/15 text-red-500">
+            <Skull aria-hidden="true" className="h-7 w-7" />
           </div>
-        </div>
-      )}
+          <DialogTitle>角色已阵亡</DialogTitle>
+          <DialogDescription>
+            战斗已自动停止。复活后可调整装备与技能，再继续冒险。
+          </DialogDescription>
+          {error && (
+            <p role="alert" className="text-destructive text-sm">
+              {error}
+            </p>
+          )}
+          <button
+            type="button"
+            onClick={handleRevive}
+            disabled={isLoading}
+            className="bg-primary text-primary-foreground hover:bg-primary/90 flex min-h-11 w-full items-center justify-center gap-2 rounded-lg font-medium disabled:cursor-wait disabled:opacity-60"
+          >
+            {combatAction === 'reviving' ? (
+              <LoaderCircle className="h-4 w-4 animate-spin" />
+            ) : (
+              <RotateCcw className="h-4 w-4" />
+            )}
+            {combatAction === 'reviving' ? '正在复活…' : '复活角色'}
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowDeathDialog(false)}
+            disabled={isLoading}
+            className="border-border text-muted-foreground hover:bg-muted flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border font-medium disabled:opacity-60"
+          >
+            <X className="h-4 w-4" />
+            稍后再说
+          </button>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

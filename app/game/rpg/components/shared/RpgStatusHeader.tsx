@@ -1,11 +1,13 @@
 'use client'
 
 import { useShallow } from 'zustand/react/shallow'
+import { Droplets, Heart } from 'lucide-react'
 import { useGameStore } from '../../stores/gameStore'
+import { CLASS_NAMES } from '../../types'
+import { getLevelProgress } from '../../utils/experience'
 import { CopperDisplay } from './CopperDisplay'
-import { CircularProgress } from './CircularProgress'
 
-/** 顶部状态栏：独立订阅 HP/MP/经验，避免战斗推送触发整页重渲染 */
+/** Subscribe separately so resource updates do not redraw the game shell. */
 export function RpgStatusHeader() {
   const { character, combatStats, currentHp, currentMana, experienceTable } = useGameStore(
     useShallow(s => ({
@@ -16,67 +18,111 @@ export function RpgStatusHeader() {
       experienceTable: s.experienceTable,
     }))
   )
+  if (!character) return null
 
-  if (!character || !combatStats) return null
-
-  const expToNext = experienceTable?.[character.level + 1] ?? (character.level + 1) * 5000
-  const expPercent =
-    expToNext > 0 ? Math.max(0, Math.min(100, (character.experience / expToNext) * 100)) : 0
+  const progress = getLevelProgress(character.level, character.experience, experienceTable)
+  const resources = [
+    {
+      label: '生命',
+      value: currentHp ?? character.current_hp ?? combatStats?.max_hp,
+      max: combatStats?.max_hp,
+      icon: Heart,
+      color: 'text-rose-600 dark:text-rose-400',
+      fill: 'bg-rose-500',
+    },
+    {
+      label: '法力',
+      value: currentMana ?? character.current_mana ?? combatStats?.max_mana,
+      max: combatStats?.max_mana,
+      icon: Droplets,
+      color: 'text-blue-600 dark:text-blue-400',
+      fill: 'bg-blue-500',
+    },
+  ]
 
   return (
-    <>
-      <div className="flex w-full items-center gap-2 text-xs sm:gap-3 sm:text-sm">
-        <div className="flex shrink-0 items-center gap-2">
-          <span className="text-foreground text-xs font-medium sm:text-sm">
-            Lv.{character.level}
-          </span>
-          <span className="self-center text-yellow-600 dark:text-yellow-400">
-            <CopperDisplay copper={character.copper} size="sm" maxParts={3} />
-          </span>
-        </div>
-        <div className="flex min-w-0 flex-1 items-center justify-center gap-2">
-          <div className="flex items-center gap-1">
-            <CircularProgress
-              percent={
-                combatStats.max_hp > 0
-                  ? ((currentHp ?? combatStats.max_hp) / combatStats.max_hp) * 100
-                  : 0
-              }
-              color="red"
-            />
-            <span className="text-xs text-red-500 sm:text-sm dark:text-red-400">
-              {currentHp ?? combatStats.max_hp}
-            </span>
-          </div>
-          <div className="flex items-center gap-1">
-            <CircularProgress
-              percent={
-                combatStats.max_mana > 0
-                  ? ((currentMana ?? combatStats.max_mana) / combatStats.max_mana) * 100
-                  : 0
-              }
-              color="blue"
-            />
-            <span className="text-xs text-blue-500 sm:text-sm dark:text-blue-400">
-              {currentMana ?? combatStats.max_mana}
-            </span>
-          </div>
-        </div>
-        <div className="flex shrink-0">
-          <span className="text-xs text-amber-500 tabular-nums sm:text-sm dark:text-amber-400">
-            {expPercent.toFixed(2)}%
-          </span>
-        </div>
+    <div className="grid w-full min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-2 sm:grid-cols-[minmax(8rem,1fr)_minmax(16rem,1.5fr)_auto] sm:gap-x-6">
+      <div className="flex min-w-0 items-center gap-2">
+        <span className="truncate text-sm font-semibold" title={character.name}>
+          {character.name}
+        </span>
+        <span className="text-muted-foreground hidden shrink-0 text-xs lg:inline">
+          {CLASS_NAMES[character.class]}
+        </span>
+        <span className="bg-primary/12 shrink-0 rounded-md px-1.5 py-0.5 text-xs font-medium tabular-nums">
+          Lv.{character.level}
+        </span>
       </div>
-      <div className="bg-muted absolute right-0 bottom-0 left-0 h-px overflow-hidden">
+      <div
+        className="col-start-2 row-start-1 text-right sm:col-start-3"
+        aria-label={`持有 ${character.copper} 铜币`}
+      >
+        <CopperDisplay copper={character.copper} size="sm" maxParts={3} nowrap />
+      </div>
+      <div className="col-span-2 flex min-w-0 items-center gap-3 sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:gap-5">
+        {resources.map(resource => {
+          const percent =
+            resource.max && resource.value != null
+              ? Math.max(0, Math.min(100, (resource.value / resource.max) * 100))
+              : 0
+          return (
+            <div
+              key={resource.label}
+              className="min-w-0 flex-1"
+              title={`${resource.label} ${resource.value ?? '—'} / ${resource.max ?? '—'}`}
+            >
+              <div
+                className={`mb-1 flex items-center gap-1 text-[11px] tabular-nums sm:text-xs ${resource.color}`}
+              >
+                <resource.icon aria-hidden="true" className="h-3 w-3 shrink-0" />
+                <span>{resource.label}</span>
+                <span className="ml-auto font-medium">{resource.value ?? '—'}</span>
+                <span className="text-muted-foreground hidden sm:inline">
+                  / {resource.max ?? '—'}
+                </span>
+              </div>
+              <div
+                role="progressbar"
+                aria-label={resource.label}
+                aria-valuemin={0}
+                aria-valuemax={resource.max ?? 0}
+                aria-valuenow={
+                  resource.value == null
+                    ? undefined
+                    : Math.max(0, Math.min(resource.max ?? resource.value, resource.value))
+                }
+                className="bg-muted h-1 overflow-hidden rounded-full"
+              >
+                <div
+                  className={`h-full rounded-full transition-[width] duration-300 motion-reduce:transition-none ${resource.fill}`}
+                  style={{ width: `${percent}%` }}
+                />
+              </div>
+            </div>
+          )
+        })}
+        <span
+          className="text-muted-foreground shrink-0 text-[10px] tabular-nums sm:hidden"
+          title={progress ? `本级经验 ${progress.earned} / ${progress.required}` : '经验数据加载中'}
+        >
+          EXP {progress ? `${progress.percent.toFixed(1)}%` : '—'}
+        </span>
+      </div>
+      <div
+        role="progressbar"
+        aria-label="升级经验"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={progress?.percent}
+        aria-valuetext={progress ? `${progress.earned} / ${progress.required}` : '加载中'}
+        className="bg-muted absolute inset-x-0 bottom-0 h-0.5 overflow-hidden"
+        title={progress ? `本级经验 ${progress.earned} / ${progress.required}` : '经验数据加载中'}
+      >
         <div
-          className="h-full min-w-0 transition-[width] duration-300"
-          style={{
-            width: `${expPercent}%`,
-            backgroundColor: expPercent > 0 ? '#f59e0b' : 'transparent',
-          }}
+          className="bg-amber-500 h-full transition-[width] duration-300 motion-reduce:transition-none"
+          style={{ width: `${progress?.percent ?? 0}%` }}
         />
       </div>
-    </>
+    </div>
   )
 }

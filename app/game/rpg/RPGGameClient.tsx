@@ -18,8 +18,8 @@ import { useLockAppScroll } from './hooks/useLockAppScroll'
 import { RpgRegistrationGate } from './components/auth/RpgRegistrationGate'
 import useAuthStore from '@/stores/authStore'
 import { RpgStatusHeader } from './components/shared/RpgStatusHeader'
-import { soundManager } from './utils/soundManager'
-import { Backpack, BookOpen, Settings, Sparkles, Swords, UserRound } from 'lucide-react'
+import { AlertCircle, X } from 'lucide-react'
+import { GAME_TABS, GameNavigation } from './components/shared/GameNavigation'
 
 import './rpg.module.css'
 
@@ -44,6 +44,7 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
   const fetchCombatLogs = useGameStore(s => s.fetchCombatLogs)
   const isLoading = useGameStore(s => s.isLoading)
   const error = useGameStore(s => s.error)
+  const clearError = useGameStore(s => s.clearError)
   const startCombat = useGameStore(s => s.startCombat)
   const stopCombat = useGameStore(s => s.stopCombat)
   const setShouldAutoCombat = useGameStore(s => s.setShouldAutoCombat)
@@ -51,6 +52,8 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
   const { isAuthenticated, loading: authLoading } = useAuthStore()
   const [showCreateView, setShowCreateView] = useState(false)
   const [initialFetchDone, setInitialFetchDone] = useState(false)
+  const [initialLoadError, setInitialLoadError] = useState<string | null>(null)
+  const [retryingCharacters, setRetryingCharacters] = useState(false)
   const contentScrollRef = useRef<HTMLDivElement | null>(null)
   const resetContentScroll = useCallback(() => {
     const scrollContainer = contentScrollRef.current
@@ -62,11 +65,12 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
   }, [])
   const handleTabChange = useCallback(
     (tabId: typeof activeTab) => {
+      if (tabId === activeTab) return
       resetContentScroll()
       setActiveTab(tabId)
       requestAnimationFrame(resetContentScroll)
     },
-    [resetContentScroll, setActiveTab]
+    [activeTab, resetContentScroll, setActiveTab]
   )
   // 视图由数据派生，避免在 effect 中 setState；首次拉取完成前固定为 select 避免闪屏
   let resolvedView: GameView
@@ -87,6 +91,7 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
   const stopCombatRef = useRef(stopCombat)
   const setShouldAutoCombatRef = useRef(setShouldAutoCombat)
   const autoStartRequestKeyRef = useRef<string | null>(null)
+  const autoStopRequestKeyRef = useRef<string | null>(null)
   const combatStatusReadyRef = useRef(false)
 
   useEffect(() => {
@@ -121,18 +126,22 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
         shouldAutoCombat,
       } = state
 
-      if (!combatStats) return
+      if (!combatStats || state.combatAction != null || state.pendingMapId != null) return
 
       const hpValue = currentHp ?? combatStats.max_hp ?? 0
       const autoStartKey =
         activeCharacter?.id && currentMap?.id ? `${activeCharacter.id}:${currentMap.id}` : null
 
       if (hpValue <= 0 && isFighting) {
-        stopCombatRef.current()
+        if (autoStartKey && autoStopRequestKeyRef.current !== autoStartKey) {
+          autoStopRequestKeyRef.current = autoStartKey
+          void stopCombatRef.current()
+        }
         setShouldAutoCombatRef.current(false)
         autoStartRequestKeyRef.current = null
         return
       }
+      if (hpValue > 0) autoStopRequestKeyRef.current = null
 
       if (!combatStatusReadyRef.current) return
 
@@ -162,13 +171,23 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
     if (authLoading || !isAuthenticated || initializedRef.current) return
     initializedRef.current = true
     fetchCharacters()
-      .then(() => setInitialFetchDone(true))
+      .then(() => {
+        setInitialLoadError(useGameStore.getState().error)
+        setInitialFetchDone(true)
+      })
       .catch(() => setInitialFetchDone(true))
   }, [authLoading, isAuthenticated, fetchCharacters])
 
   // 角色ID变化时批量拉取所有角色相关数据（优化fetch顺序）
   useEffect(() => {
     const characterId = selectedCharacterId || character?.id
+    if (!characterId) {
+      loadedCharacterIdRef.current = null
+      combatStatusReadyRef.current = false
+      autoStartRequestKeyRef.current = null
+      autoStopRequestKeyRef.current = null
+      return
+    }
     if (characterId && loadedCharacterIdRef.current !== characterId) {
       loadedCharacterIdRef.current = characterId
       combatStatusReadyRef.current = false
@@ -178,12 +197,14 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
       fetchMaps()
       fetchCombatStatus()
         .then(() => {
+          if (useGameStore.getState().selectedCharacterId !== characterId) return
           const state = useGameStore.getState()
           if (state.isFighting && state.currentMap && !state.shouldAutoCombat) {
             setShouldAutoCombatRef.current(true)
           }
         })
         .finally(() => {
+          if (useGameStore.getState().selectedCharacterId !== characterId) return
           combatStatusReadyRef.current = true
           const state = useGameStore.getState()
           const hpValue = state.currentHp ?? state.combatStats?.max_hp ?? 0
@@ -251,6 +272,37 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
   }
 
   // 角色选择页面
+  if (initialFetchDone && initialLoadError && !characters.length && !character) {
+    return (
+      <div className="bg-background flex min-h-dvh items-center justify-center p-6">
+        <div
+          role="alert"
+          className="bg-card w-full max-w-sm rounded-xl border p-6 text-center shadow-sm"
+        >
+          <AlertCircle className="text-destructive mx-auto mb-3 h-8 w-8" />
+          <h1 className="text-lg font-semibold">暂时无法加载角色</h1>
+          <p className="text-muted-foreground mt-2 break-words text-sm">{initialLoadError}</p>
+          <button
+            type="button"
+            disabled={retryingCharacters}
+            className="bg-primary text-primary-foreground mt-5 min-h-11 rounded-lg px-5 font-medium disabled:opacity-60"
+            onClick={async () => {
+              setRetryingCharacters(true)
+              try {
+                await fetchCharacters()
+                setInitialLoadError(useGameStore.getState().error)
+              } finally {
+                setRetryingCharacters(false)
+              }
+            }}
+          >
+            {retryingCharacters ? '正在重试…' : '重新加载'}
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   if (resolvedView === 'select') {
     return (
       <>
@@ -286,18 +338,9 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
     fetchCharacters()
   }
 
-  const tabs = [
-    { id: 'combat' as const, name: '战斗', icon: Swords },
-    { id: 'inventory' as const, name: '背包', icon: Backpack },
-    { id: 'character' as const, name: '角色', icon: UserRound },
-    { id: 'skills' as const, name: '技能', icon: Sparkles },
-    { id: 'compendium' as const, name: '图鉴', icon: BookOpen },
-    { id: 'settings' as const, name: '设置', icon: Settings },
-  ]
-
   return (
     <div
-      className={`bg-background text-foreground flex flex-col [--rpg-content-inset:0.75rem] [--rpg-status-bar-block:3rem] sm:[--rpg-content-inset:1rem] sm:[--rpg-status-bar-block:3rem] ${
+      className={`bg-muted/30 text-foreground flex flex-col [--rpg-content-inset:0.75rem] [--rpg-status-bar-block:calc(5rem+env(safe-area-inset-top,0px))] sm:[--rpg-content-inset:1rem] sm:[--rpg-status-bar-block:calc(4rem+env(safe-area-inset-top,0px))] ${
         usePanelInnerScroll ? 'min-h-0 overflow-hidden overscroll-none' : 'min-h-screen'
       }`}
       style={
@@ -311,10 +354,10 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
 
       {/* 顶部状态栏 */}
       <header
-        className="border-border bg-card fixed right-0 left-0 z-[60] border-b px-3 py-2 sm:px-4 sm:py-3"
+        className="border-border bg-card/95 fixed inset-x-0 z-[60] flex h-[var(--rpg-status-bar-block)] items-center border-b px-3 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl sm:px-4"
         style={{ top: 'var(--app-header-height, 50px)' }}
       >
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto w-full max-w-7xl">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <RpgStatusHeader />
           </div>
@@ -327,26 +370,23 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
           activeTab === 'character' ? 'px-0' : 'px-[var(--rpg-content-inset)]'
         } ${usePanelInnerScroll ? 'min-h-0 pb-0' : 'pb-[var(--rpg-content-inset)]'}`}
       >
-        <nav className="bg-muted mb-4 hidden gap-1 rounded-lg p-1 lg:flex">
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => handleTabChange(tab.id)}
-              className={`flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
-                activeTab === tab.id
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
-              }`}
-            >
-              <tab.icon className="mr-2 inline h-4 w-4" />
-              {tab.name}
-            </button>
-          ))}
-        </nav>
+        <GameNavigation activeTab={activeTab} onTabChange={handleTabChange} />
 
         {error && (
-          <div className="border-destructive bg-destructive/20 text-destructive mb-4 rounded-lg border p-3 text-sm">
-            {error}
+          <div
+            role="alert"
+            className="border-destructive/30 bg-destructive/10 text-destructive mb-4 flex items-start gap-2 rounded-lg border p-3 text-sm"
+          >
+            <AlertCircle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
+            <span className="min-w-0 flex-1 break-words">{error}</span>
+            <button
+              type="button"
+              aria-label="关闭错误提示"
+              onClick={clearError}
+              className="-m-1 flex h-7 w-7 shrink-0 items-center justify-center rounded hover:bg-destructive/10"
+            >
+              <X className="h-4 w-4" />
+            </button>
           </div>
         )}
 
@@ -354,16 +394,20 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
           ref={contentScrollRef}
           className={`flex min-h-0 flex-1 flex-col ${
             usePanelInnerScroll
-              ? 'overflow-hidden overscroll-none pb-28 lg:pb-4'
-              : 'overflow-y-auto pb-32 lg:pb-4'
+              ? 'overflow-hidden overscroll-none pb-[calc(5rem+env(safe-area-inset-bottom,0px))] lg:pb-4'
+              : 'overflow-y-auto pb-[calc(8rem+env(safe-area-inset-bottom,0px))] lg:pb-4'
           }`}
         >
           <div
+            id="game-panel"
+            role="tabpanel"
+            aria-label={GAME_TABS.find(tab => tab.id === activeTab)?.name}
+            tabIndex={0}
             className={
               usePanelInnerScroll ? 'flex min-h-0 flex-1 w-full min-w-0 flex-col' : 'w-full min-w-0'
             }
           >
-            <ErrorBoundary>
+            <ErrorBoundary key={activeTab}>
               {activeTab === 'character' && <CharacterPanel />}
               {activeTab === 'inventory' && <InventoryPanel />}
               {activeTab === 'skills' && <SkillPanel />}
@@ -380,25 +424,7 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
         </div>
       </main>
 
-      {/* 手机端底部栏：z-50 确保始终在内容之上，避免技能栏等挡住导航 */}
-      <nav className="border-border bg-card/95 fixed right-0 bottom-0 left-0 z-50 border-t backdrop-blur lg:hidden">
-        <div className="flex justify-around">
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => handleTabChange(tab.id)}
-              className={`flex min-h-[64px] flex-1 flex-col items-center justify-center py-3 text-center transition-colors ${
-                activeTab === tab.id
-                  ? 'bg-muted text-primary'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              <tab.icon className="mb-1 h-5 w-5" />
-              <div className="text-xs">{tab.name}</div>
-            </button>
-          ))}
-        </div>
-      </nav>
+      <GameNavigation mobile activeTab={activeTab} onTabChange={handleTabChange} />
     </div>
   )
 }

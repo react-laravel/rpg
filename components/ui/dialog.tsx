@@ -114,7 +114,10 @@ const DialogDescription = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
 >(({ className, ...props }, ref) => {
   const descriptionContext = React.useContext(DialogDescriptionContext)
-  descriptionContext?.registerDescription()
+  const registerDescription = descriptionContext?.registerDescription
+  React.useEffect(() => {
+    registerDescription?.()
+  }, [registerDescription])
 
   return (
     <DialogPrimitive.Description

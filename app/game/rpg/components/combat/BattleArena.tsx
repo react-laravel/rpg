@@ -1,6 +1,6 @@
 'use client'
 
-import { type CombatMonster, type SkillUsedEntry } from '../../types'
+import { CLASS_NAMES, type CharacterClass, type CombatMonster, type SkillUsedEntry } from '../../types'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { MonsterIcon } from './MonsterIcon'
 import { MonsterGroup } from './MonsterGroup'
@@ -142,12 +142,18 @@ export function BattleArena({
   const showDamageAndHp = !deferDamageDisplay
   const activeSkillEffect = skillRoundPending && !monsterAppearBlocking ? computedSkillEffect : null
 
-  const effectiveCharacterHp = deferDamageDisplay
-    ? hpBeforeMonsterHit
-    : (displayCharacterHp ?? finalCharacterHp)
-  const effectiveCharacterMana = deferDamageDisplay
-    ? manaBeforeRegen
-    : (displayCharacterMana ?? finalCharacterMana)
+  const effectiveCharacterHp =
+    combatLogId == null
+      ? finalCharacterHp
+      : deferDamageDisplay
+        ? hpBeforeMonsterHit
+        : (displayCharacterHp ?? finalCharacterHp)
+  const effectiveCharacterMana =
+    combatLogId == null
+      ? finalCharacterMana
+      : deferDamageDisplay
+        ? manaBeforeRegen
+        : (displayCharacterMana ?? finalCharacterMana)
   const hpPercent = combatStats?.max_hp
     ? Math.min(100, Math.max(0, (effectiveCharacterHp / combatStats.max_hp) * 100))
     : 0
@@ -159,9 +165,11 @@ export function BattleArena({
     setMonsterAppearBlocking(active)
   }, [])
 
-  // 新回合到达时重置角色动画状态
+  // A new round, stop or revival invalidates all timers from the previous round.
   useEffect(() => {
-    if (combatLogId == null) return
+    const timers = characterTimersRef.current
+    timers.forEach(clearTimeout)
+    timers.clear()
     queueMicrotask(() => {
       lastCharacterEffectsLogIdRef.current = null
       setDisplayCharacterHp(null)
@@ -181,8 +189,10 @@ export function BattleArena({
     const taken = damageTaken ?? 0
     const regenDelay = taken > 0 ? CHARACTER_REGEN_STAGGER_MS : 0
     const logId = combatLogId
+    let cancelled = false
 
     queueMicrotask(() => {
+      if (cancelled) return
       lastCharacterEffectsLogIdRef.current = logId
 
       if (taken > 0) {
@@ -213,6 +223,9 @@ export function BattleArena({
         setDisplayCharacterMana(finalCharacterMana)
       }
     })
+    return () => {
+      cancelled = true
+    }
   }, [
     showDamageAndHp,
     combatLogId,
@@ -501,7 +514,7 @@ export function BattleArena({
                 </span>
                 {character && (
                   <span className="shrink-0 text-[10px] text-white/60 sm:text-xs">
-                    Lv.{character.level} {character.class}
+                    Lv.{character.level} {CLASS_NAMES[character.class as CharacterClass] ?? character.class}
                   </span>
                 )}
               </div>

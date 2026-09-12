@@ -89,6 +89,8 @@ interface GameState {
 
   // UI状态
   isLoading: boolean
+  pendingMapId: number | null
+  combatAction: 'starting' | 'stopping' | 'reviving' | null
   error: string | null
   activeTab: 'character' | 'inventory' | 'skills' | 'maps' | 'combat' | 'settings' | 'compendium'
 
@@ -136,8 +138,8 @@ interface GameState {
 
   // 地图操作
   fetchMaps: () => Promise<void>
-  enterMap: (mapId: number) => Promise<void>
-  teleportToMap: (mapId: number) => Promise<void>
+  enterMap: (mapId: number) => Promise<boolean>
+  teleportToMap: (mapId: number) => Promise<boolean>
 
   // 战斗操作
   fetchCombatStatus: () => Promise<void>
@@ -145,7 +147,7 @@ interface GameState {
   fetchCombatLogDetail: (logId: number) => Promise<void>
   clearCombatLogDetail: () => void
   startCombat: () => Promise<void>
-  revive: () => Promise<void>
+  revive: () => Promise<boolean>
   stopCombat: () => Promise<void>
   setShouldAutoCombat: (should: boolean) => void // 设置是否应该自动战斗
   /** 已启用的技能 id 列表，可多选；自动战斗时会按顺序尝试施放 */
@@ -221,6 +223,8 @@ const initialState = {
   pendingCombatLog: null,
   combatLogDetail: null, // 选中的战斗日志详情
   isLoading: false,
+  pendingMapId: null as number | null,
+  combatAction: null as GameState['combatAction'],
   error: null,
   activeTab: 'character' as const,
   compareEquippedCollapsed: false,
@@ -908,16 +912,19 @@ const store: StateCreator<GameState> = (set, get) => ({
   },
 
   enterMap: async mapId => {
-    startRequest(set)
+    if (get().pendingMapId != null || get().combatAction != null) return false
+    const characterId = get().selectedCharacterId
+    startRequest(set, { pendingMapId: mapId })
     try {
       const selectedId = getSelectedCharacterIdOrAbort(get, set, {
         context: 'enterMap',
         warn: false,
       })
-      if (!selectedId) return
+      if (!selectedId) return false
       const response = await post<EnterMapResponse>('/rpg/maps/' + mapId + '/enter', {
         character_id: selectedId,
       })
+      if (get().selectedCharacterId !== characterId) return false
       soundManager.play('teleport') // 使用传送音效
       const maps = get().maps
       const currentMap = response.map ?? maps.find(m => m.id === mapId) ?? null
@@ -929,33 +936,41 @@ const store: StateCreator<GameState> = (set, get) => ({
             ? [...state.maps, currentMap]
             : state.maps,
         currentMap,
-        character: char,
+        character: char ? { ...char, is_fighting: false } : state.character,
         isFighting: false,
-        shouldAutoCombat: true,
+        shouldAutoCombat: (char?.current_hp ?? state.currentHp ?? state.combatStats?.max_hp ?? 1) > 0,
         isLoading: false,
         combatResult: null,
+        pendingCombatLog: null,
         statusCombatMonsters: response.monsters ?? null,
         // 切图返回的可能是「切图瞬间已死亡」的角色数据，必须同步 HP/MP，
         // 否则界面会一直显示切图前的旧血量，卡在战斗画面(实际已死亡)
         currentHp: char?.current_hp ?? state.currentHp,
         currentMana: char?.current_mana ?? state.currentMana,
       }))
+      return true
     } catch (error) {
-      setRequestError(set, error)
+      if (get().selectedCharacterId === characterId) setRequestError(set, error)
+      return false
+    } finally {
+      if (get().pendingMapId === mapId) set({ pendingMapId: null })
     }
   },
 
   teleportToMap: async mapId => {
-    startRequest(set)
+    if (get().pendingMapId != null || get().combatAction != null) return false
+    const characterId = get().selectedCharacterId
+    startRequest(set, { pendingMapId: mapId })
     try {
       const selectedId = getSelectedCharacterIdOrAbort(get, set, {
         context: 'teleportToMap',
         warn: false,
       })
-      if (!selectedId) return
+      if (!selectedId) return false
       const response = (await post('/rpg/maps/' + mapId + '/teleport', {
         character_id: selectedId,
       })) as EnterMapResponse
+      if (get().selectedCharacterId !== characterId) return false
       soundManager.play('skill_use')
       const maps = get().maps
       const currentMap = response.map ?? maps.find(m => m.id === mapId) ?? null
@@ -967,19 +982,24 @@ const store: StateCreator<GameState> = (set, get) => ({
             ? [...state.maps, currentMap]
             : state.maps,
         currentMap,
-        character: char,
+        character: char ? { ...char, is_fighting: false } : state.character,
         isFighting: false,
-        shouldAutoCombat: true,
+        shouldAutoCombat: (char?.current_hp ?? state.currentHp ?? state.combatStats?.max_hp ?? 1) > 0,
         isLoading: false,
         enabledSkillIds: resolveEnabledSkillIds(state.skills, state.enabledSkillIds),
         combatResult: null,
+        pendingCombatLog: null,
         statusCombatMonsters: response.monsters ?? null,
         // 复活时后端只恢复基础生命/法力，用返回的 character 更新当前 HP/MP 显示
         currentHp: char?.current_hp ?? state.currentHp,
         currentMana: char?.current_mana ?? state.currentMana,
       }))
+      return true
     } catch (error) {
-      setRequestError(set, error)
+      if (get().selectedCharacterId === characterId) setRequestError(set, error)
+      return false
+    } finally {
+      if (get().pendingMapId === mapId) set({ pendingMapId: null })
     }
   },
 
@@ -1076,7 +1096,7 @@ const store: StateCreator<GameState> = (set, get) => ({
   },
 
   startCombat: async () => {
-    if (startCombatInFlight) return
+    if (startCombatInFlight || get().combatAction != null || get().pendingMapId != null) return
 
     try {
       const selectedId = getSelectedCharacterIdOrAbort(get, set, {
@@ -1088,6 +1108,7 @@ const store: StateCreator<GameState> = (set, get) => ({
 
       startCombatInFlight = true
       startRequest(set, {
+        combatAction: 'starting',
         combatResult: null,
         ...withCombatFlag(get(), true),
       })
@@ -1124,18 +1145,22 @@ const store: StateCreator<GameState> = (set, get) => ({
       set(state => ({
         ...state,
         ...withCombatFlag(state, false),
+        shouldAutoCombat: false,
         error: message,
         isLoading: false,
       }))
     } finally {
       startCombatInFlight = false
+      set({ combatAction: null })
     }
   },
 
   /** 复活角色，不自动开始战斗 */
   revive: async () => {
+    if (get().combatAction != null || get().pendingMapId != null) return false
     // 立即清空战斗结果和战斗状态，避免界面继续显示死亡前的怪物
     startRequest(set, {
+      combatAction: 'reviving',
       combatResult: null,
       statusCombatMonsters: null,
       isFighting: false,
@@ -1146,7 +1171,7 @@ const store: StateCreator<GameState> = (set, get) => ({
         context: 'revive',
         warn: false,
       })
-      if (!selectedId) return
+      if (!selectedId) return false
       const response = (await post('/rpg/combat/revive', { character_id: selectedId })) as {
         character?: GameCharacter
       }
@@ -1167,28 +1192,34 @@ const store: StateCreator<GameState> = (set, get) => ({
         enabledSkillIds: resolveEnabledSkillIds(state.skills, state.enabledSkillIds),
         isLoading: false,
       }))
+      return true
     } catch (error) {
       setRequestError(set, error)
+      return false
+    } finally {
+      set({ combatAction: null })
     }
   },
 
   stopCombat: async () => {
+    if (get().combatAction != null || get().pendingMapId != null) return
+    set({ combatAction: 'stopping', shouldAutoCombat: false, error: null })
     try {
       const selectedId = get().selectedCharacterId
-      if (selectedId) {
-        await post('/rpg/combat/stop', { character_id: selectedId })
-      }
-    } finally {
+      if (selectedId) await post('/rpg/combat/stop', { character_id: selectedId })
       get().flushPendingCombatLog()
       set(state => ({
-        ...state,
-        enabledSkillIds: [],
         ...withCombatFlag(state, false),
         shouldAutoCombat: false,
         combatResult: null,
         statusCombatMonsters: null,
         pendingCombatLog: null,
       }))
+    } catch (error) {
+      // Keep the last confirmed running state so a failed stop can be retried.
+      setRequestError(set, error)
+    } finally {
+      set({ combatAction: null })
     }
   },
 
@@ -1442,8 +1473,8 @@ export const useGameStore = create<GameState>()(
         ...currentState,
         ...(persistedState as Partial<GameState>),
       }
-      if ((merged.activeTab as string) === 'shop') {
-        merged.activeTab = 'character'
+      if (!['character', 'inventory', 'skills', 'combat', 'settings', 'compendium'].includes(merged.activeTab)) {
+        merged.activeTab = 'combat'
       }
       return merged
     },

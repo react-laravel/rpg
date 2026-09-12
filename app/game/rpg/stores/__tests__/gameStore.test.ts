@@ -401,7 +401,7 @@ describe('GameStore', () => {
   })
 
   describe('stopCombat', () => {
-    it('should stop combat', async () => {
+    it('should stop combat and preserve the selected skills', async () => {
       const { post } = await import('@/lib/api')
       vi.mocked(post).mockResolvedValueOnce({})
 
@@ -416,7 +416,7 @@ describe('GameStore', () => {
 
       expect(useGameStore.getState().isFighting).toBe(false)
       expect(useGameStore.getState().shouldAutoCombat).toBe(false)
-      expect(useGameStore.getState().enabledSkillIds).toHaveLength(0)
+      expect(useGameStore.getState().enabledSkillIds).toEqual([1, 2])
     })
   })
 
