@@ -82,7 +82,7 @@ export function RpgStatusHeader() {
             <CircularProgress
               percent={resource.percent}
               color={resource.color}
-              size="md"
+              size="lg"
               label={resource.label}
             />
             <div className={`min-w-0 ${resource.text}`}>
