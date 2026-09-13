@@ -27,7 +27,7 @@ describe('battle resource display', () => {
   it('shows revived HP and mana immediately after the old round is cleared', async () => {
     const view = render(<BattleArena {...baseProps} />)
     await act(async () => {})
-    expect(screen.getByText('0 / 1000')).toBeInTheDocument()
+    expect(screen.getByText('0/1000')).toBeInTheDocument()
     view.rerender(
       <BattleArena
         {...baseProps}
@@ -37,12 +37,12 @@ describe('battle resource display', () => {
         currentMana={100}
       />
     )
-    expect(screen.getByText('1000 / 1000')).toBeInTheDocument()
-    expect(screen.getByText('100 / 100')).toBeInTheDocument()
+    expect(screen.getByText('1000/1000')).toBeInTheDocument()
+    expect(screen.getByText('100/100')).toBeInTheDocument()
     await act(async () => {
       vi.advanceTimersByTime(3000)
     })
-    expect(screen.getByText('1000 / 1000')).toBeInTheDocument()
+    expect(screen.getByText('1000/1000')).toBeInTheDocument()
   })
 
   it('cancels delayed regeneration from the previous round', async () => {
@@ -63,7 +63,7 @@ describe('battle resource display', () => {
     await act(async () => {
       vi.advanceTimersByTime(500)
     })
-    expect(screen.getByText('20 / 1000')).toBeInTheDocument()
-    expect(screen.queryByText('40 / 1000')).not.toBeInTheDocument()
+    expect(screen.getByText('20/1000')).toBeInTheDocument()
+    expect(screen.queryByText('40/1000')).not.toBeInTheDocument()
   })
 })

@@ -521,9 +521,9 @@ export function BattleArena({
                       <span className="shrink-0">生命</span>
                       <span
                         className="truncate tabular-nums"
-                        title={`${effectiveCharacterHp} / ${combatStats.max_hp}`}
+                        title={`${effectiveCharacterHp}/${combatStats.max_hp}`}
                       >
-                        {effectiveCharacterHp} / {combatStats.max_hp}
+                        {effectiveCharacterHp}/{combatStats.max_hp}
                       </span>
                     </div>
                     <div className="mt-1 h-1.5 overflow-hidden rounded-sm bg-black/60 ring-1 ring-white/10">
@@ -538,9 +538,9 @@ export function BattleArena({
                       <span className="shrink-0">魔法</span>
                       <span
                         className="truncate tabular-nums"
-                        title={`${effectiveCharacterMana} / ${combatStats.max_mana}`}
+                        title={`${effectiveCharacterMana}/${combatStats.max_mana}`}
                       >
-                        {effectiveCharacterMana} / {combatStats.max_mana}
+                        {effectiveCharacterMana}/{combatStats.max_mana}
                       </span>
                     </div>
                     <div className="mt-1 h-1.5 overflow-hidden rounded-sm bg-black/60 ring-1 ring-white/10">
