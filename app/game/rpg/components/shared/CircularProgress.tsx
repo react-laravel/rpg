@@ -4,8 +4,8 @@ import styles from '../../rpg.module.css'
 
 const SIZE_PX = {
   sm: 16,
-  md: 44,
-  lg: 56,
+  md: 32,
+  lg: 44,
 } as const
 
 type OrbSize = keyof typeof SIZE_PX

@@ -47,6 +47,7 @@ describe('RpgStatusHeader', () => {
       'aria-valuenow',
       '60'
     )
+    expect(screen.queryByText(/EXP/i)).not.toBeInTheDocument()
   })
 
   it('should return null when character is null', () => {
