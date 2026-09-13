@@ -3,6 +3,16 @@ import type { CombatMonster } from '../types'
 export const COMBAT_MONSTER_COLS = 5
 export const COMBAT_MONSTER_MAX_ROWS = 3
 
+/**
+ * 单只怪物状态卡宽度（与 MonsterGroup 五列网格单列一致）。
+ * 角色状态卡复用同一尺寸，避免底部横幅过宽。
+ */
+export const COMBAT_UNIT_PANEL_WIDTH_CLASS = 'w-[4.1rem] sm:w-[4.7rem]'
+
+/** 怪物区整体最大宽度 */
+export const COMBAT_MONSTER_GRID_MAX_WIDTH_CLASS =
+  'w-full max-w-[22rem] sm:max-w-[26rem]'
+
 export function isRenderableCombatMonster(
   monster: CombatMonster | null | undefined
 ): monster is CombatMonster {
