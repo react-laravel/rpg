@@ -1123,14 +1123,56 @@ const store: StateCreator<GameState> = (set, get) => ({
         characterId: selectedId,
         skillIds: body.skill_ids,
       })
-      await post<{ message?: string }>('/rpg/combat/start', body)
+      const result = await post<{
+        already_running?: boolean
+        message?: string
+        monster?: CombatResult['monster']
+        monsters?: CombatResult['monsters']
+        character?: CombatResult['character']
+        current_hp?: number
+        current_mana?: number
+        combat_log_id?: number
+      } & Partial<CombatResult>>('/rpg/combat/start', body)
       reportCombatDebug('gameStore.ts:startCombat:after', 'combat/start success', {
         characterId: selectedId,
       })
       soundManager.play('combat_start')
+      if (result?.already_running) {
+        await get().fetchCombatStatus()
+        await get().fetchCombatLogs()
+      }
       set(state => ({
         ...state,
         ...withCombatFlag(state, true),
+        ...(result?.monster
+          ? {
+              combatResult: {
+                victory: result.victory ?? false,
+                defeat: result.defeat,
+                auto_stopped: result.auto_stopped,
+                monster_id: result.monster_id,
+                monsters: result.monsters,
+                monster: result.monster,
+                monster_hp_before_round: result.monster_hp_before_round,
+                damage_dealt: result.damage_dealt ?? 0,
+                damage_taken: result.damage_taken ?? 0,
+                rounds: result.rounds,
+                experience_gained: result.experience_gained ?? 0,
+                copper_gained: result.copper_gained ?? 0,
+                loot: result.loot ?? {},
+                skills_used: result.skills_used,
+                skill_target_positions: result.skill_target_positions,
+                skill_cooldowns: result.skill_cooldowns,
+                round_regen: result.round_regen,
+                character: result.character ?? state.character,
+                combat_log_id: result.combat_log_id,
+              } as CombatResult,
+              statusCombatMonsters: result.monsters ?? state.statusCombatMonsters,
+              character: result.character ?? state.character,
+              currentHp: result.current_hp ?? result.character?.current_hp ?? state.currentHp,
+              currentMana: result.current_mana ?? result.character?.current_mana ?? state.currentMana,
+            }
+          : {}),
         isLoading: false,
       }))
     } catch (error) {

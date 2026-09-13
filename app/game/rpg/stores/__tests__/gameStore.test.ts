@@ -403,6 +403,42 @@ describe('GameStore', () => {
       expect(useGameStore.getState().isFighting).toBe(true)
     })
 
+    it('applies the first combat snapshot returned by start', async () => {
+      const { post } = await import('@/lib/api')
+      vi.mocked(post).mockResolvedValueOnce({
+        victory: false,
+        monster: { name: 'Goblin', type: 'normal', level: 1 },
+        monsters: [
+          {
+            id: 2,
+            name: 'Goblin',
+            type: 'normal',
+            level: 1,
+            hp: 12,
+            max_hp: 20,
+          },
+        ],
+        damage_dealt: 8,
+        damage_taken: 3,
+        experience_gained: 0,
+        copper_gained: 0,
+        loot: {},
+        character: { id: 1, name: 'Hero', current_hp: 97, current_mana: 40 },
+      })
+
+      useGameStore.setState({
+        selectedCharacterId: 1,
+        isFighting: false,
+        combatResult: null,
+      })
+
+      await useGameStore.getState().startCombat()
+
+      expect(useGameStore.getState().combatResult?.monster.name).toBe('Goblin')
+      expect(useGameStore.getState().statusCombatMonsters?.[0]?.name).toBe('Goblin')
+      expect(useGameStore.getState().currentHp).toBe(97)
+    })
+
     it('should handle combat already running error', async () => {
       const { post } = await import('@/lib/api')
       vi.mocked(post).mockRejectedValueOnce(new Error('自动战斗已在运行中'))

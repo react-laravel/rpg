@@ -55,6 +55,7 @@ export function CombatPanel() {
   const revive = useGameStore(state => state.revive)
   const isFighting = useGameStore(state => state.isFighting)
   const setShouldAutoCombat = useGameStore(state => state.setShouldAutoCombat)
+  const startCombat = useGameStore(state => state.startCombat)
   const stopCombat = useGameStore(state => state.stopCombat)
   const combatAction = useGameStore(state => state.combatAction)
   const pendingMapId = useGameStore(state => state.pendingMapId)
@@ -169,6 +170,7 @@ export function CombatPanel() {
 
   const handleStartCombat = async () => {
     setShouldAutoCombat(true)
+    await startCombat()
   }
 
   // 角色死亡时，点击只是复活，不自动开始战斗
