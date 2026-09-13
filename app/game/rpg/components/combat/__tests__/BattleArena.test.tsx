@@ -66,4 +66,20 @@ describe('battle resource display', () => {
     expect(screen.getByText('20/1000')).toBeInTheDocument()
     expect(screen.queryByText('40/1000')).not.toBeInTheDocument()
   })
+
+  it('searches for enemies while fighting without monsters instead of showing paused', async () => {
+    render(
+      <BattleArena
+        {...baseProps}
+        isFighting
+        currentHp={100}
+        damageTaken={undefined}
+        combatLogId={null}
+      />
+    )
+    await act(async () => {})
+    expect(screen.getByText('正在寻找敌人')).toBeInTheDocument()
+    expect(screen.queryByText('战斗已暂停')).not.toBeInTheDocument()
+    expect(screen.queryByText('战斗中')).not.toBeInTheDocument()
+  })
 })

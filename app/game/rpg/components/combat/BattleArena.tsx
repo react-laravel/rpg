@@ -357,7 +357,7 @@ export function BattleArena({
             <div data-effect-target={0} className={isMonsterDead && showDamageAndHp ? styles['monster-death'] : ''}>
               <MonsterIcon key={monsterId} icon={monster.icon} name={monster.name} size="lg" />
             </div>
-          ) : isFighting && isLoading ? (
+          ) : isFighting ? (
             <div className="flex items-center gap-2 rounded-full border border-white/15 bg-black/45 px-3 py-1.5 text-xs text-white/80 backdrop-blur-sm sm:text-sm">
               <span className="h-2 w-2 animate-pulse rounded-full bg-amber-400" />
               正在寻找敌人
@@ -366,9 +366,6 @@ export function BattleArena({
             <div className="rounded-full border border-white/15 bg-black/35 px-4 py-2 text-xs text-white/75 backdrop-blur-sm sm:text-sm">
               战斗已暂停
             </div>
-          )}
-          {!isLoading && isFighting && !hasValidMonsters && !monster && !monsterId && (
-            <div className="text-muted-foreground flex-1 text-xs">战斗中</div>
           )}
         </div>
 

@@ -152,7 +152,10 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
       }
 
       if (isFighting) {
-        autoStartRequestKeyRef.current = autoStartKey
+        if (autoStartRequestKeyRef.current !== autoStartKey) {
+          autoStartRequestKeyRef.current = autoStartKey
+          void startCombatRef.current()
+        }
         return
       }
 
@@ -216,7 +219,6 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
 
           if (
             state.shouldAutoCombat &&
-            !state.isFighting &&
             state.currentMap &&
             autoStartKey &&
             hpValue > 0 &&

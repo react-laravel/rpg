@@ -1114,7 +1114,7 @@ const store: StateCreator<GameState> = (set, get) => ({
       startCombatInFlight = true
       startRequest(set, {
         combatAction: 'starting',
-        combatResult: null,
+        ...(get().isFighting ? {} : { combatResult: null }),
         ...withCombatFlag(get(), true),
       })
       const body: { character_id: number; skill_ids?: number[] } = { character_id: selectedId }

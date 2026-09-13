@@ -413,6 +413,35 @@ describe('GameStore', () => {
 
       expect(useGameStore.getState().error).toBeNull()
     })
+
+    it('keeps the current battle snapshot when restarting an already running fight', async () => {
+      const { post } = await import('@/lib/api')
+      vi.mocked(post).mockResolvedValueOnce({})
+      const combatResult = {
+        victory: false,
+        monster: { name: 'Goblin', type: 'normal' as const, level: 1 },
+        damage_dealt: 4,
+        damage_taken: 1,
+        experience_gained: 0,
+        copper_gained: 0,
+        loot: {},
+        character: { id: 1, name: 'Hero' },
+      }
+
+      useGameStore.setState({
+        selectedCharacterId: 1,
+        isFighting: true,
+        combatResult,
+      })
+
+      await useGameStore.getState().startCombat()
+
+      expect(useGameStore.getState().combatResult).toEqual(combatResult)
+      expect(post).toHaveBeenCalledWith(
+        '/rpg/combat/start',
+        expect.objectContaining({ character_id: 1 })
+      )
+    })
   })
 
   describe('stopCombat', () => {
