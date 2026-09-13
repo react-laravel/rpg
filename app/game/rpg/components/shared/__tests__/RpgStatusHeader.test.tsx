@@ -35,8 +35,18 @@ describe('RpgStatusHeader', () => {
     render(<RpgStatusHeader />)
 
     expect(screen.getByText('Lv.2')).toBeInTheDocument()
+    expect(screen.getByText('生命')).toBeInTheDocument()
+    expect(screen.getByText('法力')).toBeInTheDocument()
     expect(screen.getByText('80')).toBeInTheDocument()
     expect(screen.getByText('30')).toBeInTheDocument()
+    expect(screen.getByRole('progressbar', { name: '生命' })).toHaveAttribute(
+      'aria-valuenow',
+      '80'
+    )
+    expect(screen.getByRole('progressbar', { name: '法力' })).toHaveAttribute(
+      'aria-valuenow',
+      '60'
+    )
   })
 
   it('should return null when character is null', () => {

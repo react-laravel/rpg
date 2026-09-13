@@ -269,6 +269,57 @@
   }
 }
 
+/* 顶部生命/法力球 */
+.resource-orb {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: 9999px;
+}
+
+.hp-orb-glow {
+  filter: drop-shadow(0 0 6px rgb(244 63 94 / 0.45));
+}
+
+.mp-orb-glow {
+  filter: drop-shadow(0 0 6px rgb(59 130 246 / 0.45));
+}
+
+.hp-orb-liquid,
+.mp-orb-liquid {
+  transform-origin: center bottom;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hp-orb-glow {
+    animation: orb-pulse-red 2.8s ease-in-out infinite;
+  }
+
+  .mp-orb-glow {
+    animation: orb-pulse-blue 2.8s ease-in-out infinite;
+  }
+}
+
+@keyframes orb-pulse-red {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 5px rgb(244 63 94 / 0.35));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgb(244 63 94 / 0.65));
+  }
+}
+
+@keyframes orb-pulse-blue {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 5px rgb(59 130 246 / 0.35));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgb(59 130 246 / 0.65));
+  }
+}
+
 .health-bar-fill,
 .mana-bar-fill {
   position: relative;
@@ -318,7 +369,9 @@
   .skill-triggered,
   .skill-cooldown::before,
   .health-bar-fill::after,
-  .mana-bar-fill::after {
+  .mana-bar-fill::after,
+  .hp-orb-glow,
+  .mp-orb-glow {
     animation-duration: 0.01ms;
     animation-iteration-count: 1;
   }
