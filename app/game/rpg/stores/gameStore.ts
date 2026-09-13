@@ -26,6 +26,7 @@ import {
   GameLevelUpEvent,
 } from '../types'
 import { apiGet, apiRequest, post, put, del } from '@/lib/api'
+import { mergeExperienceTable } from '../config/progression'
 import { soundManager } from '../utils/soundManager'
 
 // Imports from extracted helpers
@@ -60,7 +61,7 @@ interface GameState {
   characters: GameCharacter[]
   character: GameCharacter | null
   selectedCharacterId: number | null
-  experienceTable: Record<number, number> // 等级 -> 累计经验，由后端提供
+  experienceTable: Record<number, number> // 等级 -> 累计经验（API + 本地曲线补全至 MAX_CHARACTER_LEVEL）
   combatStats: CombatStats | null
   statsBreakdown: CombatStatsBreakdown | null // 攻击/防御等属性明细（基础+装备）
   currentHp: number | null // 当前HP
@@ -200,7 +201,7 @@ const initialState = {
   characters: [],
   character: null,
   selectedCharacterId: null,
-  experienceTable: {} as Record<number, number>,
+  experienceTable: mergeExperienceTable(null),
   combatStats: null,
   statsBreakdown: null,
   currentHp: null,
@@ -255,7 +256,9 @@ const store: StateCreator<GameState> = (set, get) => ({
       set(state => ({
         ...state,
         characters: Array.isArray(response?.characters) ? response.characters : [],
-        experienceTable: response?.experience_table ?? state.experienceTable,
+        experienceTable: mergeExperienceTable(
+          response?.experience_table ?? state.experienceTable
+        ),
       }))
     } catch (error) {
       console.error('[GameStore] Fetch characters error:', error)
@@ -298,7 +301,9 @@ const store: StateCreator<GameState> = (set, get) => ({
       set(state => ({
         ...state,
         character: response.character,
-        experienceTable: response.experience_table ?? state.experienceTable,
+        experienceTable: mergeExperienceTable(
+          response.experience_table ?? state.experienceTable
+        ),
         combatStats: response.combat_stats || null,
         statsBreakdown: response.stats_breakdown ?? null,
         currentHp: response.current_hp ?? null,
