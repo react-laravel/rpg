@@ -340,7 +340,7 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
 
   return (
     <div
-      className={`bg-muted/30 text-foreground flex flex-col [--rpg-content-inset:0.75rem] [--rpg-status-bar-block:calc(4.5rem+env(safe-area-inset-top,0px))] sm:[--rpg-content-inset:1rem] sm:[--rpg-status-bar-block:calc(4rem+env(safe-area-inset-top,0px))] ${
+      className={`bg-muted/30 text-foreground flex flex-col [--rpg-content-inset:0.75rem] [--rpg-status-bar-block:calc(3.5rem+env(safe-area-inset-top,0px))] sm:[--rpg-content-inset:1rem] sm:[--rpg-status-bar-block:calc(3.25rem+env(safe-area-inset-top,0px))] ${
         usePanelInnerScroll ? 'min-h-0 overflow-hidden overscroll-none' : 'min-h-screen'
       }`}
       style={

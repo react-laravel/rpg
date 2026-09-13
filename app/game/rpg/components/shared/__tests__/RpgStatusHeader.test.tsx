@@ -14,7 +14,7 @@ describe('RpgStatusHeader', () => {
     })
   })
 
-  it('should render without crashing when character data is present', () => {
+  it('should render a single-row header with borderless orbs and no resource text', () => {
     useGameStore.setState({
       character: {
         id: 1,
@@ -35,19 +35,17 @@ describe('RpgStatusHeader', () => {
     render(<RpgStatusHeader />)
 
     expect(screen.getByText('Lv.2')).toBeInTheDocument()
-    expect(screen.getByText('生命')).toBeInTheDocument()
-    expect(screen.getByText('法力')).toBeInTheDocument()
-    expect(screen.getByText('80')).toBeInTheDocument()
-    expect(screen.getByText('30')).toBeInTheDocument()
-    expect(screen.getByRole('progressbar', { name: '生命' })).toHaveAttribute(
-      'aria-valuenow',
-      '80'
-    )
-    expect(screen.getByRole('progressbar', { name: '法力' })).toHaveAttribute(
-      'aria-valuenow',
-      '60'
-    )
+    expect(screen.getByText('Hero')).toBeInTheDocument()
+    expect(screen.queryByText('生命')).not.toBeInTheDocument()
+    expect(screen.queryByText('法力')).not.toBeInTheDocument()
+    expect(screen.queryByText('80')).not.toBeInTheDocument()
+    expect(screen.queryByText('30')).not.toBeInTheDocument()
     expect(screen.queryByText(/EXP/i)).not.toBeInTheDocument()
+
+    const hpOrb = screen.getByRole('progressbar', { name: /生命/ })
+    const mpOrb = screen.getByRole('progressbar', { name: /法力/ })
+    expect(hpOrb).toHaveAttribute('aria-valuenow', '80')
+    expect(mpOrb).toHaveAttribute('aria-valuenow', '60')
   })
 
   it('should return null when character is null', () => {

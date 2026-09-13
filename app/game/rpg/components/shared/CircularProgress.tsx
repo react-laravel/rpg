@@ -25,7 +25,7 @@ function buildLiquidClipPath(pct: number, cx: number, cy: number, r: number): st
 }
 
 /**
- * 圆形生命/法力球：液面按百分比填充，传奇 / Diablo 风格球体。
+ * 圆形生命/法力球：无金属外框，仅液面按百分比填充。
  */
 export function CircularProgress({
   percent,
@@ -49,9 +49,7 @@ export function CircularProgress({
 
   const clipId = `${idBase}-clip`
   const fillGradId = `${idBase}-fill`
-  const rimGradId = `${idBase}-rim`
   const glossId = `${idBase}-gloss`
-  const glowId = `${idBase}-glow`
 
   if (!isOrb) {
     const fillClass =
@@ -86,9 +84,7 @@ export function CircularProgress({
     )
   }
 
-  const rimOuter = r
-  const rimInner = r - 3.5
-  const wellR = rimInner - 0.5
+  const wellR = r - 0.5
   const liquidClipD = buildLiquidClipPath(pct, cx, cy, wellR)
   const level = cy + wellR - (2 * wellR * pct) / 100
   const dy = level - cy
@@ -114,34 +110,14 @@ export function CircularProgress({
     >
       <svg width={diameter} height={diameter} viewBox={`0 0 ${diameter} ${diameter}`} aria-hidden>
         <defs>
-          <radialGradient id={glowId} cx="50%" cy="42%" r="58%">
-            <stop
-              offset="0%"
-              stopColor={color === 'red' ? '#fda4af' : '#a5f3fc'}
-              stopOpacity="0.55"
-            />
-            <stop
-              offset="70%"
-              stopColor={color === 'red' ? '#e11d48' : '#3b82f6'}
-              stopOpacity="0.18"
-            />
-            <stop offset="100%" stopColor="#000" stopOpacity="0" />
-          </radialGradient>
-          <linearGradient id={rimGradId} x1="18%" y1="8%" x2="82%" y2="92%">
-            <stop offset="0%" stopColor="#fef3c7" />
-            <stop offset="28%" stopColor="#d97706" />
-            <stop offset="55%" stopColor="#78350f" />
-            <stop offset="78%" stopColor="#fbbf24" />
-            <stop offset="100%" stopColor="#451a03" />
-          </linearGradient>
           <linearGradient id={fillGradId} x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor={fillStops.top} />
             <stop offset="45%" stopColor={fillStops.mid} />
             <stop offset="100%" stopColor={fillStops.bottom} />
           </linearGradient>
           <radialGradient id={glossId} cx="32%" cy="28%" r="45%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.72" />
-            <stop offset="45%" stopColor="#ffffff" stopOpacity="0.18" />
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.55" />
+            <stop offset="45%" stopColor="#ffffff" stopOpacity="0.12" />
             <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
           </radialGradient>
           <clipPath id={clipId}>
@@ -149,19 +125,12 @@ export function CircularProgress({
           </clipPath>
         </defs>
 
-        <circle cx={cx} cy={cy} r={rimOuter} fill={`url(#${glowId})`} />
-        <circle cx={cx} cy={cy} r={rimOuter - 0.5} fill={`url(#${rimGradId})`} />
-        <circle
-          cx={cx}
-          cy={cy}
-          r={rimInner}
-          className="fill-[oklch(0.16_0_0)] dark:fill-[oklch(0.12_0_0)]"
-        />
+        {/* 无金属外框：仅暗底 + 液面 + 高光 */}
         <circle
           cx={cx}
           cy={cy}
           r={wellR}
-          className="fill-[oklch(0.22_0.02_250)] dark:fill-[oklch(0.18_0.02_250)]"
+          className="fill-[oklch(0.2_0.02_250)] dark:fill-[oklch(0.16_0.02_250)]"
         />
 
         {pct > 0 && (
@@ -174,7 +143,7 @@ export function CircularProgress({
                 rx={surfaceRx}
                 ry={Math.max(1.2, wellR * 0.12)}
                 fill="#ffffff"
-                fillOpacity="0.35"
+                fillOpacity="0.28"
               />
             )}
           </g>
@@ -186,22 +155,6 @@ export function CircularProgress({
           rx={wellR * 0.42}
           ry={wellR * 0.28}
           fill={`url(#${glossId})`}
-        />
-        <circle
-          cx={cx}
-          cy={cy}
-          r={rimInner}
-          fill="none"
-          stroke="rgba(255,255,255,0.18)"
-          strokeWidth="0.75"
-        />
-        <circle
-          cx={cx}
-          cy={cy}
-          r={rimOuter - 1}
-          fill="none"
-          stroke="rgba(0,0,0,0.45)"
-          strokeWidth="1"
         />
       </svg>
     </div>
