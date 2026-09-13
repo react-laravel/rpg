@@ -225,14 +225,14 @@
 
 .skill-cast-banner {
   min-width: 8rem;
-  border: 1px solid rgb(255 255 255 / 0.22);
-  border-radius: 6px;
-  background: rgb(0 0 0 / 0.62);
-  padding: 0.35rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--cast-color, #facc15) 48%, transparent);
+  border-radius: 999px;
+  background: linear-gradient(110deg, rgb(8 15 18 / 0.88), rgb(16 22 25 / 0.72));
+  padding: 0.45rem 1.15rem;
   text-align: center;
   box-shadow: 0 8px 30px rgb(0 0 0 / 0.3);
   backdrop-filter: blur(8px);
-  animation: skill-cast-banner 1.5s ease-out forwards;
+  animation: skill-cast-banner var(--cast-duration, 1.2s) ease-out forwards;
 }
 
 @keyframes skill-triggered {

@@ -1,9 +1,10 @@
 'use client'
 
 import type { CharacterSkill, SkillUsedEntry } from '../../types'
-import { Check } from 'lucide-react'
+import { Check, Clock3 } from 'lucide-react'
 import { SkillIcon } from '../shared/SkillIcon'
 import styles from '../../rpg.module.css'
+import interfaceStyles from '../../interface.module.css'
 
 export type SkillBarLayout = 'row' | 'wrap'
 
@@ -32,8 +33,8 @@ export function BattleSkillBar({
     <div
       className={
         layout === 'row'
-          ? 'flex flex-nowrap items-start gap-2 overflow-x-auto overscroll-x-contain pb-1'
-          : 'flex flex-wrap items-start gap-2'
+          ? 'flex flex-nowrap items-start gap-2 overflow-x-auto overscroll-x-contain px-0.5 pt-1 pb-2'
+          : 'flex flex-wrap items-start gap-2 px-0.5 pt-1 pb-1'
       }
     >
       {activeSkills.map(cs => {
@@ -41,7 +42,7 @@ export function BattleSkillBar({
         // 剩余冷却回合数
         const remainingRounds = skillCooldowns[def.id] ?? 0
         const onCooldown = remainingRounds > 0
-        const enabled = enabledSkillIds.includes(def.id) && !disabled
+        const enabled = enabledSkillIds.includes(def.id)
         const wasUsed = usedSkillIds.has(def.id)
         const manaCost = def.mana_cost + (cs.level - 1) * (def.mana_cost_per_level ?? 0)
         const costLabel = manaCost > 0 ? ` | 消耗 ${manaCost} MP` : ''
@@ -65,26 +66,29 @@ export function BattleSkillBar({
                 </div>
               )}
             </div>
-            <span className="text-foreground w-full truncate text-center text-[10px] font-medium sm:text-xs">
+            <span className="text-foreground mt-0.5 w-full truncate text-center text-[11px] font-medium">
               {def.name}
             </span>
             <span className="text-muted-foreground h-3 text-[9px] leading-3 tabular-nums">
               {manaCost > 0 ? `${manaCost} MP` : '无消耗'}
             </span>
+            <span className={`${interfaceStyles.skillState} ${!enabled ? 'opacity-60' : ''}`} aria-hidden="true">
+              {onCooldown ? <Clock3 className="h-2.5 w-2.5" /> : enabled ? <Check className="h-2.5 w-2.5" /> : null}
+              {onCooldown ? `${remainingRounds} 回合` : enabled ? '已启用' : '未启用'}
+            </span>
           </>
         )
         const btnClass = [
-          'focus-visible:ring-ring relative flex h-[5.25rem] w-[4.25rem] shrink-0 flex-col items-center justify-center gap-0.5 rounded-md border px-1.5 py-1 transition-[background-color,border-color,box-shadow,filter,opacity,transform] duration-150 focus:outline-none focus-visible:ring-2 outline-offset-0 active:scale-[0.97]',
-          enabled
-            ? 'border-emerald-500/50 bg-emerald-500/10 hover:bg-emerald-500/15'
-            : 'border-border/60 bg-muted/20 grayscale opacity-65 hover:bg-muted/40 hover:opacity-90',
+          interfaceStyles.skillCard,
+          'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
           wasUsed ? styles['skill-triggered'] : '',
           disabled ? 'cursor-not-allowed' : 'cursor-pointer',
         ].join(' ')
         return (
           <button
-            key={`${cs.id}-${wasUsed ? (skillsUsed?.find(skill => skill.skill_id === def.id)?.round ?? 'used') : 'idle'}`}
+            key={cs.id}
             type="button"
+            disabled={disabled}
             className={btnClass}
             aria-pressed={enabled}
             aria-label={`${def.name}，${enabled ? '已启用' : '已关闭'}${onCooldown ? `，冷却 ${remainingRounds} 回合` : ''}`}

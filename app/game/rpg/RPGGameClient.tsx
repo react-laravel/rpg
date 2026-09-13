@@ -17,11 +17,12 @@ import { useCombatWebSocket } from './hooks/useCombatWebSocket'
 import { useLockAppScroll } from './hooks/useLockAppScroll'
 import { RpgRegistrationGate } from './components/auth/RpgRegistrationGate'
 import useAuthStore from '@/stores/authStore'
-import { RpgStatusHeader } from './components/shared/RpgStatusHeader'
+import { RpgExperienceBar, RpgStatusHeader } from './components/shared/RpgStatusHeader'
 import { AlertCircle, X } from 'lucide-react'
 import { GAME_TABS, GameNavigation } from './components/shared/GameNavigation'
 
 import './rpg.module.css'
+import interfaceStyles from './interface.module.css'
 
 type GameView = 'select' | 'create' | 'game'
 
@@ -340,7 +341,7 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
 
   return (
     <div
-      className={`bg-muted/30 text-foreground flex flex-col [--rpg-content-inset:0.75rem] [--rpg-status-bar-block:calc(3.5rem+env(safe-area-inset-top,0px))] sm:[--rpg-content-inset:1rem] sm:[--rpg-status-bar-block:calc(3.25rem+env(safe-area-inset-top,0px))] ${
+      className={`${interfaceStyles.shell} text-foreground flex flex-col [--rpg-content-inset:0.75rem] [--rpg-status-bar-block:calc(3.5rem+env(safe-area-inset-top,0px))] sm:[--rpg-content-inset:1rem] sm:[--rpg-status-bar-block:calc(3.25rem+env(safe-area-inset-top,0px))] ${
         usePanelInnerScroll ? 'min-h-0 overflow-hidden overscroll-none' : 'min-h-screen'
       }`}
       style={
@@ -354,7 +355,7 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
 
       {/* 顶部状态栏 */}
       <header
-        className="border-border bg-card/95 fixed inset-x-0 z-[60] flex h-[var(--rpg-status-bar-block)] items-center border-b px-3 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl sm:px-4"
+        className={`${interfaceStyles.status} fixed inset-x-0 z-[60] flex h-[var(--rpg-status-bar-block)] items-center px-3 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl sm:px-4`}
         style={{ top: 'var(--app-header-height, 50px)' }}
       >
         <div className="mx-auto w-full max-w-7xl">
@@ -362,6 +363,7 @@ export default function RPGGameClient({ requireRegistration = false }: RPGGameCl
             <RpgStatusHeader />
           </div>
         </div>
+        <RpgExperienceBar />
       </header>
 
       {/* 主体内容/导航 */}

@@ -3,8 +3,52 @@
 import { useShallow } from 'zustand/react/shallow'
 import { useGameStore } from '../../stores/gameStore'
 import { CLASS_NAMES } from '../../types'
+import { getLevelProgress } from '../../utils/experience'
 import { CircularProgress } from './CircularProgress'
 import { CopperDisplay } from './CopperDisplay'
+import interfaceStyles from '../../interface.module.css'
+
+function useLevelProgress() {
+  const { character, experienceTable } = useGameStore(
+    useShallow(s => ({
+      character: s.character,
+      experienceTable: s.experienceTable,
+    }))
+  )
+  if (!character) return null
+  return {
+    character,
+    progress: getLevelProgress(character.level, character.experience, experienceTable),
+  }
+}
+
+/** 贴在状态栏底边的 2px 金色经验条，宽度为本级经验百分比。 */
+export function RpgExperienceBar() {
+  const data = useLevelProgress()
+  if (!data) return null
+
+  const percent = data.progress?.percent ?? 0
+  return (
+    <div
+      role="progressbar"
+      aria-label="升级经验"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={data.progress?.percent}
+      aria-valuetext={
+        data.progress ? `${data.progress.earned} / ${data.progress.required}` : '加载中'
+      }
+      className={`${interfaceStyles.expTrack} absolute inset-x-0 bottom-0 h-[2px] overflow-hidden`}
+      title={
+        data.progress
+          ? `本级经验 ${data.progress.earned} / ${data.progress.required}`
+          : '经验数据加载中'
+      }
+    >
+      <div className={interfaceStyles.expFill} style={{ width: `${percent}%` }} />
+    </div>
+  )
+}
 
 /** 顶部状态栏：单行展示名称/等级/双球/货币；球仅以色块液面表示状态 */
 export function RpgStatusHeader() {

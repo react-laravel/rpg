@@ -1,6 +1,7 @@
 'use client'
 
 import { Backpack, BookOpen, Settings, Sparkles, Swords, UserRound } from 'lucide-react'
+import interfaceStyles from '../../interface.module.css'
 
 export const GAME_TABS = [
   { id: 'combat', name: '战斗', icon: Swords },
@@ -28,8 +29,8 @@ export function GameNavigation({
       aria-label="游戏导航"
       className={
         mobile
-          ? 'border-border bg-card/95 fixed inset-x-0 bottom-0 z-50 border-t px-1 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-xl lg:hidden'
-          : 'border-border bg-card mb-5 hidden rounded-xl border p-1.5 shadow-sm lg:block'
+          ? `${interfaceStyles.mobileNav} fixed inset-x-0 bottom-0 z-50 border-t px-1 pt-1 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-xl lg:hidden`
+          : `${interfaceStyles.desktopNav} mb-4 hidden rounded-xl border p-1.5 lg:block`
       }
     >
       <div role="tablist" aria-label="游戏功能" className="flex gap-1">
@@ -56,21 +57,15 @@ export function GameNavigation({
               onTabChange(nextTab.id)
               document.getElementById(`${prefix}-tab-${nextTab.id}`)?.focus()
             }}
-            className={`relative flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-lg font-medium transition-colors ${
-              mobile ? 'min-h-16 flex-col py-2 text-xs' : 'min-h-11 px-4 py-2 text-sm'
-            } ${activeTab === tab.id ? 'bg-primary/12 text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`}
+            className={`${interfaceStyles.navTab} focus-visible:ring-ring relative flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-lg font-medium focus-visible:ring-2 focus-visible:outline-none ${
+              mobile ? 'min-h-15 flex-col py-2 text-[11px]' : 'min-h-11 px-4 py-2 text-sm'
+            } ${activeTab === tab.id ? '' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`}
           >
             <tab.icon
               aria-hidden="true"
-              className={`h-[18px] w-[18px] ${activeTab === tab.id ? 'text-amber-600 dark:text-amber-400' : ''}`}
+              className="h-[18px] w-[18px]"
             />
             {tab.name}
-            {activeTab === tab.id && (
-              <span
-                aria-hidden="true"
-                className="bg-primary absolute inset-x-1/3 bottom-0 h-0.5 rounded-full"
-              />
-            )}
           </button>
         ))}
       </div>

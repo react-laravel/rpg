@@ -43,3 +43,10 @@ Original prompt: 战斗界面，地图会挡住顶部的信息条
 - Bundled web-game client was run with a fixture preload and DOM-backed `render_game_to_text`; this existing game uses DOM panels and backend-driven combat rather than a canvas simulation. Screenshots were visually inspected.
 - Browser verification files and screenshots: `/tmp/rpg-ui/`. No live account data was changed.
 - Implementation and validation are complete. The user subsequently requested committing and pushing these improvements to the current remote branch.
+
+## 2026-09-12 — Skill casting animation improvements
+
+- Active goal: 技能释放动画改进.
+- Current checkout is clean at 961cb12. Review found premature effect removal on hit, sound-duration-driven early settlement, frame-based canvas motion, fixed 400x300 buffers, and target coordinates that ignore the centered monster grid.
+- Requirements: distinct cast/travel/impact/tail phases; actual monster/caster anchors at all screen sizes; deterministic elapsed-time rendering and bounded pixel density; once-only hit/completion with interruption cleanup; coverage for current active skill keys and existing legacy effects; reduced-motion behavior; browser proof of visual phases and HP timing in real battle components.
+- The backend currently selects one active skill per round. Preserve that contract; do not invent extra casts or change combat outcomes.

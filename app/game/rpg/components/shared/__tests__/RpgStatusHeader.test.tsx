@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { useGameStore } from '../../../stores/gameStore'
-import { RpgStatusHeader } from '../RpgStatusHeader'
+import { RpgExperienceBar, RpgStatusHeader } from '../RpgStatusHeader'
 
 describe('RpgStatusHeader', () => {
   beforeEach(() => {
@@ -50,6 +50,31 @@ describe('RpgStatusHeader', () => {
 
   it('should return null when character is null', () => {
     const { container } = render(<RpgStatusHeader />)
+    expect(container.firstChild).toBeNull()
+  })
+
+  it('renders a gold experience bar whose width matches current-level progress', () => {
+    useGameStore.setState({
+      character: {
+        id: 1,
+        name: 'Hero',
+        level: 2,
+        experience: 100,
+        copper: 0,
+      } as any,
+      experienceTable: { 2: 0, 3: 1000 },
+    })
+
+    render(<RpgExperienceBar />)
+
+    const bar = screen.getByRole('progressbar', { name: '升级经验' })
+    expect(bar).toHaveAttribute('aria-valuenow', '10')
+    expect(bar).toHaveAttribute('aria-valuetext', '100 / 1000')
+    expect(bar.firstElementChild).toHaveStyle({ width: '10%' })
+  })
+
+  it('hides the experience bar when there is no character', () => {
+    const { container } = render(<RpgExperienceBar />)
     expect(container.firstChild).toBeNull()
   })
 })

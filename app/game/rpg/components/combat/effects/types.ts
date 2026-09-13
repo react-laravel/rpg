@@ -1,41 +1,25 @@
-/** 技能特效类型 */
-export type SkillEffectType =
-  | 'meteor-storm'
-  | 'fireball'
-  | 'ice-arrow'
-  | 'ice-age'
-  | 'blackhole'
-  | 'heal'
-  | 'lightning'
-  | 'meteor'
-  | 'chain-lightning'
+import type { SkillEffectType } from './effectRegistry'
+export type { SkillEffectType } from './effectRegistry'
 
-/** 技能特效组件属性 */
-export interface SkillEffectProps {
-  /** 技能类型 */
-  type: SkillEffectType
-  /** 是否激活特效 */
-  active: boolean
-  /** 持续时间（毫秒） */
-  duration?: number
-  /** 目标位置（0-1 之间的相对坐标） */
-  targetPosition?: { x: number; y: number }
-  /** 多个目标位置（用于连锁闪电等技能） */
-  targetPositions?: { x: number; y: number }[]
-  /** 回调：特效结束 */
-  onComplete?: () => void
-  /** 回调：技能视觉上命中目标时（用于提前显示扣血，避免等整段尾效播完） */
-  onHit?: () => void
-  /** 自定义样式类 */
-  className?: string
-}
+/** Coordinates relative to the rendered battlefield, in CSS pixels normalized to 0–1. */
+export interface EffectPoint { x: number; y: number }
+export interface EffectAnchors { source: EffectPoint; targets: EffectPoint[] }
 
-/** 单个特效组件的通用 props */
 export interface EffectBaseProps {
   active: boolean
+  duration?: number
+  sourcePosition?: EffectPoint
+  targetPosition?: EffectPoint
+  targetPositions?: EffectPoint[]
+  /** Read actual actor centers when a cast starts or the battlefield resizes. */
+  resolveAnchors?: () => EffectAnchors
+  /** A stable seed for repeatable particles and trails. */
+  seed?: number
   onComplete?: () => void
-  /** 技能视觉命中时调用，可早于 onComplete */
   onHit?: () => void
-  targetPosition?: { x: number; y: number }
-  targetPositions?: { x: number; y: number }[]
+}
+
+export interface SkillEffectProps extends EffectBaseProps {
+  type: SkillEffectType
+  className?: string
 }

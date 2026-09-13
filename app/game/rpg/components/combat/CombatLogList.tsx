@@ -22,8 +22,9 @@ import {
   type CombatLogEntry,
 } from '../../stores/combatHelpers'
 import { formatItemStatValue } from '../../utils/itemUtils'
-import { Award, CircleCheckBig, Coins, Shield, Skull, Swords, Target, X, Zap } from 'lucide-react'
+import { Award, ChevronRight, CircleCheckBig, Coins, ScrollText, Shield, Skull, Swords, Target, X, Zap } from 'lucide-react'
 import type { SkillUsedEntry } from '../../types'
+import interfaceStyles from '../../interface.module.css'
 
 function CombatLogSkillIcons({ skills }: { skills: SkillUsedEntry[] }) {
   return (
@@ -363,7 +364,15 @@ export function CombatLogList({ logs }: { logs: (CombatResult | CombatLogType)[]
   const maxLogs = useMemo(() => logs.slice(0, 50), [logs])
 
   if (!logs || logs.length === 0) {
-    return <p className="text-muted-foreground py-4 text-center text-sm">暂无战斗记录</p>
+    return (
+      <div className={interfaceStyles.emptyLog}>
+        <span className={`${interfaceStyles.headingIcon} mb-1 h-11 w-11 rounded-xl`}>
+          <ScrollText aria-hidden="true" className="h-5 w-5" />
+        </span>
+        <p className="text-foreground text-sm font-medium">暂无战斗记录</p>
+        <p className="text-muted-foreground text-xs leading-relaxed">开始战斗后，在这里查看战果与收获。</p>
+      </div>
+    )
   }
   return (
     <>
@@ -376,6 +385,7 @@ export function CombatLogList({ logs }: { logs: (CombatResult | CombatLogType)[]
               : `combat-log-${index}`
         // 没有回合概念，只显示战斗状态
         const isVictory = 'victory' in log && log.victory === true
+        const logId = extractCombatLogId(log)
 
         const playerSkillsUsed = filterPlayerSkillsUsed(log.skills_used, playerSkillIds)
 
@@ -383,8 +393,9 @@ export function CombatLogList({ logs }: { logs: (CombatResult | CombatLogType)[]
           <div key={logKey}>
             {/* 战斗日志主体 - 可点击 */}
             <div
-              role="button"
-              tabIndex={0}
+              role={logId ? 'button' : undefined}
+              tabIndex={logId ? 0 : undefined}
+              aria-label={logId ? `查看${getCombatLogMonsterName(log)}的战斗记录` : undefined}
               onClick={() => {
                 const id = extractCombatLogId(log)
                 if (id) {
@@ -393,7 +404,8 @@ export function CombatLogList({ logs }: { logs: (CombatResult | CombatLogType)[]
                 }
               }}
               onKeyDown={e => {
-                if (e.key === 'Enter' || e.key === ' ') {
+                if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) {
+                  e.preventDefault()
                   const id = extractCombatLogId(log)
                   if (id) {
                     setSelectedLogId(id)
@@ -401,11 +413,7 @@ export function CombatLogList({ logs }: { logs: (CombatResult | CombatLogType)[]
                   }
                 }
               }}
-              className={`flex min-h-9 w-full cursor-pointer items-center gap-2 rounded-md border-l-2 px-2 py-1.5 text-xs transition-colors sm:px-3 sm:py-2 sm:text-sm ${
-                isVictory
-                  ? 'border-l-emerald-500 bg-emerald-500/[0.04] hover:bg-emerald-500/[0.09]'
-                  : 'border-l-orange-500 bg-orange-500/[0.04] hover:bg-orange-500/[0.09]'
-              }`}
+              className={`${interfaceStyles.logRow} focus-visible:ring-ring flex min-h-12 w-full items-center gap-2 px-2 py-2 text-xs focus-visible:ring-2 focus-visible:outline-none ${logId ? 'cursor-pointer' : ''}`}
             >
               <div className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden sm:gap-2">
                 {isVictory ? (
@@ -413,8 +421,13 @@ export function CombatLogList({ logs }: { logs: (CombatResult | CombatLogType)[]
                 ) : (
                   <Swords className="h-3.5 w-3.5 shrink-0 text-orange-500" />
                 )}
-                <span className="text-foreground truncate">{getCombatLogMonsterName(log)}</span>
-                {playerSkillsUsed.length > 0 && <CombatLogSkillIcons skills={playerSkillsUsed} />}
+                <div className="min-w-0">
+                  <span className="text-foreground block truncate font-medium">{getCombatLogMonsterName(log)}</span>
+                  <div className="text-muted-foreground mt-0.5 flex items-center gap-1.5 text-[10px]">
+                    <span>{isVictory ? '战斗胜利' : '战斗交锋'}</span>
+                    {playerSkillsUsed.length > 0 && <CombatLogSkillIcons skills={playerSkillsUsed} />}
+                  </div>
+                </div>
               </div>
               <div className="flex shrink-0 items-center justify-end gap-1 sm:gap-2">
                 {log.loot?.item && (
@@ -429,10 +442,11 @@ export function CombatLogList({ logs }: { logs: (CombatResult | CombatLogType)[]
                   </span>
                 )}
                 {(log.experience_gained ?? 0) > 0 && (
-                  <span className="text-purple-500 dark:text-purple-400">
-                    +{log.experience_gained}
+                  <span className="text-purple-600 text-[11px] tabular-nums dark:text-purple-300" title={`获得 ${log.experience_gained} 经验`}>
+                    +{log.experience_gained} <span className="text-[9px]">EXP</span>
                   </span>
                 )}
+                {logId && <ChevronRight aria-hidden="true" className="text-muted-foreground/60 h-3 w-3" />}
               </div>
             </div>
           </div>

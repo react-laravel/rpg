@@ -147,6 +147,11 @@ export function MonsterGroup({
     prevSlotInstanceRef.current = nextSlots
 
     if (newAppearing.length > 0) {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        newAppearing.forEach(id => appearedMonsters.add(id))
+        saveAppearedMonsters(appearedMonsters)
+        return
+      }
       newAppearingRef.current = new Set(newAppearing)
       queueMicrotask(() => {
         setAppearingMonsters(prev => {
@@ -355,7 +360,7 @@ export function MonsterGroup({
               title={`点击查看 ${m.name} 详情`}
               aria-label={`${m.name}，生命 ${m.hp ?? 0}/${m.max_hp ?? 0}`}
             >
-              <div className="relative flex flex-col items-center">
+              <div data-effect-target={pos} className="relative flex flex-col items-center">
                 {damage !== undefined && damage > 0 && (
                   <span
                     className={`${styles['damage-number']} pointer-events-none absolute bottom-full left-1/2 z-20 mb-0.5 -translate-x-1/2 whitespace-nowrap`}

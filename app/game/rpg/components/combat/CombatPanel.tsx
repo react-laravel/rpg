@@ -39,11 +39,12 @@ import {
   Sparkles,
   X,
 } from 'lucide-react'
+import interfaceStyles from '../../interface.module.css'
 const SKILL_BAR_LAYOUT_KEY = 'rpg-skill-bar-layout'
 
 function readSkillBarLayout(): SkillBarLayout {
-  if (typeof window === 'undefined') return 'row'
-  return localStorage.getItem(SKILL_BAR_LAYOUT_KEY) === 'wrap' ? 'wrap' : 'row'
+  if (typeof window === 'undefined') return 'wrap'
+  return localStorage.getItem(SKILL_BAR_LAYOUT_KEY) === 'row' ? 'row' : 'wrap'
 }
 
 export function CombatPanel() {
@@ -188,14 +189,15 @@ export function CombatPanel() {
 
   return (
     <div className="space-y-3 sm:space-y-4">
-      <div className="grid items-start gap-3 xl:grid-cols-[minmax(0,1.7fr)_minmax(19rem,0.8fr)] xl:gap-4">
+      <div className={`${interfaceStyles.combatGrid} grid items-start gap-3 xl:gap-4`}>
         {/* 战场 */}
-        <section className="border-border bg-card relative overflow-hidden rounded-xl border shadow-sm">
-          <div className="border-border/70 flex min-h-16 items-center justify-between gap-2 border-b px-2 py-2 sm:px-3">
+        <section className={`${interfaceStyles.panel} ${interfaceStyles.arenaPanel} relative overflow-hidden`}>
+          <div className={`${interfaceStyles.arenaToolbar} flex min-h-16 items-center justify-between gap-2 border-b px-2 py-2 sm:px-3`}>
             <CombatMapPicker />
             <div className="flex shrink-0 items-center gap-2">
               {isFighting && currentRound > 0 && (
-                <span className="text-muted-foreground hidden rounded-md border px-2 py-1 text-xs tabular-nums sm:inline">
+                <span className={`${interfaceStyles.statusPill} hidden sm:inline-flex`}>
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
                   第 {currentRound} 回合
                 </span>
               )}
@@ -242,6 +244,7 @@ export function CombatPanel() {
                 skillUsed={combatResult?.skills_used?.[0]}
                 skillTargetPositions={combatResult?.skill_target_positions}
                 combatLogId={combatResult?.combat_log_id ?? null}
+                roundNumber={combatResult?.rounds}
                 damageTaken={combatResult?.damage_taken}
                 roundRegen={combatResult?.round_regen}
                 onRoundVisualSettled={handleRoundVisualSettled}
@@ -255,15 +258,17 @@ export function CombatPanel() {
         </section>
 
         {/* 作战侧栏 */}
-        <aside className="flex min-w-0 flex-col gap-3 xl:max-h-[calc(100dvh-var(--app-header-height,0px)-var(--rpg-status-bar-block)-2rem)]">
+        <aside className="flex min-w-0 flex-col gap-3">
           {currentMap && activeSkills.length > 0 && (
-            <section className="border-border bg-card rounded-lg border p-3 shadow-sm sm:p-4">
-              <div className="mb-2 flex items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="text-primary h-4 w-4" />
-                  <h3 className="text-sm font-semibold sm:text-base">自动技能</h3>
-                  <span className="text-muted-foreground text-xs">
-                    {enabledSkillIds.length}/{activeSkills.length}
+            <section className={`${interfaceStyles.panel} p-3 sm:p-4`}>
+              <div className={`${interfaceStyles.panelHeading} justify-between`}>
+                <div className="flex min-w-0 items-center gap-2">
+                  <span className={interfaceStyles.headingIcon}>
+                    <Sparkles aria-hidden="true" className="h-4 w-4" />
+                  </span>
+                  <h3 className="text-sm font-semibold">自动技能</h3>
+                  <span className={interfaceStyles.statusPill}>
+                    {activeSkills.filter(skill => enabledSkillIds.includes(skill.skill_id)).length}/{activeSkills.length}
                   </span>
                 </div>
                 <button
@@ -286,6 +291,9 @@ export function CombatPanel() {
                   )}
                 </button>
               </div>
+              <p className="text-muted-foreground mb-3 text-[11px] leading-relaxed">
+                点选参与自动战斗的技能，冷却结束后自动释放。
+              </p>
               <BattleSkillBar
                 activeSkills={activeSkills}
                 skillsUsed={combatResult?.skills_used}
@@ -298,17 +306,19 @@ export function CombatPanel() {
             </section>
           )}
 
-          <section className="border-border bg-card flex min-h-0 flex-col rounded-lg border p-3 shadow-sm sm:p-4 xl:flex-1">
-            <div className="mb-2 flex items-center gap-2">
-              <History className="text-primary h-4 w-4" />
-              <h3 className="text-sm font-semibold sm:text-base">战斗记录</h3>
+          <section className={`${interfaceStyles.panel} flex min-h-0 flex-col p-3 sm:p-4 xl:flex-1`}>
+            <div className={interfaceStyles.panelHeading}>
+              <span className={interfaceStyles.headingIcon}>
+                <History aria-hidden="true" className="h-4 w-4" />
+              </span>
+              <h3 className="text-sm font-semibold">战斗记录</h3>
               {combatLogs.length > 0 && (
                 <span className="text-muted-foreground ml-auto text-xs">
                   最近 {Math.min(50, combatLogs.length)} 条
                 </span>
               )}
             </div>
-            <div className="min-h-0 max-h-72 flex-1 space-y-1 overflow-y-auto overscroll-contain pr-1 xl:max-h-none">
+            <div className="min-h-0 max-h-72 flex-1 space-y-1 overflow-y-auto overscroll-contain pr-1 xl:basis-0 xl:max-h-none">
               <CombatLogList logs={combatLogs} />
             </div>
           </section>
