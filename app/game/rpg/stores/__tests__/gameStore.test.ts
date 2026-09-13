@@ -94,6 +94,21 @@ describe('GameStore', () => {
       expect(useGameStore.getState().characters).toEqual(mockCharacters)
     })
 
+    it('extends a short API experience table through the soft level cap', async () => {
+      const { apiGet } = await import('@/lib/api')
+      vi.mocked(apiGet).mockResolvedValueOnce({
+        characters: [],
+        experience_table: { 1: 0, 2: 50, 100: 16417500 },
+      })
+
+      await useGameStore.getState().fetchCharacters()
+
+      const table = useGameStore.getState().experienceTable
+      expect(table[100]).toBe(16417500)
+      expect(table[105]).toBeGreaterThan(table[100])
+      expect(table[200]).toBeGreaterThan(table[105])
+    })
+
     it('should handle fetch characters error', async () => {
       const { apiGet } = await import('@/lib/api')
       vi.mocked(apiGet).mockRejectedValueOnce(new Error('Network error'))

@@ -5,6 +5,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { useGameStore } from '../../stores/gameStore'
 import { EquipmentGrid } from '../inventory/EquipmentGrid'
 import { CLASS_NAMES, STAT_DESCRIPTIONS, STAT_NAMES, type StatBreakdownItem } from '../../types'
+import { getNextLevelThreshold } from '../../utils/experience'
 
 const CHARACTER_STATS = ['strength', 'dexterity', 'vitality', 'energy'] as const
 
@@ -49,7 +50,8 @@ export function CharacterPanel() {
   // 优化: 仅在没有角色信息时再渲染 null
   if (!character) return null
 
-  const expToNext = experienceTable?.[character.level + 1] ?? (character.level + 1) * 5000
+  const expToNext =
+    getNextLevelThreshold(character.level, experienceTable) ?? character.experience
 
   return (
     <div className="space-y-3 sm:space-y-4">
