@@ -285,7 +285,7 @@ function CombatLogDetailDialog({
                     </div>
                   )}
                   <div className="border-muted flex justify-between border-t pt-1 font-medium">
-                    <span>本回合总伤害:</span>
+                    <span>总伤害:</span>
                     <span className="text-red-500">{d.damage_detail.total}</span>
                   </div>
                   <div className="flex justify-between">
@@ -313,7 +313,6 @@ function CombatLogDetailDialog({
               <h4 className="text-muted-foreground mb-2 text-sm font-medium">战斗信息</h4>
               {hasBattleInfo ? (
                 <div className="grid grid-cols-2 gap-2 text-sm">
-                  {d.battle.round != null ? <div>回合: {d.battle.round}</div> : null}
                   <div>存活: {d.battle.alive_count}只</div>
                   <div>击杀: {d.battle.killed_count}只</div>
                   <div>
@@ -421,15 +420,10 @@ export function CombatLogList({ logs }: { logs: (CombatResult | CombatLogType)[]
                 ) : (
                   <Swords className="h-3.5 w-3.5 shrink-0 text-orange-500" />
                 )}
-                <div className="min-w-0">
-                  <span className="text-foreground block truncate font-medium">{getCombatLogMonsterName(log)}</span>
-                  <div className="text-muted-foreground mt-0.5 flex items-center gap-1.5 text-[10px]">
-                    <span>{isVictory ? '战斗胜利' : '战斗交锋'}</span>
-                    {playerSkillsUsed.length > 0 && <CombatLogSkillIcons skills={playerSkillsUsed} />}
-                  </div>
-                </div>
+                <span className="text-foreground truncate font-medium">{getCombatLogMonsterName(log)}</span>
+                {playerSkillsUsed.length > 0 && <CombatLogSkillIcons skills={playerSkillsUsed} />}
               </div>
-              <div className="flex shrink-0 items-center justify-end gap-1 sm:gap-2">
+              <div className="flex h-5 shrink-0 items-center justify-end gap-1 sm:gap-2">
                 {log.loot?.item && (
                   <CombatLogLootIcon
                     item={log.loot.item}
@@ -437,13 +431,23 @@ export function CombatLogList({ logs }: { logs: (CombatResult | CombatLogType)[]
                   />
                 )}
                 {(log.copper_gained ?? 0) > 0 && (
-                  <span className="inline-flex items-center text-yellow-600 dark:text-yellow-400">
-                    +<CopperDisplay copper={log.copper_gained} size="sm" />
+                  <span className="inline-flex h-4 items-center gap-0.5 leading-none text-[11px] tabular-nums text-yellow-600 dark:text-yellow-400">
+                    <span className="leading-none">+</span>
+                    <CopperDisplay
+                      copper={log.copper_gained}
+                      size="xs"
+                      nowrap
+                      className="!text-[11px] leading-none"
+                    />
                   </span>
                 )}
                 {(log.experience_gained ?? 0) > 0 && (
-                  <span className="text-purple-600 text-[11px] tabular-nums dark:text-purple-300" title={`获得 ${log.experience_gained} 经验`}>
-                    +{log.experience_gained} <span className="text-[9px]">EXP</span>
+                  <span
+                    className="inline-flex h-4 items-center leading-none text-[11px] tabular-nums text-purple-600 dark:text-purple-300"
+                    title={`获得 ${log.experience_gained} 经验`}
+                  >
+                    +{log.experience_gained}
+                    <span className="ml-0.5 text-[9px] leading-none">EXP</span>
                   </span>
                 )}
                 {logId && <ChevronRight aria-hidden="true" className="text-muted-foreground/60 h-3 w-3" />}

@@ -38,10 +38,12 @@ describe('BattleSkillBar', () => {
       />
     )
 
-    const button = screen.getByRole('button', { name: '火球术，已启用，冷却 2 回合' })
+    const button = screen.getByRole('button', { name: '火球术，已启用，冷却 2' })
     expect(button).toHaveAttribute('aria-pressed', 'true')
     expect(screen.getByText('4 MP')).toBeInTheDocument()
     expect(screen.getByText('2')).toBeInTheDocument()
+    expect(screen.queryByText(/回合/)).not.toBeInTheDocument()
+    expect(screen.queryByText('已启用')).not.toBeInTheDocument()
 
     fireEvent.click(button)
     expect(onSkillToggle).toHaveBeenCalledWith(7)

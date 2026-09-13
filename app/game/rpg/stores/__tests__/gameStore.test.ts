@@ -457,6 +457,41 @@ describe('GameStore', () => {
       useGameStore.getState().toggleEnabledSkill(1)
       expect(useGameStore.getState().enabledSkillIds).not.toContain(1)
     })
+
+    it('syncs the remaining skill list while fighting', async () => {
+      const { post } = await import('@/lib/api')
+      vi.mocked(post).mockResolvedValueOnce({})
+      useGameStore.setState({
+        selectedCharacterId: 1,
+        isFighting: true,
+        enabledSkillIds: [1, 2],
+      })
+
+      await useGameStore.getState().toggleEnabledSkill(1)
+
+      expect(post).toHaveBeenCalledWith('/rpg/combat/skills', {
+        character_id: 1,
+        skill_id: 1,
+        skill_ids: [2],
+      })
+      expect(useGameStore.getState().enabledSkillIds).toEqual([2])
+    })
+
+    it('rolls back the toggle when combat skill sync fails', async () => {
+      const { post } = await import('@/lib/api')
+      vi.mocked(post).mockRejectedValueOnce(new Error('当前没有进行中的自动战斗'))
+      useGameStore.setState({
+        selectedCharacterId: 1,
+        isFighting: true,
+        enabledSkillIds: [1, 2],
+        error: null,
+      })
+
+      await useGameStore.getState().toggleEnabledSkill(1)
+
+      expect(useGameStore.getState().enabledSkillIds).toEqual([1, 2])
+      expect(useGameStore.getState().error).toBe('当前没有进行中的自动战斗')
+    })
   })
 
   describe('handleMonstersAppear', () => {

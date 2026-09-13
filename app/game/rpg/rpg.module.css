@@ -255,18 +255,9 @@
   animation: skill-triggered 0.72s ease-out;
 }
 
-.skill-cooldown::before {
-  position: absolute;
-  inset: 0;
-  content: '';
-  background: conic-gradient(from 0deg, rgb(255 255 255 / 0.16), transparent 70%);
-  animation: cooldown-sweep 2.8s linear infinite;
-}
-
-@keyframes cooldown-sweep {
-  to {
-    transform: rotate(360deg);
-  }
+.skill-on-cooldown {
+  display: flex;
+  filter: brightness(0.42);
 }
 
 /* 顶部生命/法力球 */
@@ -367,7 +358,6 @@
   .regen-number,
   .skill-cast-banner,
   .skill-triggered,
-  .skill-cooldown::before,
   .health-bar-fill::after,
   .mana-bar-fill::after,
   .hp-orb-glow,

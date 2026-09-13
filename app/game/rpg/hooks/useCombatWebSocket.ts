@@ -22,7 +22,7 @@ interface CombatUpdateData {
   monster: { name: string; type: string; level: number }
   damage_dealt: number
   damage_taken: number
-  rounds: number
+  rounds?: number
   experience_gained: number
   copper_gained: number
   loot?: {

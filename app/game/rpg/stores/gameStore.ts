@@ -81,10 +81,10 @@ interface GameState {
   isFighting: boolean
   shouldAutoCombat: boolean // 是否应该自动战斗（不管在哪个标签页）
   combatResult: CombatResult | null
-  /** 刷新页面时由 combat/status 返回的当前怪物列表，用于在未收到 WebSocket 回合前显示怪物 */
+  /** 刷新页面时由 combat/status 返回的当前怪物列表，用于在未收到 WebSocket 战斗推送前显示怪物 */
   statusCombatMonsters: (CombatMonster | null)[] | null
   combatLogs: (CombatResult | CombatLog)[]
-  /** WebSocket 回合推送先缓存，等战斗场景动画结算后再写入 combatLogs */
+  /** WebSocket 战斗推送先缓存，等战斗场景动画结算后再写入 combatLogs */
   pendingCombatLog: CombatLogEntry | null
   combatLogDetail: CombatLogDetail | null // 选中的战斗日志详情
 
@@ -1235,30 +1235,31 @@ const store: StateCreator<GameState> = (set, get) => ({
   },
 
   toggleEnabledSkill: async (skillId: number) => {
-    const wasFighting = get().isFighting
-    const shouldSyncCombatSkills = wasFighting || get().shouldAutoCombat
-    set(state => {
-      const ids = state.enabledSkillIds
-      const has = ids.includes(skillId)
-      return {
-        ...state,
-        enabledSkillIds: has ? ids.filter(id => id !== skillId) : [...ids, skillId],
-      }
-    })
+    const previousIds = get().enabledSkillIds
+    const shouldSyncCombatSkills = get().isFighting || get().shouldAutoCombat
+    const nextIds = previousIds.includes(skillId)
+      ? previousIds.filter(id => id !== skillId)
+      : [...previousIds, skillId]
+    set(state => ({
+      ...state,
+      enabledSkillIds: nextIds,
+    }))
     // 自动战斗流程进行中（包括启动中的瞬间）时，同步更新后端技能配置
     if (shouldSyncCombatSkills) {
       const selectedId = get().selectedCharacterId
-      const enabledIds = get().enabledSkillIds
       if (selectedId) {
         try {
-          // 传 skill_id 参数让后端识别是单个技能操作
           await post('/rpg/combat/skills', {
             character_id: selectedId,
             skill_id: skillId,
-            skill_ids: enabledIds,
+            skill_ids: nextIds,
           })
         } catch (error) {
-          console.error('[GameStore] Failed to update combat skills:', error)
+          set(state => ({
+            ...state,
+            enabledSkillIds: previousIds,
+            error: error instanceof Error ? error.message : String(error),
+          }))
         }
       }
     }
@@ -1276,7 +1277,7 @@ const store: StateCreator<GameState> = (set, get) => ({
     set(state => ({
       ...state,
       statusCombatMonsters: typedData.monsters || [],
-      // 战斗回合数据优先：刷新推送不应冲掉当前回合的扣血/死亡表现
+      // 当前战斗数据优先：刷新推送不应冲掉正在播放的扣血/死亡表现
       ...(state.combatResult == null ? { combatResult: null } : {}),
       currentHp,
       currentMana,

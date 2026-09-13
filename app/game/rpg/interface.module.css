@@ -120,7 +120,7 @@
   position: relative;
   display: flex;
   width: 4.75rem;
-  min-height: 6.5rem;
+  min-height: 5.5rem;
   flex-shrink: 0;
   flex-direction: column;
   align-items: center;
@@ -152,17 +152,6 @@
 .skillCard:disabled {
   cursor: not-allowed;
   opacity: 0.6;
-}
-
-.skillState {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  min-height: 0.875rem;
-  color: var(--rpg-ink);
-  font-size: 0.5625rem;
-  line-height: 0.875rem;
 }
 
 .logRow {

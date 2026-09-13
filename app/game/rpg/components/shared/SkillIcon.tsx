@@ -32,7 +32,7 @@ export const SkillIcon = memo(function SkillIcon({
 
   return (
     <span
-      className={`bg-muted relative flex items-center justify-center overflow-hidden rounded ${sizeClass}`}
+      className={`relative flex items-center justify-center overflow-hidden rounded-lg ${sizeClass}`}
     >
       {src && !failed ? (
         <Image

@@ -1,14 +1,13 @@
 'use client'
 
 import type { CharacterSkill, SkillUsedEntry } from '../../types'
-import { Check, Clock3 } from 'lucide-react'
 import { SkillIcon } from '../shared/SkillIcon'
 import styles from '../../rpg.module.css'
 import interfaceStyles from '../../interface.module.css'
 
 export type SkillBarLayout = 'row' | 'wrap'
 
-/** 战斗技能栏：显示主动技能图标、回合冷却、点击启用/关闭 */
+/** 战斗技能栏：显示主动技能图标、冷却、点击启用/关闭 */
 export function BattleSkillBar({
   activeSkills,
   skillsUsed,
@@ -39,9 +38,9 @@ export function BattleSkillBar({
     >
       {activeSkills.map(cs => {
         const def = cs.skill
-        // 剩余冷却回合数
-        const remainingRounds = skillCooldowns[def.id] ?? 0
-        const onCooldown = remainingRounds > 0
+        // 剩余冷却次数
+        const remainingCooldown = skillCooldowns[def.id] ?? 0
+        const onCooldown = remainingCooldown > 0
         const enabled = enabledSkillIds.includes(def.id)
         const wasUsed = usedSkillIds.has(def.id)
         const manaCost = def.mana_cost + (cs.level - 1) * (def.mana_cost_per_level ?? 0)
@@ -49,21 +48,16 @@ export function BattleSkillBar({
         const buttonContent = (
           <>
             <div className="relative">
-              <SkillIcon icon={def.icon} effectKey={def.effect_key} name={def.name} />
-              {enabled && !onCooldown && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-white shadow-sm">
-                  <Check className="h-2.5 w-2.5" strokeWidth={3} />
-                </span>
-              )}
+              <span className={onCooldown ? styles['skill-on-cooldown'] : undefined}>
+                <SkillIcon icon={def.icon} effectKey={def.effect_key} name={def.name} />
+              </span>
               {onCooldown && (
-                <div
-                  className={`${styles['skill-cooldown']} absolute inset-0 flex items-center justify-center overflow-hidden rounded bg-black/65`}
+                <span
+                  className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]"
                   aria-hidden
                 >
-                  <span className="relative z-10 text-sm font-bold text-white drop-shadow">
-                    {remainingRounds}
-                  </span>
-                </div>
+                  {remainingCooldown}
+                </span>
               )}
             </div>
             <span className="text-foreground mt-0.5 w-full truncate text-center text-[11px] font-medium">
@@ -71,10 +65,6 @@ export function BattleSkillBar({
             </span>
             <span className="text-muted-foreground h-3 text-[9px] leading-3 tabular-nums">
               {manaCost > 0 ? `${manaCost} MP` : '无消耗'}
-            </span>
-            <span className={`${interfaceStyles.skillState} ${!enabled ? 'opacity-60' : ''}`} aria-hidden="true">
-              {onCooldown ? <Clock3 className="h-2.5 w-2.5" /> : enabled ? <Check className="h-2.5 w-2.5" /> : null}
-              {onCooldown ? `${remainingRounds} 回合` : enabled ? '已启用' : '未启用'}
             </span>
           </>
         )
@@ -91,7 +81,7 @@ export function BattleSkillBar({
             disabled={disabled}
             className={btnClass}
             aria-pressed={enabled}
-            aria-label={`${def.name}，${enabled ? '已启用' : '已关闭'}${onCooldown ? `，冷却 ${remainingRounds} 回合` : ''}`}
+            aria-label={`${def.name}，${enabled ? '已启用' : '已关闭'}${onCooldown ? `，冷却 ${remainingCooldown}` : ''}`}
             title={
               enabled
                 ? `${def.name} 已启用（再点关闭）${costLabel}`

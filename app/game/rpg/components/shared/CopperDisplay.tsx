@@ -37,7 +37,7 @@ function CoinIcon({
   const { light, dark, edge } = gradients[variant]
   const id = `${uid}-coin-${variant}`
   return (
-    <svg viewBox="0 0 24 24" className={className} aria-hidden>
+    <svg viewBox="0 0 24 24" className={`block ${className ?? ''}`} aria-hidden>
       <defs>
         <linearGradient id={id} x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor={light} />

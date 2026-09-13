@@ -22,7 +22,7 @@ export interface CombatMonster {
   experience?: number
   /** 怪物在战斗阵列中的位置 (0-4) */
   position?: number
-  /** 本回合是否被攻击 */
+  /** 本场是否被攻击 */
   was_attacked?: boolean
 }
 
@@ -54,11 +54,12 @@ export interface CombatResult {
     hp?: number
     max_hp?: number
   }
-  /** 本回合开始时的怪物血量，用于先渲染再播扣血动画 */
+  /** 本场开始时的怪物血量，用于先渲染再播扣血动画 */
   monster_hp_before_round?: number
   damage_dealt: number
   damage_taken: number
-  rounds: number
+  /** 兼容旧推送；新服务端恒为 0，冷却已改为剩余次数 */
+  rounds?: number
   experience_gained: number
   copper_gained: number
   loot: {
@@ -69,9 +70,9 @@ export interface CombatResult {
   }
   skills_used?: SkillUsedEntry[]
   skill_target_positions?: number[] // 技能命中的怪物位置 (0-4)
-  /** 技能冷却（回合数） */
+  /** 技能冷却剩余次数 */
   skill_cooldowns?: Record<number, number>
-  /** 回合结束自动恢复记录 */
+  /** 战斗推进后自动恢复记录 */
   round_regen?: Record<string, { name: string; restored: number }> | null
   character: GameCharacter
   /** 仅当本场战斗结束（胜利/失败）时存在 */
@@ -113,7 +114,7 @@ export interface CombatLog {
   copper_gained: number
   duration_seconds: number
   skills_used?: SkillUsedEntry[]
-  /** 回合结束自动恢复记录 */
+  /** 战斗推进后自动恢复记录 */
   round_regen?: Record<string, { name: string; restored: number }> | null
   created_at: string
 }
@@ -167,7 +168,6 @@ export interface CombatLogDetail {
     counter_damage: number
   }
   battle: {
-    round?: number
     alive_count: number
     killed_count: number
   }

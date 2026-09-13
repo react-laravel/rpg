@@ -285,7 +285,7 @@ export function BattleArena({
     return () => clearTimeout(watchdog)
   }, [activeSkillEffect, skillRoundKey, handleSkillComplete])
 
-  // 无视觉技能特效的回合：出现动画结束后展示扣血，再写入战斗日志
+  // 无视觉技能特效时：出现动画结束后展示扣血，再写入战斗日志
   useEffect(() => {
     if (monsterAppearBlocking || deferDamageDisplay) return
     if (skillUsed && computedSkillEffect) return

@@ -155,17 +155,17 @@ export function CombatPanel() {
       ),
     [learnedSkills]
   )
-  // skill_cooldowns 是技能冷却到期的回合号，需要减去当前回合数得到剩余冷却
-  const currentRound = combatResult?.rounds ?? 0
+  // skill_cooldowns 是剩余冷却次数；旧服务端曾发到期回合号，rounds>0 时相减兼容
   const skillCooldowns = useMemo(() => {
     const cooldowns = combatResult?.skill_cooldowns ?? {}
+    const currentRound = combatResult?.rounds ?? 0
     const result: Record<number, number> = {}
-    for (const [skillId, endRound] of Object.entries(cooldowns)) {
-      const remaining = (endRound as number) - currentRound
+    for (const [skillId, value] of Object.entries(cooldowns)) {
+      const remaining = currentRound > 0 ? (value as number) - currentRound : (value as number)
       result[Number(skillId)] = remaining > 0 ? remaining : 0
     }
     return result
-  }, [combatResult?.skill_cooldowns, currentRound])
+  }, [combatResult?.skill_cooldowns, combatResult?.rounds])
 
   const handleStartCombat = async () => {
     setShouldAutoCombat(true)
@@ -195,12 +195,6 @@ export function CombatPanel() {
           <div className={`${interfaceStyles.arenaToolbar} flex min-h-16 items-center justify-between gap-2 border-b px-2 py-2 sm:px-3`}>
             <CombatMapPicker />
             <div className="flex shrink-0 items-center gap-2">
-              {isFighting && currentRound > 0 && (
-                <span className={`${interfaceStyles.statusPill} hidden sm:inline-flex`}>
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
-                  第 {currentRound} 回合
-                </span>
-              )}
               {currentMap && (
                 <VSSwords
                   isFighting={isFighting}

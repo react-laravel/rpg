@@ -267,7 +267,6 @@ describe('combat types', () => {
         counter_damage: 0,
       },
       battle: {
-        round: 3,
         alive_count: 1,
         killed_count: 1,
       },
@@ -276,7 +275,7 @@ describe('combat types', () => {
         multiplier: 1.0,
       },
     }
-    expect(detail.battle.round).toBe(3)
+    expect(detail.battle.alive_count).toBe(1)
     expect(detail.damage_detail.total).toBe(50)
   })
 
@@ -323,7 +322,6 @@ describe('combat types', () => {
         counter_damage: 0,
       },
       battle: {
-        round: 3,
         alive_count: 1,
         killed_count: 1,
       },

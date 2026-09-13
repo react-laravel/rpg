@@ -197,7 +197,6 @@ export function buildCombatLogDetailFromEntry(
         counter_damage: log.monster_counter_damage ?? 0,
       },
       battle: {
-        round: log.round_number ?? 0,
         alive_count: log.monsters_alive_count ?? 0,
         killed_count: log.monsters_killed_count ?? 0,
       },
@@ -257,7 +256,6 @@ export function buildCombatLogDetailFromEntry(
       counter_damage: result.damage_taken,
     },
     battle: {
-      round: result.rounds ?? 0,
       alive_count: 0,
       killed_count: result.victory ? 1 : 0,
     },
