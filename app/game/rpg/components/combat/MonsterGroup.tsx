@@ -8,6 +8,7 @@ import {
   isRenderableCombatMonster,
   COMBAT_MONSTER_COLS,
   COMBAT_MONSTER_MAX_ROWS,
+  COMBAT_MONSTER_GRID_MAX_WIDTH_CLASS,
 } from '../../utils/combatUtils'
 import styles from '../../rpg.module.css'
 
@@ -315,7 +316,7 @@ export function MonsterGroup({
   return (
     <>
       <div
-        className="grid w-full max-w-[22rem] grid-cols-5 items-end justify-items-center gap-x-1 gap-y-1.5 overflow-visible px-1 sm:max-w-[26rem] sm:gap-x-2"
+        className={`${COMBAT_MONSTER_GRID_MAX_WIDTH_CLASS} grid grid-cols-5 items-end justify-items-center gap-x-1 gap-y-1.5 overflow-visible px-1 sm:gap-x-2`}
         style={{ gridTemplateRows: `repeat(${COMBAT_MONSTER_MAX_ROWS}, minmax(0, auto))` }}
       >
         {slotPositions.map(pos => {

@@ -7,6 +7,7 @@ import { MonsterGroup } from './MonsterGroup'
 import { SkillEffect, type SkillEffectType } from './effects'
 import { soundManager } from '../../utils/soundManager'
 import { getSkillSoundDuration } from '../../utils/skillSoundRegistry'
+import { COMBAT_UNIT_PANEL_WIDTH_CLASS } from '../../utils/combatUtils'
 import styles from '../../rpg.module.css'
 
 const CHARACTER_DAMAGE_TEXT_MS = 2200
@@ -476,21 +477,21 @@ export function BattleArena({
           )}
         </div>
 
-        {/* 下侧：角色 */}
+        {/* 下侧：角色（尺寸与单只怪物状态卡对齐） */}
         <div className="mt-auto flex shrink-0 items-end justify-center p-3 sm:p-5">
-          <div className="border-white/15 bg-black/55 flex w-full max-w-md items-center gap-3 rounded-lg border p-2.5 shadow-lg backdrop-blur-md sm:gap-4 sm:p-3">
-            <div
-              className={`border-primary/60 bg-primary/25 text-primary relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 text-xl font-bold shadow-[0_0_18px_rgba(59,130,246,0.28)] sm:h-16 sm:w-16 sm:text-2xl ${characterHit ? styles['character-hit'] : isFighting ? styles['character-idle'] : ''}`}
-            >
+          <div
+            className={`${COMBAT_UNIT_PANEL_WIDTH_CLASS} relative flex flex-col items-center gap-1 rounded-md px-0.5 pb-1`}
+          >
+            <div className="relative flex flex-col items-center">
               {(characterDamageText != null ||
                 characterRegenHpText != null ||
                 characterRegenMpText != null) && (
-                <div className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-1 flex -translate-x-1/2 flex-col items-center gap-0.5 whitespace-nowrap">
+                <div className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-0.5 flex -translate-x-1/2 flex-col items-center gap-0.5 whitespace-nowrap">
                   {characterDamageText != null && (
                     <span className={styles['damage-number']}>-{characterDamageText}</span>
                   )}
                   {(characterRegenHpText != null || characterRegenMpText != null) && (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
                       {characterRegenHpText != null && (
                         <span className={`${styles['regen-number']} text-emerald-300`}>
                           +{characterRegenHpText}
@@ -505,45 +506,46 @@ export function BattleArena({
                   )}
                 </div>
               )}
-              {character?.name?.charAt(0) ?? '?'}
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="mb-1.5 flex items-baseline justify-between gap-2 text-white">
-                <span className="truncate text-sm font-semibold sm:text-base">
-                  {character?.name ?? '冒险者'}
-                </span>
-                {character && (
-                  <span className="shrink-0 text-[10px] text-white/60 sm:text-xs">
-                    Lv.{character.level} {CLASS_NAMES[character.class as CharacterClass] ?? character.class}
-                  </span>
-                )}
+              <div
+                className={`border-amber-500/80 bg-amber-950/40 text-amber-300 relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 text-xl font-bold shadow-[0_0_12px_rgba(245,158,11,0.45)] sm:h-16 sm:w-16 sm:text-2xl ${characterHit ? styles['character-hit'] : isFighting ? styles['character-idle'] : ''}`}
+              >
+                {character?.name?.charAt(0) ?? '?'}
               </div>
+            </div>
+
+            <div className="w-full min-w-0 rounded bg-black/45 px-1 py-1 backdrop-blur-sm">
               {combatStats && (
-                <div className="space-y-1.5">
+                <div className="space-y-1">
                   <div>
-                    <div className="mb-0.5 flex justify-between text-[10px] font-medium text-white/75 sm:text-xs">
-                      <span>生命</span>
-                      <span className="tabular-nums">
-                        {effectiveCharacterHp} / {combatStats.max_hp}
+                    <div className="flex min-w-0 items-center justify-between gap-0.5 text-[9px] leading-none text-white/80 sm:text-[10px]">
+                      <span className="shrink-0">生命</span>
+                      <span
+                        className="truncate tabular-nums"
+                        title={`${effectiveCharacterHp}/${combatStats.max_hp}`}
+                      >
+                        {effectiveCharacterHp}/{combatStats.max_hp}
                       </span>
                     </div>
-                    <div className="h-2.5 w-full overflow-hidden rounded-sm bg-black/45 ring-1 ring-white/10">
+                    <div className="mt-1 h-1.5 overflow-hidden rounded-sm bg-black/60 ring-1 ring-white/10">
                       <div
-                        className={`${styles['health-bar-fill']} h-full bg-gradient-to-r from-red-700 via-red-500 to-rose-400 transition-[width] duration-300`}
+                        className={`${styles['health-bar-fill']} h-full bg-gradient-to-r from-red-700 to-rose-400 transition-[width] duration-300`}
                         style={{ width: `${hpPercent}%` }}
                       />
                     </div>
                   </div>
                   <div>
-                    <div className="mb-0.5 flex justify-between text-[10px] font-medium text-white/75 sm:text-xs">
-                      <span>魔法</span>
-                      <span className="tabular-nums">
-                        {effectiveCharacterMana} / {combatStats.max_mana}
+                    <div className="flex min-w-0 items-center justify-between gap-0.5 text-[9px] leading-none text-white/80 sm:text-[10px]">
+                      <span className="shrink-0">魔法</span>
+                      <span
+                        className="truncate tabular-nums"
+                        title={`${effectiveCharacterMana}/${combatStats.max_mana}`}
+                      >
+                        {effectiveCharacterMana}/{combatStats.max_mana}
                       </span>
                     </div>
-                    <div className="h-2 w-full overflow-hidden rounded-sm bg-black/45 ring-1 ring-white/10">
+                    <div className="mt-1 h-1.5 overflow-hidden rounded-sm bg-black/60 ring-1 ring-white/10">
                       <div
-                        className={`${styles['mana-bar-fill']} h-full bg-gradient-to-r from-blue-700 via-blue-500 to-cyan-300 transition-[width] duration-300`}
+                        className={`${styles['mana-bar-fill']} h-full bg-gradient-to-r from-blue-700 to-cyan-300 transition-[width] duration-300`}
                         style={{ width: `${manaPercent}%` }}
                       />
                     </div>
@@ -551,6 +553,19 @@ export function BattleArena({
                 </div>
               )}
             </div>
+
+            <p
+              className="w-full truncate px-0.5 text-center text-[9px] font-medium text-white/90 drop-shadow sm:text-[11px]"
+              title={character?.name ?? '冒险者'}
+            >
+              {character?.name ?? '冒险者'}
+            </p>
+            {character && (
+              <p className="w-full truncate px-0.5 text-center text-[8px] text-white/60 sm:text-[9px]">
+                Lv.{character.level}{' '}
+                {CLASS_NAMES[character.class as CharacterClass] ?? character.class}
+              </p>
+            )}
           </div>
         </div>
       </div>

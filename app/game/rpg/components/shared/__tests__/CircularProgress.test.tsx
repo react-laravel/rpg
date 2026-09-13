@@ -36,4 +36,17 @@ describe('CircularProgress', () => {
     const result = CircularProgress({ percent: 100, color: 'blue' })
     expect(result).toBeDefined()
   })
+
+  it('should render large orb size with progressbar role', () => {
+    const result = CircularProgress({
+      percent: 40,
+      color: 'red',
+      size: 'md',
+      label: '生命',
+    })
+    expect(result).toBeDefined()
+    expect(result.props.role).toBe('progressbar')
+    expect(result.props['aria-label']).toBe('生命')
+    expect(result.props['aria-valuenow']).toBe(40)
+  })
 })
