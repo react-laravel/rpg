@@ -194,26 +194,25 @@ export function CombatPanel() {
       <div className={`${interfaceStyles.combatGrid} grid items-start gap-3 xl:gap-4`}>
         {/* 战场 */}
         <section className={`${interfaceStyles.panel} ${interfaceStyles.arenaPanel} relative overflow-hidden`}>
-          <div className={`${interfaceStyles.arenaToolbar} flex min-h-16 items-center justify-between gap-2 border-b px-2 py-2 sm:px-3`}>
-            <CombatMapPicker />
-            <div className="flex shrink-0 items-center gap-2">
-              {currentMap && (
-                <VSSwords
-                  isFighting={isFighting}
-                  isLoading={isLoading}
-                  isDead={isCharacterDead}
-                  onToggle={handleCombatToggle}
-                  variant="inline"
-                />
-              )}
-            </div>
-          </div>
-
           {currentMap ? (
             <div
               className="relative mx-auto aspect-[4/5] w-full overflow-hidden sm:aspect-[4/3] lg:aspect-[16/10]"
               style={getMapBackgroundStyle(currentMap, { useOrigin: true, fill: true })}
             >
+              <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-2 px-2 py-2 sm:px-3">
+                <div className="pointer-events-auto min-w-0 flex-1">
+                  <CombatMapPicker overlay />
+                </div>
+                <div className="pointer-events-auto flex shrink-0 items-center gap-2">
+                  <VSSwords
+                    isFighting={isFighting}
+                    isLoading={isLoading}
+                    isDead={isCharacterDead}
+                    onToggle={handleCombatToggle}
+                    variant="inline"
+                  />
+                </div>
+              </div>
               <BattleArena
                 character={
                   character
@@ -247,8 +246,13 @@ export function CombatPanel() {
               />
             </div>
           ) : (
-            <div className="text-muted-foreground flex min-h-72 items-center justify-center text-sm">
-              正在准备战场...
+            <div className="relative flex min-h-72 flex-col">
+              <div className="flex items-center justify-between gap-2 px-2 py-2 sm:px-3">
+                <CombatMapPicker />
+              </div>
+              <div className="text-muted-foreground flex flex-1 items-center justify-center text-sm">
+                正在准备战场...
+              </div>
             </div>
           )}
         </section>
@@ -287,9 +291,6 @@ export function CombatPanel() {
                   )}
                 </button>
               </div>
-              <p className="text-muted-foreground mb-3 text-[11px] leading-relaxed">
-                点选参与自动战斗的技能，冷却结束后自动释放。
-              </p>
               <BattleSkillBar
                 activeSkills={activeSkills}
                 skillsUsed={combatResult?.skills_used}

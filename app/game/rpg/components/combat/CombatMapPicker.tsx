@@ -9,7 +9,7 @@ import { getMapBackgroundStyle } from '../../utils/mapBackground'
 import { MapCardMonsterAvatar } from './MapCardMonsterAvatar'
 
 /** Travel controls own their pending/error feedback independently of background requests. */
-export function CombatMapPicker() {
+export function CombatMapPicker({ overlay = false }: { overlay?: boolean }) {
   const currentMap = useGameStore(s => s.currentMap)
   const maps = useGameStore(s => s.maps)
   const enterMap = useGameStore(s => s.enterMap)
@@ -53,20 +53,39 @@ export function CombatMapPicker() {
         <button
           type="button"
           aria-label={`切换地图，当前${currentMap?.name ?? '未选择地图'}`}
-          className="hover:bg-muted flex min-h-11 min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors"
+          className={
+            overlay
+              ? 'flex min-h-11 min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-left text-white transition-colors hover:bg-black/25'
+              : 'hover:bg-muted flex min-h-11 min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors'
+          }
         >
-          <MapPin aria-hidden="true" className="text-primary hidden h-5 w-5 shrink-0 sm:block" />
+          <MapPin
+            aria-hidden="true"
+            className={`hidden h-5 w-5 shrink-0 sm:block ${overlay ? 'text-amber-200' : 'text-primary'}`}
+          />
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-sm font-semibold sm:text-base">
+            <span
+              className={`block truncate text-sm font-semibold sm:text-base ${
+                overlay ? 'drop-shadow-[0_1px_2px_rgba(0,0,0,0.85)]' : ''
+              }`}
+            >
               {currentMap?.name ?? '选择冒险地图'}
             </span>
-            <span className="text-muted-foreground block text-[11px]">
+            <span
+              className={`block text-[11px] ${
+                overlay
+                  ? 'text-white/75 drop-shadow-[0_1px_2px_rgba(0,0,0,0.85)]'
+                  : 'text-muted-foreground'
+              }`}
+            >
               {currentMap ? `${getActName(currentMap.act)} · ` : ''}切换地图
             </span>
           </span>
           <ChevronDown
             aria-hidden="true"
-            className={`text-muted-foreground h-4 w-4 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`}
+            className={`h-4 w-4 shrink-0 transition-transform ${open ? 'rotate-180' : ''} ${
+              overlay ? 'text-white/70' : 'text-muted-foreground'
+            }`}
           />
         </button>
       </PopoverTrigger>

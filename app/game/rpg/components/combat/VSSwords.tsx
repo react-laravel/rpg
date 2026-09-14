@@ -1,7 +1,6 @@
 'use client'
 
 import { LoaderCircle, RotateCcw, Square, Swords } from 'lucide-react'
-import styles from '../../rpg.module.css'
 
 /** 战斗状态按钮：开始、停止与复活使用一致的图标和状态反馈。 */
 export function VSSwords({
@@ -33,7 +32,7 @@ export function VSSwords({
       type="button"
       onClick={onToggle}
       disabled={isLoading}
-      className={`focus-visible:ring-ring flex w-fit shrink-0 items-center justify-center font-semibold transition-[background-color,color,border-color,transform] focus:outline-none focus-visible:ring-2 active:scale-[0.98] disabled:cursor-wait disabled:opacity-70 ${
+      className={`focus-visible:ring-ring flex w-fit shrink-0 items-center justify-center font-semibold transition-[background-color,color,border-color] focus:outline-none focus-visible:ring-2 disabled:cursor-wait disabled:opacity-70 ${
         isInline
           ? `min-h-11 flex-row gap-1.5 rounded-md border px-2.5 text-xs sm:px-3 sm:text-sm ${
               isCharacterDead
@@ -48,11 +47,8 @@ export function VSSwords({
       aria-label={label}
     >
       <span className="relative flex items-center justify-center" aria-hidden>
-        {isFighting && !isCharacterDead && !isLoading && (
-          <span className="absolute h-5 w-5 animate-ping rounded-full bg-red-500/25" />
-        )}
         <Icon
-          className={`${isInline ? 'h-4 w-4' : 'h-8 w-8'} ${isLoading ? 'animate-spin' : ''} ${!isCharacterDead && isFighting ? styles['vs-emoji-fighting'] : ''}`}
+          className={`${isInline ? 'h-4 w-4' : 'h-8 w-8'} ${isLoading ? 'animate-spin' : ''}`}
           fill={isFighting && !isLoading && !isCharacterDead ? 'currentColor' : 'none'}
         />
       </span>
