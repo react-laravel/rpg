@@ -26,7 +26,7 @@ const fireball: CharacterSkill = {
 }
 
 describe('BattleSkillBar', () => {
-  it('shows enabled state, mana cost, cooldown, and toggles the skill', () => {
+  it('shows icon-only enabled state, cooldown, and toggles the skill', () => {
     const onSkillToggle = vi.fn()
     render(
       <BattleSkillBar
@@ -40,10 +40,10 @@ describe('BattleSkillBar', () => {
 
     const button = screen.getByRole('button', { name: '火球术，已启用，冷却 2' })
     expect(button).toHaveAttribute('aria-pressed', 'true')
-    expect(screen.getByText('4 MP')).toBeInTheDocument()
+    expect(screen.queryByText('4 MP')).not.toBeInTheDocument()
+    expect(screen.queryByText('火球术')).not.toBeInTheDocument()
     expect(screen.getByText('2')).toBeInTheDocument()
-    expect(screen.queryByText(/回合/)).not.toBeInTheDocument()
-    expect(screen.queryByText('已启用')).not.toBeInTheDocument()
+    expect(button.querySelector('[data-enabled="true"]')).toBeTruthy()
 
     fireEvent.click(button)
     expect(onSkillToggle).toHaveBeenCalledWith(7)
@@ -63,6 +63,22 @@ describe('BattleSkillBar', () => {
     expect(screen.getByRole('button', { name: '火球术，已启用' }).className).toContain(
       'skill-triggered'
     )
+  })
+
+  it('does not draw an accent icon border when the skill is disabled', () => {
+    render(
+      <BattleSkillBar
+        activeSkills={[fireball]}
+        skillsUsed={[]}
+        skillCooldowns={{}}
+        enabledSkillIds={[]}
+        onSkillToggle={() => undefined}
+      />
+    )
+
+    const button = screen.getByRole('button', { name: '火球术，已关闭' })
+    expect(button).toHaveAttribute('aria-pressed', 'false')
+    expect(button.querySelector('[data-enabled="false"]')).toBeTruthy()
   })
 })
 

@@ -262,7 +262,7 @@ export function CombatPanel() {
                   <span className={interfaceStyles.headingIcon}>
                     <Sparkles aria-hidden="true" className="h-4 w-4" />
                   </span>
-                  <h3 className="text-sm font-semibold">自动技能</h3>
+                  <h3 className="text-sm font-semibold">技能</h3>
                   <span className={interfaceStyles.statusPill}>
                     {activeSkills.filter(skill => enabledSkillIds.includes(skill.skill_id)).length}/{activeSkills.length}
                   </span>
