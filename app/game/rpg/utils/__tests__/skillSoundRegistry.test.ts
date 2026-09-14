@@ -5,8 +5,23 @@ import { getAllSkillSoundUrls, getSkillSoundUrl, skillSoundManifest } from '../s
 
 describe('skillSoundRegistry', () => {
   it('returns a specific sound for a known skill name', () => {
-    expect(getSkillSoundUrl({ name: '火球术', effect_key: 'fireball' })).toBe(
+    expect(getSkillSoundUrl({ name: '小火球', effect_key: 'fireball' })).toBe(
       '/game/rpg/sfx/fireball-ember.mp3'
+    )
+  })
+
+  it('resolves frost-nova by effect key', () => {
+    expect(getSkillSoundUrl({ name: '冰霜新星', effect_key: 'frost-nova' })).toBe(
+      '/game/rpg/sfx/frost-nova-ring.mp3'
+    )
+  })
+
+  it('resolves arcane missile and cataclysm sounds', () => {
+    expect(getSkillSoundUrl({ name: '奥术飞弹', effect_key: 'arcane-missile' })).toBe(
+      '/game/rpg/sfx/multishot-volley.mp3'
+    )
+    expect(getSkillSoundUrl({ name: '元素灾变', effect_key: 'element-cataclysm' })).toBe(
+      '/game/rpg/sfx/thunder-wrath-burst.mp3'
     )
   })
 

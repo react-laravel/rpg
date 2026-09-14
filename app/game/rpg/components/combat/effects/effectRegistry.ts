@@ -59,7 +59,7 @@ export type SkillEffectType = keyof typeof EFFECT_PROFILES
 
 const LEGACY_KEYS: Record<string, SkillEffectType> = { buff: 'battle-roar', dash: 'gale-step' }
 const LEGACY_NAMES: Record<string, SkillEffectType> = {
-  冰霜新星: 'frost-nova', 雷霆万钧: 'thunder-wrath', 烈焰风暴: 'meteor-storm',
+  小火球: 'fireball', 火球术: 'fireball', 冰霜新星: 'frost-nova', 雷霆万钧: 'thunder-wrath', 烈焰风暴: 'meteor-storm',
 }
 
 export function resolveSkillEffect(skill?: Pick<SkillUsedEntry, 'name' | 'effect_key'> | null): SkillEffectType | null {

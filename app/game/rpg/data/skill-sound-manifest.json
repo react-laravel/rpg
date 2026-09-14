@@ -8,7 +8,7 @@
     "promptEn": "Short fantasy healing spell for an action RPG, gentle holy shimmer, rising magical chimes, soft restorative glow, no voice, no music, clean isolated sound effect."
   },
   {
-    "skillName": "火球术",
+    "skillName": "小火球",
     "effectKey": "fireball",
     "fileName": "fireball-ember.mp3",
     "preset": "fireball",
@@ -33,7 +33,7 @@
   },
   {
     "skillName": "冰霜新星",
-    "effectKey": "ice-arrow",
+    "effectKey": "frost-nova",
     "fileName": "frost-nova-ring.mp3",
     "preset": "frost-nova",
     "durationSeconds": 0.92,
@@ -86,6 +86,22 @@
     "preset": "meteor",
     "durationSeconds": 1.06,
     "promptEn": "Epic fantasy meteor spell for an action RPG, falling rock from the sky, fiery descent, heavy magical impact, no voice, no music, clean isolated sound effect."
+  },
+  {
+    "skillName": "奥术飞弹",
+    "effectKey": "arcane-missile",
+    "fileName": "multishot-volley.mp3",
+    "preset": "arcane-missile",
+    "durationSeconds": 0.82,
+    "promptEn": "Short fantasy arcane missiles for an action RPG, rapid purple magical bolts, layered projectile whooshes, no voice, no music, clean isolated sound effect."
+  },
+  {
+    "skillName": "元素灾变",
+    "effectKey": "element-cataclysm",
+    "fileName": "thunder-wrath-burst.mp3",
+    "preset": "element-cataclysm",
+    "durationSeconds": 1.18,
+    "promptEn": "Epic fantasy elemental cataclysm for an action RPG, fire ice lightning fusion burst, layered magical devastation, no voice, no music, clean isolated sound effect."
   },
   {
     "skillName": "穿刺射击",
