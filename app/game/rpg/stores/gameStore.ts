@@ -31,8 +31,10 @@ import { mergeExperienceTable } from '../config/progression'
 import { soundManager } from '../utils/soundManager'
 import {
   combatLootValue,
+  countRoundKills,
   farmSessionForLoadout,
   recordFarmGains,
+  resumeFarmSession,
   type FarmSession,
 } from '../utils/farmStats'
 
@@ -283,8 +285,11 @@ const store: StateCreator<GameState> = (set, get) => ({
   selectCharacter: async characterId => {
     startRequest(set)
     try {
-      // 设置选中的角色ID
-      set(state => ({ ...state, selectedCharacterId: characterId }))
+      set(state => ({
+        ...state,
+        selectedCharacterId: characterId,
+        farmSession: state.selectedCharacterId === characterId ? state.farmSession : null,
+      }))
       // 更新在线时间
       await post('/rpg/character/online', { character_id: characterId })
       // 获取该角色的详细信息
@@ -959,13 +964,16 @@ const store: StateCreator<GameState> = (set, get) => ({
         ...state,
         maps: response.maps ?? [],
         currentMap,
-        farmSession: farmSessionForLoadout(
-          state.farmSession,
-          currentMap?.id ?? null,
-          state.character,
-          state.combatStats,
-          state.equipment
-        ),
+        farmSession:
+          state.farmSession && currentMap && state.farmSession.mapId === currentMap.id
+            ? state.farmSession
+            : farmSessionForLoadout(
+                state.farmSession,
+                currentMap?.id ?? null,
+                state.character,
+                state.combatStats,
+                state.equipment
+              ),
         isLoading: false,
       }))
     } catch (error) {
@@ -1443,13 +1451,17 @@ const store: StateCreator<GameState> = (set, get) => ({
       const pendingCombatLog =
         dataLogId != null ? ({ ...typedData, id: dataLogId } as CombatLogEntry) : null
 
-      const farmSession = farmSessionForLoadout(
-        state.farmSession,
-        state.currentMap?.id ?? null,
-        typedData.character ?? state.character,
-        state.combatStats,
-        state.equipment
-      )
+      const mapId = state.currentMap?.id ?? null
+      const farmSession =
+        state.farmSession && mapId != null && state.farmSession.mapId === mapId
+          ? state.farmSession
+          : farmSessionForLoadout(
+              state.farmSession,
+              mapId,
+              typedData.character ?? state.character,
+              state.combatStats,
+              state.equipment
+            )
 
       return {
         combatResult: typedData,
@@ -1457,14 +1469,16 @@ const store: StateCreator<GameState> = (set, get) => ({
         pendingCombatLog: pendingCombatLog ?? state.pendingCombatLog,
         character: typedData.character,
         farmSession: farmSession
-          ? recordFarmGains(
-              farmSession,
-              typedData.experience_gained ?? 0,
-              combatLootValue(
+          ? recordFarmGains(farmSession, {
+              exp: typedData.experience_gained ?? 0,
+              lootValue: combatLootValue(
                 typedData.copper_gained ?? 0,
                 typedData.loot?.item?.sell_price
-              )
-            )
+              ),
+              damage: typedData.damage_dealt ?? 0,
+              taken: typedData.damage_taken ?? 0,
+              kills: countRoundKills(typedData.monsters),
+            })
           : null,
         // 只有当新值存在且不为 undefined 时才更新
         ...(newCurrentHp !== undefined && { currentHp: newCurrentHp }),
@@ -1629,6 +1643,7 @@ export const useGameStore = create<GameState>()(
       selectedCharacterId: state.selectedCharacterId,
       activeTab: state.activeTab,
       compareEquippedCollapsed: state.compareEquippedCollapsed,
+      farmSession: state.farmSession,
     }),
     merge: (persistedState, currentState) => {
       const merged = {
@@ -1637,6 +1652,9 @@ export const useGameStore = create<GameState>()(
       }
       if (!['character', 'inventory', 'skills', 'combat', 'settings', 'compendium'].includes(merged.activeTab)) {
         merged.activeTab = 'combat'
+      }
+      if (merged.farmSession) {
+        merged.farmSession = resumeFarmSession(merged.farmSession)
       }
       return merged
     },

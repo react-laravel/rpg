@@ -4,13 +4,29 @@ export interface FarmSession {
   mapId: number
   powerKey: string
   startedAt: number
+  lastTickAt: number
+  elapsedMs: number
   exp: number
   lootValue: number
+  damage: number
+  taken: number
+  kills: number
+}
+
+export interface FarmGain {
+  exp?: number
+  lootValue?: number
+  damage?: number
+  taken?: number
+  kills?: number
 }
 
 export interface FarmRates {
   expPerMin: number | null
   lootPerMin: number | null
+  damagePerMin: number | null
+  takenPerMin: number | null
+  killsPerMin: number | null
   elapsedMs: number
 }
 
@@ -38,41 +54,106 @@ export function getFarmPowerKey(
 }
 
 export function createFarmSession(mapId: number, powerKey: string, now = Date.now()): FarmSession {
-  return { mapId, powerKey, startedAt: now, exp: 0, lootValue: 0 }
+  return {
+    mapId,
+    powerKey,
+    startedAt: now,
+    lastTickAt: now,
+    elapsedMs: 0,
+    exp: 0,
+    lootValue: 0,
+    damage: 0,
+    taken: 0,
+    kills: 0,
+  }
+}
+
+/** 刷新后接着算，不把关页时间算进每分钟速度 */
+export function resumeFarmSession(session: FarmSession, now = Date.now()): FarmSession {
+  return { ...session, lastTickAt: now }
 }
 
 export function reconcileFarmSession(
   session: FarmSession | null,
   mapId: number | null,
   powerKey: string,
-  now = Date.now()
+  now = Date.now(),
+  powerKeyReady = true
 ): FarmSession | null {
   if (mapId == null) return null
-  if (!session || session.mapId !== mapId || session.powerKey !== powerKey) {
+  if (!session || session.mapId !== mapId) {
+    return createFarmSession(mapId, powerKey, now)
+  }
+  if (!powerKeyReady) {
+    return session
+  }
+  if (session.powerKey !== powerKey) {
     return createFarmSession(mapId, powerKey, now)
   }
   return session
 }
 
-export function recordFarmGains(session: FarmSession, exp: number, lootValue: number): FarmSession {
+export function recordFarmGains(
+  session: FarmSession,
+  gain: FarmGain,
+  now = Date.now()
+): FarmSession {
+  const elapsedMs = session.elapsedMs + Math.max(0, now - session.lastTickAt)
   return {
     ...session,
-    exp: session.exp + Math.max(0, exp),
-    lootValue: session.lootValue + Math.max(0, lootValue),
+    elapsedMs,
+    lastTickAt: now,
+    exp: session.exp + Math.max(0, gain.exp ?? 0),
+    lootValue: session.lootValue + Math.max(0, gain.lootValue ?? 0),
+    damage: session.damage + Math.max(0, gain.damage ?? 0),
+    taken: session.taken + Math.max(0, gain.taken ?? 0),
+    kills: session.kills + Math.max(0, gain.kills ?? 0),
   }
 }
 
 export function computeFarmRates(session: FarmSession, now = Date.now()): FarmRates {
-  const elapsedMs = Math.max(0, now - session.startedAt)
+  const elapsedMs = session.elapsedMs + Math.max(0, now - session.lastTickAt)
   if (elapsedMs < FARM_RATE_MIN_MS) {
-    return { expPerMin: null, lootPerMin: null, elapsedMs }
+    return {
+      expPerMin: null,
+      lootPerMin: null,
+      damagePerMin: null,
+      takenPerMin: null,
+      killsPerMin: null,
+      elapsedMs,
+    }
   }
   const minutes = elapsedMs / 60_000
   return {
     expPerMin: Math.round(session.exp / minutes),
     lootPerMin: Math.round(session.lootValue / minutes),
+    damagePerMin: Math.round(session.damage / minutes),
+    takenPerMin: Math.round(session.taken / minutes),
+    killsPerMin: Math.round(session.kills / minutes),
     elapsedMs,
   }
+}
+
+export function countRoundKills(
+  monsters?: Array<{ hp?: number; damage_taken?: number; was_attacked?: boolean } | null>
+): number {
+  if (!monsters) return 0
+  return monsters.filter(
+    monster =>
+      monster != null &&
+      (monster.hp ?? 0) <= 0 &&
+      ((monster.damage_taken ?? 0) > 0 || monster.was_attacked === true)
+  ).length
+}
+
+export function formatEta(remainingExp: number, expPerMin: number | null): string | null {
+  if (expPerMin == null || expPerMin <= 0 || remainingExp <= 0) return null
+  const minutes = remainingExp / expPerMin
+  if (minutes < 1) return '<1分钟'
+  if (minutes < 60) return `${Math.round(minutes)}分钟`
+  const hours = minutes / 60
+  if (hours < 10) return `${hours.toFixed(1)}小时`
+  return `${Math.round(hours)}小时`
 }
 
 export function combatLootValue(copperGained: number, itemSellPrice?: number | null): number {
@@ -87,5 +168,11 @@ export function farmSessionForLoadout(
   equipment: Record<string, GameItem | null>,
   now = Date.now()
 ): FarmSession | null {
-  return reconcileFarmSession(session, mapId, getFarmPowerKey(character, combatStats, equipment), now)
+  return reconcileFarmSession(
+    session,
+    mapId,
+    getFarmPowerKey(character, combatStats, equipment),
+    now,
+    combatStats != null
+  )
 }
