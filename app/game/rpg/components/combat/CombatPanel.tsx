@@ -21,6 +21,7 @@ import {
 } from '../../utils/combatUtils'
 import { extractCombatLogId } from '../../stores/combatHelpers'
 import { CombatMapPicker } from './CombatMapPicker'
+import { MapFarmStats } from './MapFarmStats'
 import {
   Dialog,
   DialogContent,
@@ -246,6 +247,7 @@ export function CombatPanel() {
                 shield={combatResult?.shield ?? statusCombatShield}
                 onRoundVisualSettled={handleRoundVisualSettled}
               />
+              <MapFarmStats />
             </div>
           ) : (
             <div className="relative flex min-h-72 flex-col">

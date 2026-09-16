@@ -29,6 +29,12 @@ import {
 import { apiGet, apiRequest, post, put, del } from '@/lib/api'
 import { mergeExperienceTable } from '../config/progression'
 import { soundManager } from '../utils/soundManager'
+import {
+  combatLootValue,
+  farmSessionForLoadout,
+  recordFarmGains,
+  type FarmSession,
+} from '../utils/farmStats'
 
 // Imports from extracted helpers
 import {
@@ -77,6 +83,7 @@ interface GameState {
   skills: SkillWithLearnedState[]
   maps: MapDefinition[]
   currentMap: MapDefinition | null
+  farmSession: FarmSession | null
 
   // 战斗状态
   isFighting: boolean
@@ -216,6 +223,7 @@ const initialState = {
   availableSkills: [],
   maps: [],
   currentMap: null,
+  farmSession: null,
   isFighting: false,
   shouldAutoCombat: false, // 是否应该自动战斗
   enabledSkillIds: [] as number[], // 已启用的技能，可多选
@@ -404,6 +412,13 @@ const store: StateCreator<GameState> = (set, get) => ({
         statsBreakdown: response.stats_breakdown ?? null,
         currentHp: response.current_hp,
         currentMana: response.current_mana,
+        farmSession: farmSessionForLoadout(
+          state.farmSession,
+          state.currentMap?.id ?? null,
+          response.character,
+          response.combat_stats,
+          state.equipment
+        ),
         isLoading: false,
       }))
     } catch (error) {
@@ -520,17 +535,27 @@ const store: StateCreator<GameState> = (set, get) => ({
       }
       const filteredInventory = updatedInventory.filter(i => i.id !== itemId)
 
-      set(state => ({
-        ...state,
-        inventory: filteredInventory,
-        equipment: {
+      set(state => {
+        const equipment = {
           ...state.equipment,
           [response.equipped_slot]: response.equipped_item,
-        },
-        combatStats: response.combat_stats,
-        statsBreakdown: response.stats_breakdown ?? state.statsBreakdown,
-        isLoading: false,
-      }))
+        }
+        return {
+          ...state,
+          inventory: filteredInventory,
+          equipment,
+          combatStats: response.combat_stats,
+          statsBreakdown: response.stats_breakdown ?? state.statsBreakdown,
+          farmSession: farmSessionForLoadout(
+            state.farmSession,
+            state.currentMap?.id ?? null,
+            state.character,
+            response.combat_stats,
+            equipment
+          ),
+          isLoading: false,
+        }
+      })
     } catch (error) {
       setRequestError(set, error)
     }
@@ -552,17 +577,27 @@ const store: StateCreator<GameState> = (set, get) => ({
         combat_stats: CombatStats
         stats_breakdown?: CombatStatsBreakdown
       }
-      set(state => ({
-        ...state,
-        inventory: [...state.inventory, response.item],
-        equipment: {
+      set(state => {
+        const equipment = {
           ...state.equipment,
           [slot]: null,
-        },
-        combatStats: response.combat_stats,
-        statsBreakdown: response.stats_breakdown ?? state.statsBreakdown,
-        isLoading: false,
-      }))
+        }
+        return {
+          ...state,
+          inventory: [...state.inventory, response.item],
+          equipment,
+          combatStats: response.combat_stats,
+          statsBreakdown: response.stats_breakdown ?? state.statsBreakdown,
+          farmSession: farmSessionForLoadout(
+            state.farmSession,
+            state.currentMap?.id ?? null,
+            state.character,
+            response.combat_stats,
+            equipment
+          ),
+          isLoading: false,
+        }
+      })
     } catch (error) {
       setRequestError(set, error)
     }
@@ -602,6 +637,13 @@ const store: StateCreator<GameState> = (set, get) => ({
           equipment,
           combatStats: response.combat_stats ?? state.combatStats,
           statsBreakdown: response.stats_breakdown ?? state.statsBreakdown,
+          farmSession: farmSessionForLoadout(
+            state.farmSession,
+            state.currentMap?.id ?? null,
+            state.character,
+            response.combat_stats ?? state.combatStats,
+            equipment
+          ),
           isLoading: false,
         }
       })
@@ -647,6 +689,13 @@ const store: StateCreator<GameState> = (set, get) => ({
           equipment,
           combatStats: response.combat_stats ?? state.combatStats,
           statsBreakdown: response.stats_breakdown ?? state.statsBreakdown,
+          farmSession: farmSessionForLoadout(
+            state.farmSession,
+            state.currentMap?.id ?? null,
+            state.character,
+            response.combat_stats ?? state.combatStats,
+            equipment
+          ),
           isLoading: false,
         }
       })
@@ -910,6 +959,13 @@ const store: StateCreator<GameState> = (set, get) => ({
         ...state,
         maps: response.maps ?? [],
         currentMap,
+        farmSession: farmSessionForLoadout(
+          state.farmSession,
+          currentMap?.id ?? null,
+          state.character,
+          state.combatStats,
+          state.equipment
+        ),
         isLoading: false,
       }))
     } catch (error) {
@@ -954,6 +1010,13 @@ const store: StateCreator<GameState> = (set, get) => ({
         // 否则界面会一直显示切图前的旧血量，卡在战斗画面(实际已死亡)
         currentHp: char?.current_hp ?? state.currentHp,
         currentMana: char?.current_mana ?? state.currentMana,
+        farmSession: farmSessionForLoadout(
+          null,
+          currentMap?.id ?? null,
+          char ?? state.character,
+          state.combatStats,
+          state.equipment
+        ),
       }))
       return true
     } catch (error) {
@@ -1001,6 +1064,13 @@ const store: StateCreator<GameState> = (set, get) => ({
         // 复活时后端只恢复基础生命/法力，用返回的 character 更新当前 HP/MP 显示
         currentHp: char?.current_hp ?? state.currentHp,
         currentMana: char?.current_mana ?? state.currentMana,
+        farmSession: farmSessionForLoadout(
+          null,
+          currentMap?.id ?? null,
+          char ?? state.character,
+          state.combatStats,
+          state.equipment
+        ),
       }))
       return true
     } catch (error) {
@@ -1181,6 +1251,13 @@ const store: StateCreator<GameState> = (set, get) => ({
               currentMana: result.current_mana ?? result.character?.current_mana ?? state.currentMana,
             }
           : {}),
+        farmSession: farmSessionForLoadout(
+          state.farmSession,
+          state.currentMap?.id ?? null,
+          result?.character ?? state.character,
+          state.combatStats,
+          state.equipment
+        ),
         isLoading: false,
       }))
     } catch (error) {
@@ -1366,11 +1443,29 @@ const store: StateCreator<GameState> = (set, get) => ({
       const pendingCombatLog =
         dataLogId != null ? ({ ...typedData, id: dataLogId } as CombatLogEntry) : null
 
+      const farmSession = farmSessionForLoadout(
+        state.farmSession,
+        state.currentMap?.id ?? null,
+        typedData.character ?? state.character,
+        state.combatStats,
+        state.equipment
+      )
+
       return {
         combatResult: typedData,
         statusCombatShield: typedData.shield ?? state.statusCombatShield,
         pendingCombatLog: pendingCombatLog ?? state.pendingCombatLog,
         character: typedData.character,
+        farmSession: farmSession
+          ? recordFarmGains(
+              farmSession,
+              typedData.experience_gained ?? 0,
+              combatLootValue(
+                typedData.copper_gained ?? 0,
+                typedData.loot?.item?.sell_price
+              )
+            )
+          : null,
         // 只有当新值存在且不为 undefined 时才更新
         ...(newCurrentHp !== undefined && { currentHp: newCurrentHp }),
         ...(newCurrentMana !== undefined && { currentMana: newCurrentMana }),
@@ -1447,6 +1542,13 @@ const store: StateCreator<GameState> = (set, get) => ({
       character: typedData.character,
       currentHp: typedData.character?.current_hp ?? state.currentHp,
       currentMana: typedData.character?.current_mana ?? state.currentMana,
+      farmSession: farmSessionForLoadout(
+        state.farmSession,
+        state.currentMap?.id ?? null,
+        typedData.character,
+        state.combatStats,
+        state.equipment
+      ),
     }))
   },
 

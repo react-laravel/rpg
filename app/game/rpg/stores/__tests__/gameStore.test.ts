@@ -52,6 +52,7 @@ describe('GameStore', () => {
       skills: [],
       maps: [],
       currentMap: null,
+      farmSession: null,
       isFighting: false,
       shouldAutoCombat: false,
       enabledSkillIds: [],
