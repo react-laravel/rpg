@@ -40,6 +40,15 @@ export interface SkillUsedEntry {
   round?: number
 }
 
+/** 角色护盾在本场战斗推进后的状态 */
+export interface CombatShield {
+  hp: number
+  max_hp: number
+  ticks: number
+  broke: boolean
+  absorbed: number
+}
+
 export interface CombatResult {
   victory: boolean
   defeat?: boolean
@@ -74,6 +83,8 @@ export interface CombatResult {
   skill_cooldowns?: Record<number, number>
   /** 战斗推进后自动恢复记录 */
   round_regen?: Record<string, { name: string; restored: number }> | null
+  /** 魔法护盾等角色护盾 */
+  shield?: CombatShield | null
   character: GameCharacter
   /** 仅当本场战斗结束（胜利/失败）时存在 */
   combat_log_id?: number
@@ -142,7 +153,6 @@ export interface CombatLogDetail {
   created_at: string
   character: {
     level: number
-    class: string
     attack: number
     defense: number
     crit_rate: number

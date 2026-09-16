@@ -6,7 +6,7 @@ type PersistedCombatLogFields = {
   map_id?: number
   monster_id?: number
   character_level?: number
-  character_class?: string
+
   character_attack?: number
   character_defense?: number
   character_crit_rate?: number
@@ -169,7 +169,6 @@ export function buildCombatLogDetailFromEntry(
       created_at: log.created_at,
       character: {
         level: log.character_level ?? 0,
-        class: log.character_class ?? '?',
         attack: log.character_attack ?? 0,
         defense: log.character_defense ?? 0,
         crit_rate: log.character_crit_rate ?? 0,
@@ -231,7 +230,6 @@ export function buildCombatLogDetailFromEntry(
     created_at: new Date().toISOString(),
     character: {
       level: result.character?.level ?? 0,
-      class: result.character?.class ?? '?',
       attack: 0,
       defense: 0,
       crit_rate: 0,

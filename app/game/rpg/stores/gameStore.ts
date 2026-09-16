@@ -8,6 +8,7 @@ import {
   CombatStats,
   CombatStatsBreakdown,
   CombatMonster,
+  CombatShield,
   CombatResult,
   CombatLog,
   CombatLogDetail,
@@ -83,6 +84,7 @@ interface GameState {
   combatResult: CombatResult | null
   /** 刷新页面时由 combat/status 返回的当前怪物列表，用于在未收到 WebSocket 战斗推送前显示怪物 */
   statusCombatMonsters: (CombatMonster | null)[] | null
+  statusCombatShield: CombatShield | null
   combatLogs: (CombatResult | CombatLog)[]
   /** WebSocket 战斗推送先缓存，等战斗场景动画结算后再写入 combatLogs */
   pendingCombatLog: CombatLogEntry | null
@@ -113,7 +115,6 @@ interface GameState {
   fetchCharacter: () => Promise<void>
   createCharacter: (
     name: string,
-    characterClass: string,
     gender?: 'male' | 'female'
   ) => Promise<void>
   deleteCharacter: (characterId: number) => Promise<void>
@@ -220,6 +221,7 @@ const initialState = {
   enabledSkillIds: [] as number[], // 已启用的技能，可多选
   combatResult: null,
   statusCombatMonsters: null,
+  statusCombatShield: null,
   combatLogs: [],
   pendingCombatLog: null,
   combatLogDetail: null, // 选中的战斗日志详情
@@ -316,12 +318,11 @@ const store: StateCreator<GameState> = (set, get) => ({
     }
   },
 
-  createCharacter: async (name, characterClass, gender = 'male') => {
+  createCharacter: async (name, gender = 'male') => {
     startRequest(set)
     try {
       const response = (await post('/rpg/character', {
         name,
-        class: characterClass,
         gender,
       })) as {
         character: GameCharacter
@@ -948,6 +949,7 @@ const store: StateCreator<GameState> = (set, get) => ({
         combatResult: null,
         pendingCombatLog: null,
         statusCombatMonsters: response.monsters ?? null,
+        statusCombatShield: null,
         // 切图返回的可能是「切图瞬间已死亡」的角色数据，必须同步 HP/MP，
         // 否则界面会一直显示切图前的旧血量，卡在战斗画面(实际已死亡)
         currentHp: char?.current_hp ?? state.currentHp,
@@ -995,6 +997,7 @@ const store: StateCreator<GameState> = (set, get) => ({
         combatResult: null,
         pendingCombatLog: null,
         statusCombatMonsters: response.monsters ?? null,
+        statusCombatShield: null,
         // 复活时后端只恢复基础生命/法力，用返回的 character 更新当前 HP/MP 显示
         currentHp: char?.current_hp ?? state.currentHp,
         currentMana: char?.current_mana ?? state.currentMana,
@@ -1033,7 +1036,9 @@ const store: StateCreator<GameState> = (set, get) => ({
           max_hp: number
         }
         current_combat_monsters?: (CombatMonster | null)[]
-      }
+        shield?: CombatShield | null
+      } | null
+      if (!response) return
       set(state => ({
         ...state,
         isFighting: response.is_fighting,
@@ -1044,6 +1049,7 @@ const store: StateCreator<GameState> = (set, get) => ({
         statusCombatMonsters: response.is_fighting
           ? (response.current_combat_monsters ?? null)
           : null,
+        statusCombatShield: response.is_fighting ? (response.shield ?? null) : null,
       }))
     } catch (error) {
       console.error('[GameStore] Fetch combat status error:', error)
@@ -1164,10 +1170,12 @@ const store: StateCreator<GameState> = (set, get) => ({
                 skill_target_positions: result.skill_target_positions,
                 skill_cooldowns: result.skill_cooldowns,
                 round_regen: result.round_regen,
+                shield: result.shield,
                 character: result.character ?? state.character,
                 combat_log_id: result.combat_log_id,
               } as CombatResult,
               statusCombatMonsters: result.monsters ?? state.statusCombatMonsters,
+              statusCombatShield: result.shield ?? state.statusCombatShield,
               character: result.character ?? state.character,
               currentHp: result.current_hp ?? result.character?.current_hp ?? state.currentHp,
               currentMana: result.current_mana ?? result.character?.current_mana ?? state.currentMana,
@@ -1210,6 +1218,7 @@ const store: StateCreator<GameState> = (set, get) => ({
       combatAction: 'reviving',
       combatResult: null,
       statusCombatMonsters: null,
+      statusCombatShield: null,
       isFighting: false,
       shouldAutoCombat: false,
     })
@@ -1233,6 +1242,7 @@ const store: StateCreator<GameState> = (set, get) => ({
         shouldAutoCombat: false,
         combatResult: null,
         statusCombatMonsters: null,
+        statusCombatShield: null,
         character: char ?? state.character,
         currentHp: char?.current_hp ?? state.currentHp,
         currentMana: char?.current_mana ?? state.currentMana,
@@ -1260,6 +1270,7 @@ const store: StateCreator<GameState> = (set, get) => ({
         shouldAutoCombat: false,
         combatResult: null,
         statusCombatMonsters: null,
+        statusCombatShield: null,
         pendingCombatLog: null,
       }))
     } catch (error) {
@@ -1357,6 +1368,7 @@ const store: StateCreator<GameState> = (set, get) => ({
 
       return {
         combatResult: typedData,
+        statusCombatShield: typedData.shield ?? state.statusCombatShield,
         pendingCombatLog: pendingCombatLog ?? state.pendingCombatLog,
         character: typedData.character,
         // 只有当新值存在且不为 undefined 时才更新

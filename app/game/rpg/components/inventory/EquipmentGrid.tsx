@@ -8,7 +8,7 @@ import { EquipmentSlot, GameItem } from '../../types'
 import { EquipmentDetailOverlay } from './EquipmentDetailOverlay'
 import { GemSelectorDialog } from './GemSelectorDialog'
 import { EquipmentSlotButton } from './EquipmentSlotButton'
-import { CHARACTER_PORTRAITS, PAPER_DOLL_SLOTS } from './equipmentLayout'
+import { CHARACTER_PORTRAIT, PAPER_DOLL_SLOTS } from './equipmentLayout'
 import { useGemManagement } from './useGemManagement'
 
 interface EquipmentGridProps {
@@ -17,20 +17,18 @@ interface EquipmentGridProps {
   characterSummary?: {
     name: string
     level: number
-    classLabel: string
     experience: number
     expToNext: number
   }
 }
 
 export function EquipmentGrid({ equipment, onUnequip, characterSummary }: EquipmentGridProps) {
-  const { socketGem, unsocketGem, inventory, isLoading, characterClass } = useGameStore(
+  const { socketGem, unsocketGem, inventory, isLoading } = useGameStore(
     useShallow(s => ({
       socketGem: s.socketGem,
       unsocketGem: s.unsocketGem,
       inventory: s.inventory,
       isLoading: s.isLoading,
-      characterClass: s.character?.class,
     }))
   )
   const [selectedSlot, setSelectedSlot] = useState<EquipmentSlot | null>(null)
@@ -59,7 +57,7 @@ export function EquipmentGrid({ equipment, onUnequip, characterSummary }: Equipm
     setSelectedSlot(null)
   }
 
-  const portrait = CHARACTER_PORTRAITS[characterClass ?? 'warrior'] ?? CHARACTER_PORTRAITS.warrior
+  const portrait = CHARACTER_PORTRAIT
 
   return (
     <>

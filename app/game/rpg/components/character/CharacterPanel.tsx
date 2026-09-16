@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from 'react'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useGameStore } from '../../stores/gameStore'
 import { EquipmentGrid } from '../inventory/EquipmentGrid'
-import { CLASS_NAMES, STAT_DESCRIPTIONS, STAT_NAMES, type StatBreakdownItem } from '../../types'
+import { STAT_DESCRIPTIONS, STAT_NAMES, type StatBreakdownItem } from '../../types'
 import { getNextLevelThreshold } from '../../utils/experience'
 
 const CHARACTER_STATS = ['strength', 'dexterity', 'vitality', 'energy'] as const
@@ -63,7 +63,6 @@ export function CharacterPanel() {
           characterSummary={{
             name: character.name,
             level: character.level,
-            classLabel: CLASS_NAMES[character.class],
             experience: character.experience,
             expToNext,
           }}

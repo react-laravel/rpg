@@ -162,6 +162,93 @@
   animation: character-idle 1.8s ease-in-out infinite;
 }
 
+@keyframes character-shield-pulse {
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.045);
+  }
+}
+
+@keyframes character-shield-cast {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+    filter: brightness(1.8);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.12);
+    filter: brightness(1.35);
+  }
+  100% {
+    opacity: 0.92;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes character-shield-shatter {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1.7);
+  }
+  45% {
+    opacity: 0.8;
+    transform: scale(1.2) rotate(8deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5) rotate(-14deg);
+    filter: brightness(2.4);
+  }
+}
+
+.character-shield {
+  position: absolute;
+  inset: -8px;
+  border-radius: 9999px;
+  border: 2px solid rgb(125 211 252 / 0.95);
+  background: radial-gradient(circle, rgb(59 130 246 / 0.08) 42%, rgb(14 165 233 / 0.26) 100%);
+  box-shadow:
+    0 0 12px rgb(56 189 248 / 0.72),
+    inset 0 0 12px rgb(147 197 253 / 0.5);
+  pointer-events: none;
+  animation: character-shield-pulse 1.7s ease-in-out infinite;
+}
+
+.character-shield-cast {
+  animation: character-shield-cast 0.7s ease-out;
+}
+
+.character-shield-break {
+  animation: character-shield-shatter 0.55s ease-out forwards;
+  border-color: rgb(219 234 254 / 0.45);
+  box-shadow: 0 0 20px rgb(255 255 255 / 0.55);
+}
+
+.character-shield-hp {
+  position: absolute;
+  right: -5px;
+  bottom: -3px;
+  z-index: 2;
+  min-width: 1.15rem;
+  border-radius: 9999px;
+  background: rgb(30 64 175 / 0.94);
+  padding: 0 0.25rem;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1.3;
+  color: #dbeafe;
+  text-shadow: 0 1px 1px rgb(0 0 0 / 0.65);
+  pointer-events: none;
+}
+
 @keyframes damage-number-rise {
   0% {
     opacity: 0;
@@ -189,19 +276,23 @@
   line-height: 1.1;
   font-weight: 900;
   letter-spacing: 0;
+  animation: damage-number-rise 2.2s ease-out forwards;
+}
+
+.damage-number,
+.regen-hp {
   color: #fb7185;
   text-shadow:
     0 2px 0 rgb(69 10 10 / 0.95),
     1px 0 0 rgb(0 0 0 / 0.9),
     -1px 0 0 rgb(0 0 0 / 0.9),
     0 0 8px rgb(0 0 0 / 0.8);
-  animation: damage-number-rise 2.2s ease-out forwards;
 }
 
-.regen-number {
-  color: inherit;
+.regen-mp {
+  color: #3b82f6;
   text-shadow:
-    0 2px 0 rgb(0 0 0 / 0.9),
+    0 2px 0 rgb(30 58 138 / 0.95),
     1px 0 0 rgb(0 0 0 / 0.9),
     -1px 0 0 rgb(0 0 0 / 0.9),
     0 0 8px rgb(0 0 0 / 0.8);
@@ -361,7 +452,10 @@
   .health-bar-fill::after,
   .mana-bar-fill::after,
   .hp-orb-glow,
-  .mp-orb-glow {
+  .mp-orb-glow,
+  .character-shield,
+  .character-shield-cast,
+  .character-shield-break {
     animation-duration: 0.01ms;
     animation-iteration-count: 1;
   }

@@ -65,6 +65,7 @@ export function CombatPanel() {
   const combatResult = useGameStore(state => state.combatResult)
   const flushPendingCombatLog = useGameStore(state => state.flushPendingCombatLog)
   const statusCombatMonsters = useGameStore(state => state.statusCombatMonsters)
+  const statusCombatShield = useGameStore(state => state.statusCombatShield)
   const skills = useGameStore(state => state.skills)
   const character = useGameStore(state => state.character)
   const combatStats = useGameStore(state => state.combatStats)
@@ -216,7 +217,7 @@ export function CombatPanel() {
               <BattleArena
                 character={
                   character
-                    ? { name: character.name, class: character.class, level: character.level }
+                    ? { name: character.name, level: character.level }
                     : null
                 }
                 combatStats={combatStats}
@@ -242,6 +243,7 @@ export function CombatPanel() {
                 roundNumber={combatResult?.rounds}
                 damageTaken={combatResult?.damage_taken}
                 roundRegen={combatResult?.round_regen}
+                shield={combatResult?.shield ?? statusCombatShield}
                 onRoundVisualSettled={handleRoundVisualSettled}
               />
             </div>

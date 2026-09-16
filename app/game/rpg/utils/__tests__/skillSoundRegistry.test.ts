@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
-import { getAllSkillSoundUrls, getSkillSoundUrl, skillSoundManifest } from '../skillSoundRegistry'
+import {
+  getAllSkillSoundUrls,
+  getSkillSoundUrl,
+  skillSoundManifest,
+  skillSoundPlaybackWindow,
+} from '../skillSoundRegistry'
 
 describe('skillSoundRegistry', () => {
   it('returns a specific sound for a known skill name', () => {
@@ -38,6 +43,24 @@ describe('skillSoundRegistry', () => {
   it('returns preloaded urls for every manifest entry', () => {
     expect(getAllSkillSoundUrls()).toHaveLength(skillSoundManifest.length)
     expect(getAllSkillSoundUrls()[0]).toMatch(/^\/game\/rpg\/sfx\//)
+  })
+
+  it('aligns a longer clip so its impact meets the visual hit', () => {
+    const window = skillSoundPlaybackWindow(720, 520)
+    expect(window.delaySec).toBe(0)
+    expect(window.offsetSec).toBeCloseTo((720 * 0.88 - 520) / 1000)
+  })
+
+  it('delays a short clip until visual hit', () => {
+    const window = skillSoundPlaybackWindow(200, 680)
+    expect(window.offsetSec).toBe(0)
+    expect(window.delaySec).toBeCloseTo((680 - 200 * 0.88) / 1000)
+  })
+
+  it('skips into the clip when decoding starts late', () => {
+    const window = skillSoundPlaybackWindow(720, 520, 80)
+    expect(window.delaySec).toBe(0)
+    expect(window.offsetSec).toBeCloseTo((720 * 0.88 - 520 + 80) / 1000)
   })
 
   it('points every manifest entry at an existing public audio file', () => {

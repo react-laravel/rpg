@@ -17,6 +17,8 @@ export interface EffectBaseProps {
   seed?: number
   onComplete?: () => void
   onHit?: () => void
+  /** Fired once when the effect clock starts, so SFX can share that timeline. */
+  onStart?: () => void
 }
 
 export interface SkillEffectProps extends EffectBaseProps {

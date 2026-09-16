@@ -61,3 +61,28 @@ export function getSkillSoundDuration(
 export function getAllSkillSoundUrls(): string[] {
   return skillSoundManifest.map(entry => toSkillSoundUrl(entry.fileName))
 }
+
+/**
+ * Place the clip so its impact (near the end) lands on the visual hit.
+ * `lateMs` is decode/start delay after the visual clock began.
+ */
+export function skillSoundPlaybackWindow(
+  clipDurationMs: number,
+  hitAtMs?: number,
+  lateMs = 0
+): { delaySec: number; offsetSec: number } {
+  const clip = Math.max(20, clipDurationMs)
+  const late = Math.max(0, lateMs)
+  if (hitAtMs == null || !Number.isFinite(hitAtMs)) {
+    return { delaySec: 0, offsetSec: Math.min(late, clip - 20) / 1000 }
+  }
+
+  const impactAtInClip = clip * 0.88
+  const startOnVisual = hitAtMs - impactAtInClip
+  const delayMs = Math.max(0, startOnVisual - late)
+  const offsetMs = Math.max(0, late - startOnVisual)
+  return {
+    delaySec: delayMs / 1000,
+    offsetSec: Math.min(offsetMs, clip - 20) / 1000,
+  }
+}

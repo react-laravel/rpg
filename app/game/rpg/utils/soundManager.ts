@@ -1,6 +1,6 @@
 // 游戏音效管理器
 import type { SkillUsedEntry } from '../types'
-import { getAllSkillSoundUrls, getSkillSoundUrl } from './skillSoundRegistry'
+import { getAllSkillSoundUrls, getSkillSoundUrl, skillSoundPlaybackWindow } from './skillSoundRegistry'
 
 type SoundEffect =
   | 'combat_start'
@@ -14,11 +14,13 @@ type SoundEffect =
   | 'equip'
   | 'gold'
   | 'teleport'
+  | 'shield_break'
 
 class SoundManager {
   private sounds: Map<SoundEffect, HTMLAudioElement> = new Map()
   private audioCache: Map<string, HTMLAudioElement> = new Map()
   private audioBufferCache: Map<string, Promise<AudioBuffer | null>> = new Map()
+  private resolvedAudioBuffers: Map<string, AudioBuffer> = new Map()
   private enabled: boolean = true
   private volume: number = 0.3
   // 单例 AudioContext - 避免每次播放音效都创建新实例
@@ -108,6 +110,7 @@ class SoundManager {
       } catch {
         // 测试环境或受限浏览器可能没有可构造的 Audio，实际播放时仍会走 Web Audio/fallback。
       }
+      void this.loadAudioBuffer(url)
     })
   }
 
@@ -150,18 +153,31 @@ class SoundManager {
     this.playGeneratedSound(effect)
   }
 
-  playSkill(skill?: Pick<SkillUsedEntry, 'name' | 'effect_key'> | null): void {
+  playSkill(
+    skill?: Pick<SkillUsedEntry, 'name' | 'effect_key'> | null,
+    options?: { hitAtMs?: number }
+  ): void {
     if (!this.canPlay() || !skill) return
 
     const url = getSkillSoundUrl(skill)
     if (!url) {
-      this.playGeneratedSound('skill_use')
+      this.playGeneratedSkillSound(skill, options?.hitAtMs)
       return
     }
 
-    void this.playAudioFile(url).then(played => {
-      if (!played) {
-        this.playGeneratedSkillSound(skill)
+    const visualStartedAt = typeof performance !== 'undefined' ? performance.now() : Date.now()
+    const started = this.startSkillBuffer(url, options?.hitAtMs, 0)
+    if (started) return
+
+    void this.loadAudioBuffer(url).then(buffer => {
+      if (!buffer) {
+        this.playGeneratedSkillSound(skill, options?.hitAtMs)
+        return
+      }
+      const lateMs =
+        (typeof performance !== 'undefined' ? performance.now() : Date.now()) - visualStartedAt
+      if (!this.startSkillBuffer(url, options?.hitAtMs, lateMs)) {
+        this.playGeneratedSkillSound(skill, options?.hitAtMs)
       }
     })
   }
@@ -238,6 +254,10 @@ class SoundManager {
         return response.arrayBuffer()
       })
       .then(buffer => audioContext.decodeAudioData(buffer.slice(0)))
+      .then(decoded => {
+        if (decoded) this.resolvedAudioBuffers.set(url, decoded)
+        return decoded
+      })
       .catch(error => {
         console.warn(`SoundManager: 技能音效解码失败 ${url}`, error)
         return null
@@ -245,6 +265,31 @@ class SoundManager {
 
     this.audioBufferCache.set(url, promise)
     return promise
+  }
+
+  private startSkillBuffer(url: string, hitAtMs?: number, lateMs = 0): boolean {
+    const audioContext = this.getAudioContext()
+    const buffer = this.resolvedAudioBuffers.get(url)
+    if (!audioContext || !buffer) return false
+    if (audioContext.state === 'suspended') {
+      void audioContext.resume().catch(() => {})
+    }
+
+    try {
+      const window = skillSoundPlaybackWindow(buffer.duration * 1000, hitAtMs, lateMs)
+      if (window.offsetSec >= buffer.duration - 0.02) return false
+      const source = audioContext.createBufferSource()
+      const gainNode = audioContext.createGain()
+      source.buffer = buffer
+      gainNode.gain.value = this.volume
+      source.connect(gainNode)
+      gainNode.connect(audioContext.destination)
+      source.start(audioContext.currentTime + window.delaySec, window.offsetSec)
+      return true
+    } catch (error) {
+      console.warn(`SoundManager: 技能音效播放失败 ${url}`, error)
+      return false
+    }
   }
 
   private async playAudioBuffer(url: string): Promise<boolean> {
@@ -277,7 +322,10 @@ class SoundManager {
     }
   }
 
-  private playGeneratedSkillSound(skill: Pick<SkillUsedEntry, 'name' | 'effect_key'>) {
+  private playGeneratedSkillSound(
+    skill: Pick<SkillUsedEntry, 'name' | 'effect_key'>,
+    hitAtMs?: number
+  ) {
     const audioContext = this.getAudioContext()
     if (!audioContext) return
 
@@ -330,15 +378,17 @@ class SoundManager {
       const gainNode = audioContext.createGain()
       const now = audioContext.currentTime
 
+      const window = skillSoundPlaybackWindow(profile.duration * 1000, hitAtMs)
+      const startAt = now + window.delaySec
       oscillator.type = profile.type
-      oscillator.frequency.setValueAtTime(profile.start, now)
-      oscillator.frequency.exponentialRampToValueAtTime(profile.end, now + profile.duration)
-      gainNode.gain.setValueAtTime(this.volume * profile.volume, now)
-      gainNode.gain.exponentialRampToValueAtTime(0.01, now + profile.duration)
+      oscillator.frequency.setValueAtTime(profile.start, startAt)
+      oscillator.frequency.exponentialRampToValueAtTime(profile.end, startAt + profile.duration)
+      gainNode.gain.setValueAtTime(this.volume * profile.volume, startAt)
+      gainNode.gain.exponentialRampToValueAtTime(0.01, startAt + profile.duration)
       oscillator.connect(gainNode)
       gainNode.connect(audioContext.destination)
-      oscillator.start(now)
-      oscillator.stop(now + profile.duration)
+      oscillator.start(startAt)
+      oscillator.stop(startAt + profile.duration)
     } catch (error) {
       console.warn('SoundManager: 技能生成音效播放失败', error)
     }
@@ -437,6 +487,37 @@ class SoundManager {
           oscillator.start(audioContext.currentTime)
           oscillator.stop(audioContext.currentTime + 0.15)
           break
+
+        case 'shield_break': {
+          const now = audioContext.currentTime
+          const noiseLength = Math.floor(audioContext.sampleRate * 0.28)
+          const noiseBuffer = audioContext.createBuffer(1, noiseLength, audioContext.sampleRate)
+          const noiseData = noiseBuffer.getChannelData(0)
+          for (let i = 0; i < noiseLength; i++) {
+            noiseData[i] = (Math.random() * 2 - 1) * (1 - i / noiseLength)
+          }
+          const noise = audioContext.createBufferSource()
+          noise.buffer = noiseBuffer
+          const band = audioContext.createBiquadFilter()
+          band.type = 'bandpass'
+          band.frequency.setValueAtTime(2600, now)
+          band.frequency.exponentialRampToValueAtTime(420, now + 0.24)
+          const noiseGain = audioContext.createGain()
+          noiseGain.gain.setValueAtTime(this.volume * 0.24, now)
+          noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.26)
+          noise.connect(band)
+          band.connect(noiseGain)
+          noiseGain.connect(audioContext.destination)
+          noise.start(now)
+          oscillator.type = 'triangle'
+          oscillator.frequency.setValueAtTime(1760, now)
+          oscillator.frequency.exponentialRampToValueAtTime(180, now + 0.22)
+          gainNode.gain.setValueAtTime(this.volume * 0.14, now)
+          gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.22)
+          oscillator.start(now)
+          oscillator.stop(now + 0.22)
+          break
+        }
 
         case 'gold':
           oscillator.type = 'sine'

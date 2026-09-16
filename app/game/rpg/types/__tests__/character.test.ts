@@ -5,26 +5,12 @@ import type {
   StatBreakdownItem,
   CombatStatsBreakdown,
 } from '../character'
-import { CLASS_NAMES } from '../character'
-
 describe('character types', () => {
-  it('should export CharacterClass type', () => {
-    const cls: GameCharacter['class'] = 'warrior'
-    expect(cls).toBe('warrior')
-  })
-
-  it('should have valid CLASS_NAMES', () => {
-    expect(CLASS_NAMES.warrior).toBe('战士')
-    expect(CLASS_NAMES.mage).toBe('法师')
-    expect(CLASS_NAMES.ranger).toBe('游侠')
-  })
-
   it('should allow creating a GameCharacter', () => {
     const char: GameCharacter = {
       id: 1,
       user_id: 1,
       name: 'Test',
-      class: 'warrior',
       level: 1,
       experience: 0,
       copper: 0,
@@ -41,7 +27,6 @@ describe('character types', () => {
       updated_at: '2024-01-01T00:00:00Z',
     }
     expect(char.name).toBe('Test')
-    expect(char.class).toBe('warrior')
     expect(char.level).toBe(1)
   })
 
@@ -50,7 +35,6 @@ describe('character types', () => {
       id: 1,
       user_id: 1,
       name: 'Test',
-      class: 'mage',
       level: 5,
       experience: 100,
       copper: 500,
@@ -115,7 +99,6 @@ describe('character types', () => {
       id: 1,
       user_id: 1,
       name: 'Test',
-      class: 'ranger',
       level: 1,
       experience: 0,
       copper: 0,

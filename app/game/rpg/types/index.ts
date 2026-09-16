@@ -3,13 +3,11 @@
 
 // Character types
 export type {
-  CharacterClass,
   GameCharacter,
   CombatStats,
   StatBreakdownItem,
   CombatStatsBreakdown,
 } from './character'
-export { CLASS_NAMES } from './character'
 
 // Item and equipment types
 export type { ItemQuality, ItemType, EquipmentSlot } from './item'
@@ -28,6 +26,7 @@ export type {
   MonsterType,
   CombatMonster,
   SkillUsedEntry,
+  CombatShield,
   CombatResult,
   CombatLog,
   CombatLogDetail,
@@ -89,4 +88,5 @@ export interface CombatStatusResponse {
   current_map: MapDefinition | null
   combat_stats: CombatStats
   last_combat_at: string | null
+  shield?: import('./combat').CombatShield | null
 }

@@ -2,7 +2,7 @@
 
 import { useShallow } from 'zustand/react/shallow'
 import { useGameStore } from '../../stores/gameStore'
-import { CLASS_NAMES } from '../../types'
+
 import { getLevelProgress } from '../../utils/experience'
 import { CircularProgress } from './CircularProgress'
 import { CopperDisplay } from './CopperDisplay'
@@ -76,9 +76,6 @@ export function RpgStatusHeader() {
       <div className="flex min-w-0 flex-1 items-center gap-2">
         <span className="truncate text-sm font-semibold" title={character.name}>
           {character.name}
-        </span>
-        <span className="text-muted-foreground hidden shrink-0 text-xs lg:inline">
-          {CLASS_NAMES[character.class]}
         </span>
         <span className="bg-primary/12 shrink-0 rounded-md px-1.5 py-0.5 text-xs font-medium tabular-nums">
           Lv.{character.level}

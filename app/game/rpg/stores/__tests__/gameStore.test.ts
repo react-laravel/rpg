@@ -84,7 +84,7 @@ describe('GameStore', () => {
 
   describe('fetchCharacters', () => {
     it('should fetch characters successfully', async () => {
-      const mockCharacters = [{ id: 1, name: 'Test Character', class: 'warrior', level: 1 }]
+      const mockCharacters = [{ id: 1, name: 'Test Character', level: 1 }]
       const { apiGet } = await import('@/lib/api')
       vi.mocked(apiGet).mockResolvedValueOnce({ characters: mockCharacters })
 
@@ -125,7 +125,7 @@ describe('GameStore', () => {
       const { post, apiGet } = await import('@/lib/api')
       vi.mocked(post).mockResolvedValueOnce({})
       vi.mocked(apiGet).mockResolvedValueOnce({
-        character: { id: 1, name: 'Test', class: 'warrior', level: 1 },
+        character: { id: 1, name: 'Test', level: 1 },
       })
 
       await useGameStore.getState().selectCharacter(1)
@@ -140,7 +140,6 @@ describe('GameStore', () => {
       const newCharacter = {
         id: 1,
         name: 'NewChar',
-        class: 'warrior',
         level: 1,
         combat_stats: {
           max_hp: 100,
@@ -156,7 +155,7 @@ describe('GameStore', () => {
         combat_stats: newCharacter.combat_stats,
       })
 
-      await useGameStore.getState().createCharacter('NewChar', 'warrior')
+      await useGameStore.getState().createCharacter('NewChar')
 
       expect(useGameStore.getState().characters).toContainEqual(newCharacter)
     })

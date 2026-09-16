@@ -1,6 +1,6 @@
 // Skill types for RPG game
 
-import type { CharacterClass } from './character'
+
 
 export type SkillStage = 'basic' | 'core' | 'defensive' | 'special' | 'ultimate' | 'key_passive'
 import type { SkillType, SkillTargetType } from './combat'
@@ -11,7 +11,7 @@ export interface SkillDefinition {
   name: string
   description?: string
   type: SkillType
-  class_restriction: CharacterClass | 'all'
+  class_restriction?: string
   /** 技能分支/流派（兼容旧数据） */
   branch?: string
   /** 技能层级（兼容旧数据）：1基础/2中级/3高级 */

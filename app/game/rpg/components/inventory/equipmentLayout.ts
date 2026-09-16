@@ -1,11 +1,6 @@
-import type { CharacterClass, EquipmentSlot } from '../../types'
+import type { EquipmentSlot } from '../../types'
 
-/** 各职业的全身立绘（仿传奇世界 F10 装备界面） */
-export const CHARACTER_PORTRAITS: Record<CharacterClass, string> = {
-  warrior: '/game/rpg/characters/warrior.jpg',
-  mage: '/game/rpg/characters/mage.jpg',
-  ranger: '/game/rpg/characters/ranger.jpg',
-}
+export const CHARACTER_PORTRAIT = '/game/rpg/characters/mage.jpg'
 
 /**
  * 纸娃娃槽位布局：人物居中，装备槽分列左右四行。

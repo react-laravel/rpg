@@ -13,11 +13,11 @@ const safePoint = (point: EffectPoint): EffectPoint => ({
 })
 
 /** One resize-aware canvas and clock for all casts; no React updates or frame-dependent physics. */
-export function CanvasSkillEffect({ type, active, duration, sourcePosition, targetPosition, targetPositions, resolveAnchors, seed = 17, onHit, onComplete, className = '' }: SkillEffectProps) {
+export function CanvasSkillEffect({ type, active, duration, sourcePosition, targetPosition, targetPositions, resolveAnchors, seed = 17, onHit, onComplete, onStart, className = '' }: SkillEffectProps) {
   const canvasRef=useRef<HTMLCanvasElement>(null)
-  const callbacks=useRef({onHit,onComplete})
+  const callbacks=useRef({onHit,onComplete,onStart})
   const positions=useRef({sourcePosition,targetPosition,targetPositions,resolveAnchors})
-  useEffect(()=>{ callbacks.current={onHit,onComplete} },[onHit,onComplete])
+  useEffect(()=>{ callbacks.current={onHit,onComplete,onStart} },[onHit,onComplete,onStart])
   useEffect(()=>{ positions.current={sourcePosition,targetPosition,targetPositions,resolveAnchors} },[sourcePosition,targetPosition,targetPositions,resolveAnchors])
 
   useEffect(()=>{
@@ -56,7 +56,7 @@ export function CanvasSkillEffect({ type, active, duration, sourcePosition, targ
     }
     const tick=(now:number)=>{
       if(cancelled)return
-      if(start==null) {resize();start=now}
+      if(start==null) {resize();start=now;callbacks.current.onStart?.()}
       const elapsed=now-start
       draw(elapsed)
       canvas.dataset.phase=timeline.advance(elapsed)

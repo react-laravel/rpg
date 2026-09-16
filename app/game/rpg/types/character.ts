@@ -1,12 +1,9 @@
 // Character types for RPG game
 
-export type CharacterClass = 'warrior' | 'mage' | 'ranger'
-
 export interface GameCharacter {
   id: number
   user_id: number
   name: string
-  class: CharacterClass
   gender?: 'male' | 'female'
   level: number
   experience: number
@@ -53,8 +50,4 @@ export interface CombatStatsBreakdown {
   crit_damage: StatBreakdownItem
 }
 
-export const CLASS_NAMES: Record<CharacterClass, string> = {
-  warrior: '战士',
-  mage: '法师',
-  ranger: '游侠',
-}
+

@@ -20,7 +20,6 @@ import { Trash2 } from 'lucide-react'
 interface Character {
   id: number
   name: string
-  class: string
   gender?: 'male' | 'female'
   level: number
   experience: number
@@ -34,11 +33,10 @@ interface CharacterSelectProps {
   onCreateCharacter: () => void
 }
 
-const CLASS_INFO = {
-  warrior: { name: '战士', icon: '⚔️', color: '', male: 'warrior-man', female: 'warrior-female' },
-  mage: { name: '法师', icon: '🔮', color: '', male: 'wizard-man', female: 'wizard-female' },
-  ranger: { name: '弓手', icon: '🏹', color: '', male: 'ranger-man', female: 'ranger-female' },
-}
+const AVATARS = {
+  male: 'wizard-man',
+  female: 'wizard-female',
+} as const
 
 export const DIFFICULTY_OPTIONS: { tier: number; label: string }[] = [
   { tier: 0, label: '普通' },
@@ -136,11 +134,9 @@ export function CharacterSelect({ onBack, onCreateCharacter }: CharacterSelectPr
   // 角色卡片渲染
   const renderCharacterCard = useCallback(
     (character: Character) => {
-      const classInfo = CLASS_INFO[character.class as keyof typeof CLASS_INFO]
       const difficultyTier = character.difficulty_tier ?? 0
-      const gender = character.gender ?? 'male'
-      const avatarKey = gender === 'female' ? classInfo.female : classInfo.male
-      const avatarUrl = gameAsset(`/game/rpg/avatar/${avatarKey}.png`)
+      const gender = character.gender === 'female' ? 'female' : 'male'
+      const avatarUrl = gameAsset(`/game/rpg/avatar/${AVATARS[gender]}.png`)
 
       const handleDeleteClick = (e: React.MouseEvent) => {
         e.stopPropagation()
@@ -151,7 +147,7 @@ export function CharacterSelect({ onBack, onCreateCharacter }: CharacterSelectPr
       return (
         <div
           key={character.id}
-          className={`relative flex min-h-[180px] max-w-[200px] flex-1 flex-col rounded-lg border-2 p-3 sm:min-h-[200px] ${classInfo.color} cursor-pointer transition-transform hover:scale-[1.02]`}
+          className="relative flex min-h-[180px] max-w-[200px] flex-1 cursor-pointer flex-col rounded-lg border-2 p-3 transition-transform hover:scale-[1.02] sm:min-h-[200px]"
           onClick={() => handleSelectCharacter(character.id)}
         >
           <div className="flex min-h-0 flex-1 flex-col items-center justify-between overflow-hidden text-center">
@@ -165,9 +161,7 @@ export function CharacterSelect({ onBack, onCreateCharacter }: CharacterSelectPr
                 />
               </div>
               <h3 className="mt-1 truncate text-sm font-bold">{character.name}</h3>
-              <p className="text-muted-foreground mt-1 text-sm">
-                {classInfo.name} · Lv.{character.level}
-              </p>
+              <p className="text-muted-foreground mt-1 text-sm">Lv.{character.level}</p>
               {character.is_fighting && (
                 <div className="text-sm text-yellow-600 dark:text-yellow-400">战斗中</div>
               )}

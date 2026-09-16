@@ -13,7 +13,7 @@ vi.mock('../../../utils/soundManager', () => ({ soundManager: { play: vi.fn() } 
 beforeEach(() => {
   useGameStore.setState(useGameStore.getInitialState())
   useGameStore.setState({
-    character: { id: 1, name: 'Hero', class: 'warrior' } as GameCharacter,
+    character: { id: 1, name: 'Hero' } as GameCharacter,
     currentMap: { id: 1, name: 'Camp', act: 1, monster_ids: [] },
     combatStats: { max_hp: 100, max_mana: 50 } as CombatStats,
     currentHp: 100,

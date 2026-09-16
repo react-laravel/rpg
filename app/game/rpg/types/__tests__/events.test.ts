@@ -52,7 +52,7 @@ describe('events types', () => {
         id: 1,
         user_id: 1,
         name: 'Hero',
-        class: 'warrior',
+       
         level: 1,
         experience: 100,
         copper: 550,
@@ -91,7 +91,7 @@ describe('events types', () => {
         id: 1,
         user_id: 1,
         name: 'Hero',
-        class: 'warrior',
+       
         level: 1,
         experience: 0,
         copper: 0,
@@ -158,7 +158,7 @@ describe('events types', () => {
         id: 1,
         user_id: 1,
         name: 'Hero',
-        class: 'warrior',
+       
         level: 2,
         experience: 0,
         copper: 550,

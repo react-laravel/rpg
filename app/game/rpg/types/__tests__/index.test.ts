@@ -3,13 +3,11 @@ import {
   formatCopper,
   QUALITY_COLORS,
   QUALITY_NAMES,
-  CLASS_NAMES,
   SLOT_NAMES,
   STAT_NAMES,
   STAT_DESCRIPTIONS,
 } from '../index'
 import type {
-  CharacterClass,
   CharacterMap,
   CombatLog,
   CombatLogDetail,
@@ -32,7 +30,6 @@ import type {
 } from '../index'
 
 type ExpectedTypeExports = [
-  CharacterClass,
   GameCharacter,
   ItemQuality,
   ItemType,
@@ -113,14 +110,6 @@ describe('RPG Types', () => {
     })
   })
 
-  describe('CLASS_NAMES', () => {
-    it('should have names for all character classes', () => {
-      expect(CLASS_NAMES.warrior).toBe('战士')
-      expect(CLASS_NAMES.mage).toBe('法师')
-      expect(CLASS_NAMES.ranger).toBe('游侠')
-    })
-  })
-
   describe('SLOT_NAMES', () => {
     it('should have names for all equipment slots', () => {
       expect(SLOT_NAMES.weapon).toBe('武器')
@@ -158,9 +147,9 @@ describe('RPG Types', () => {
       expect(STAT_DESCRIPTIONS.energy).toContain('能量')
     })
 
-    it('should describe strength correctly for all classes', () => {
-      expect(STAT_DESCRIPTIONS.strength).toContain('所有职业')
+    it('should describe strength as attack power', () => {
       expect(STAT_DESCRIPTIONS.strength).toContain('攻击力')
+      expect(STAT_DESCRIPTIONS.strength).not.toContain('职业')
     })
 
     it('should describe dexterity correctly for crit rate', () => {

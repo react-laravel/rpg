@@ -1,13 +1,15 @@
 'use client'
 
-import { CLASS_NAMES, type CharacterClass, type CombatMonster, type SkillUsedEntry } from '../../types'
+import { type CombatMonster, type CombatShield, type SkillUsedEntry } from '../../types'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { MonsterIcon } from './MonsterIcon'
 import { MonsterGroup } from './MonsterGroup'
 import { SkillEffect } from './effects'
 import { EFFECT_PROFILES, resolveSkillEffect } from './effects/effectRegistry'
+import { getEffectTiming } from './effects/effectTimeline'
 import { readBattleEffectAnchors } from './effects/effectAnchors'
 import { soundManager } from '../../utils/soundManager'
+import { getSkillSoundUrl } from '../../utils/skillSoundRegistry'
 import { COMBAT_UNIT_PANEL_WIDTH_CLASS } from '../../utils/combatUtils'
 import styles from '../../rpg.module.css'
 
@@ -32,9 +34,10 @@ export function BattleArena({
   roundNumber,
   damageTaken,
   roundRegen,
+  shield,
   onRoundVisualSettled,
 }: {
-  character: { name: string; class: string; level: number } | null
+  character: { name: string; level: number } | null
   combatStats: { max_hp: number; max_mana: number } | null
   currentHp: number | null
   currentMana: number | null
@@ -57,6 +60,7 @@ export function BattleArena({
   roundNumber?: number
   damageTaken?: number
   roundRegen?: Record<string, { name: string; restored: number }> | null
+  shield?: CombatShield | null
   onRoundVisualSettled?: () => void
 }) {
   const finalMonsterHp = monster?.hp ?? 0
@@ -74,6 +78,8 @@ export function BattleArena({
   const [characterRegenHpText, setCharacterRegenHpText] = useState<number | null>(null)
   const [characterRegenMpText, setCharacterRegenMpText] = useState<number | null>(null)
   const [characterHit, setCharacterHit] = useState(false)
+  const [shieldBreaking, setShieldBreaking] = useState(false)
+  const lastShieldBreakKeyRef = useRef<string | null>(null)
 
   const finalCharacterHp = currentHp ?? 0
   const finalCharacterMana = currentMana ?? 0
@@ -162,6 +168,7 @@ export function BattleArena({
       setCharacterRegenHpText(null)
       setCharacterRegenMpText(null)
       setCharacterHit(false)
+      setShieldBreaking(false)
     })
   }, [combatRoundKey])
 
@@ -237,14 +244,16 @@ export function BattleArena({
     if (!hasRoundData) lastNotifiedRoundRef.current = null
   }, [skillRoundKey, hasRoundData])
 
-  useEffect(() => {
-    if (!skillUsed || monsterAppearBlocking) return
+  const handleSkillSoundStart = useCallback(() => {
+    if (!skillUsed || !activeSkillEffect) return
     const soundKey = `${combatRoundKey}:${skillUsed.skill_id}`
     if (soundKey === lastPlayedSkillSoundKeyRef.current) return
-    if (computedSkillEffect ? !activeSkillEffect : !showDamageAndHp) return
     lastPlayedSkillSoundKeyRef.current = soundKey
-    soundManager.playSkill(skillUsed)
-  }, [skillUsed, combatRoundKey, monsterAppearBlocking, computedSkillEffect, activeSkillEffect, showDamageAndHp])
+    const reducedMotion =
+      typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const timing = getEffectTiming(EFFECT_PROFILES[activeSkillEffect], undefined, reducedMotion)
+    soundManager.playSkill(skillUsed, { hitAtMs: timing.hitMs })
+  }, [skillUsed, activeSkillEffect, combatRoundKey])
 
   // 多怪物：延迟显示时传扣血前数据
   const displayMonsters = useMemo(() => {
@@ -268,9 +277,15 @@ export function BattleArena({
     if (!skillRoundKey || lastSkillRoundKeyRef.current !== skillRoundKey || skillHitKeyRef.current === skillRoundKey) return
     skillHitKeyRef.current = skillRoundKey
     setSettledSkillRoundKey(skillRoundKey)
-    if (computedSkillEffect && EFFECT_PROFILES[computedSkillEffect].target === 'enemy') soundManager.play('combat_hit')
+    if (
+      computedSkillEffect &&
+      EFFECT_PROFILES[computedSkillEffect].target === 'enemy' &&
+      !getSkillSoundUrl(skillUsed)
+    ) {
+      soundManager.play('combat_hit')
+    }
     notifyRoundVisualSettled()
-  }, [skillRoundKey, computedSkillEffect, notifyRoundVisualSettled])
+  }, [skillRoundKey, computedSkillEffect, notifyRoundVisualSettled, skillUsed])
 
   const handleSkillComplete = useCallback(() => {
     if (!skillRoundKey || lastSkillRoundKeyRef.current !== skillRoundKey) return
@@ -307,6 +322,24 @@ export function BattleArena({
     notifyRoundVisualSettled,
   ])
 
+  const shieldActive = (shield?.hp ?? 0) > 0
+  const shieldCasting = skillUsed?.effect_key === 'shield' || skillUsed?.name === '魔法护盾'
+
+  useEffect(() => {
+    if (!shield?.broke) return
+    let cancelled = false
+    queueMicrotask(() => {
+      if (cancelled || lastShieldBreakKeyRef.current === combatRoundKey) return
+      lastShieldBreakKeyRef.current = combatRoundKey
+      setShieldBreaking(true)
+      soundManager.play('shield_break')
+      scheduleCharacterTimeout(() => setShieldBreaking(false), 620)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [shield?.broke, combatRoundKey, scheduleCharacterTimeout])
+
   return (
     <div ref={arenaRef} data-battle-arena className="absolute inset-0 isolate flex flex-col items-stretch">
       <div className={styles['battlefield-vignette']} aria-hidden />
@@ -322,6 +355,7 @@ export function BattleArena({
           seed={(skillUsed?.skill_id ?? 1) * 31 + (roundNumber ?? combatLogId ?? 0)}
           onComplete={handleSkillComplete}
           onHit={settleRound}
+          onStart={handleSkillSoundStart}
           className="absolute inset-0 z-20"
         />
       )}
@@ -385,12 +419,18 @@ export function BattleArena({
                   {(characterRegenHpText != null || characterRegenMpText != null) && (
                     <div className="flex items-center gap-1.5">
                       {characterRegenHpText != null && (
-                        <span className={`${styles['regen-number']} text-emerald-300`}>
+                        <span
+                          className={`${styles['regen-number']} ${styles['regen-hp']}`}
+                          data-floating="hp-regen"
+                        >
                           +{characterRegenHpText}
                         </span>
                       )}
                       {characterRegenMpText != null && (
-                        <span className={`${styles['regen-number']} text-sky-300`}>
+                        <span
+                          className={`${styles['regen-number']} ${styles['regen-mp']}`}
+                          data-floating="mp-regen"
+                        >
                           +{characterRegenMpText}
                         </span>
                       )}
@@ -399,10 +439,26 @@ export function BattleArena({
                 </div>
               )}
               <div
-                data-effect-caster
-                className={`border-amber-500/80 bg-amber-950/40 text-amber-300 relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 text-xl font-bold shadow-[0_0_12px_rgba(245,158,11,0.45)] sm:h-16 sm:w-16 sm:text-2xl ${characterHit ? styles['character-hit'] : isFighting ? styles['character-idle'] : ''}`}
+                className={`relative h-14 w-14 shrink-0 sm:h-16 sm:w-16 ${characterHit ? styles['character-hit'] : ''}`}
               >
-                {character?.name?.charAt(0) ?? '?'}
+                {(shieldActive || shieldBreaking || shieldCasting) && (
+                  <span
+                    className={`${styles['character-shield']} ${shieldCasting && !shieldBreaking ? styles['character-shield-cast'] : ''} ${shieldBreaking ? styles['character-shield-break'] : ''}`}
+                    data-shield={shieldBreaking ? 'break' : 'active'}
+                    aria-hidden
+                  />
+                )}
+                <div
+                  data-effect-caster
+                  className={`border-amber-500/80 bg-amber-950/40 text-amber-300 relative flex h-full w-full items-center justify-center rounded-full border-2 text-xl font-bold shadow-[0_0_12px_rgba(245,158,11,0.45)] sm:text-2xl ${!characterHit && isFighting ? styles['character-idle'] : ''}`}
+                >
+                  {character?.name?.charAt(0) ?? '?'}
+                </div>
+                {shieldActive && (
+                  <span className={styles['character-shield-hp']} data-testid="character-shield-hp">
+                    {shield?.hp}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -455,8 +511,7 @@ export function BattleArena({
             </p>
             {character && (
               <p className="w-full truncate px-0.5 text-center text-[8px] text-white/60 sm:text-[9px]">
-                Lv.{character.level}{' '}
-                {CLASS_NAMES[character.class as CharacterClass] ?? character.class}
+                Lv.{character.level}
               </p>
             )}
           </div>

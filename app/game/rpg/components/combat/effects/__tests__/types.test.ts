@@ -56,6 +56,7 @@ describe('combat effects types', () => {
       active: true,
       onComplete: () => {},
       onHit: () => {},
+      onStart: () => {},
       targetPosition: { x: 0.5, y: 0.5 },
       targetPositions: [{ x: 0.5, y: 0.5 }],
     }

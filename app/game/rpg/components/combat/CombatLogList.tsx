@@ -192,9 +192,9 @@ function CombatLogDetailDialog({
             <h3 className="text-foreground flex items-center gap-2 pr-8 text-lg font-bold">
               {d.victory
                 ? '✅ 胜利'
-                : d.experience_gained === 0 && d.copper_gained === 0
-                  ? '⚔️ 战斗中'
-                  : '💀 战败'}
+                : (d.duration_seconds ?? 0) > 0
+                  ? '💀 战败'
+                  : '⚔️ 战斗中'}
               <span className="text-muted-foreground text-sm font-normal">
                 {d.map?.name || '未知地图'}
               </span>
@@ -203,7 +203,7 @@ function CombatLogDetailDialog({
             {/* 角色属性 */}
             <div className="bg-muted/50 rounded-lg p-3">
               <h4 className="text-muted-foreground mb-2 text-sm font-medium">
-                角色属性 (Lv.{d.character?.level ?? '?'} {d.character?.class ?? '?'})
+                角色属性 (Lv.{d.character?.level ?? '?'})
               </h4>
               {d.character?.attack != null ? (
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
@@ -233,11 +233,11 @@ function CombatLogDetailDialog({
               </h4>
               {d.monster_stats?.hp != null ? (
                 <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div>攻击: {d.monster_stats.attack}</div>
+                  <div>防御: {d.monster_stats.defense}</div>
                   <div>
                     HP: {d.monster_stats.hp}/{d.monster_stats.max_hp}
                   </div>
-                  <div>攻击: {d.monster_stats.attack}</div>
-                  <div>防御: {d.monster_stats.defense}</div>
                   <div>经验: {d.monster_stats.experience}</div>
                 </div>
               ) : (
@@ -254,13 +254,13 @@ function CombatLogDetailDialog({
               {d.damage_detail?.total != null ? (
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
-                    <span>基础/技能伤害:</span>
+                    <span>普攻伤害:</span>
                     <span className="text-red-500">{d.damage_detail.base_attack}</span>
                   </div>
                   {((d.damage_detail.skill_damage ?? 0) > 0 || playerSkillsUsed.length > 0) && (
                     <div className="flex justify-between gap-2">
                       <span className="flex min-w-0 flex-wrap items-center gap-1.5">
-                        <span className="shrink-0">技能额外伤害:</span>
+                        <span className="shrink-0">技能伤害:</span>
                         {playerSkillsUsed.length > 0 && (
                           <CombatLogSkillIcons skills={playerSkillsUsed} />
                         )}
@@ -285,17 +285,19 @@ function CombatLogDetailDialog({
                     </div>
                   )}
                   <div className="border-muted flex justify-between border-t pt-1 font-medium">
-                    <span>总伤害:</span>
+                    <span>实际造成:</span>
                     <span className="text-red-500">{d.damage_detail.total}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>怪物防御减伤:</span>
+                    <span>怪物防御减免:</span>
                     <span className="text-gray-500">
+                      {Math.round((d.monster_stats?.defense ?? 0) * (d.damage_detail.defense_reduction ?? 0.5))}
+                      （系数{' '}
                       {(
                         d.damage_detail.defense_reduction_percent ??
-                        d.damage_detail.defense_reduction * 100
-                      ).toFixed(1)}
-                      %
+                        (d.damage_detail.defense_reduction ?? 0) * 100
+                      ).toFixed(0)}
+                      %）
                     </span>
                   </div>
                   <div className="flex justify-between">

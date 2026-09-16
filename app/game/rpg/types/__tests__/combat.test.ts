@@ -84,7 +84,7 @@ describe('combat types', () => {
         id: 1,
         user_id: 1,
         name: 'Hero',
-        class: 'warrior',
+       
         level: 1,
         experience: 100,
         copper: 550,
@@ -135,7 +135,7 @@ describe('combat types', () => {
         id: 1,
         user_id: 1,
         name: 'Hero',
-        class: 'warrior',
+       
         level: 1,
         experience: 20,
         copper: 510,
@@ -176,7 +176,7 @@ describe('combat types', () => {
         id: 1,
         user_id: 1,
         name: 'Hero',
-        class: 'warrior',
+       
         level: 1,
         experience: 100,
         copper: 550,
@@ -242,7 +242,7 @@ describe('combat types', () => {
       created_at: '2024-01-01T00:00:00Z',
       character: {
         level: 1,
-        class: 'warrior',
+       
         attack: 10,
         defense: 5,
         crit_rate: 0.1,
@@ -296,7 +296,7 @@ describe('combat types', () => {
       created_at: '2024-01-01T00:00:00Z',
       character: {
         level: 1,
-        class: 'warrior',
+       
         attack: 10,
         defense: 5,
         crit_rate: 0.1,

@@ -18,8 +18,10 @@ export function readBattleEffectAnchors(
   const caster = arena.querySelector('[data-effect-caster]')
   const elements = [...arena.querySelectorAll('[data-effect-target]')]
   const slots = [...new Set(targetSlots?.filter(slot => Number.isInteger(slot) && slot >= 0 && slot < 5))]
-  const selected = slots.length
-    ? slots.flatMap(slot => elements.filter(el => Number(el.getAttribute('data-effect-target')) === slot))
-    : allTargets ? elements : elements.slice(0, 1)
+  const selected = allTargets
+    ? elements
+    : slots.length
+      ? slots.flatMap(slot => elements.filter(el => Number(el.getAttribute('data-effect-target')) === slot))
+      : elements.slice(0, 1)
   return { source: caster ? center(caster) : fallback.source, targets: selected.length ? selected.map(center) : fallback.targets }
 }

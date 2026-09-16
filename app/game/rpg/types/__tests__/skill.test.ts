@@ -71,24 +71,7 @@ describe('skill types', () => {
     expect(skill.effect_key).toBeUndefined()
   })
 
-  it('should allow SkillDefinition for all class restrictions', () => {
-    const classes = ['warrior', 'mage', 'ranger', 'all'] as const
-    classes.forEach(cls => {
-      const skill: SkillDefinition = {
-        id: 1,
-        name: 'Test',
-        type: 'active',
-        class_restriction: cls,
-        max_level: 1,
-        base_damage: 10,
-        damage_per_level: 0,
-        mana_cost: 0,
-        mana_cost_per_level: 0,
-        cooldown: 0,
-      }
-      expect(skill.class_restriction).toBe(cls)
-    })
-  })
+
 
   it('should allow SkillDefinition with all skill stages', () => {
     const stages = ['basic', 'core', 'defensive', 'special', 'ultimate', 'key_passive'] as const

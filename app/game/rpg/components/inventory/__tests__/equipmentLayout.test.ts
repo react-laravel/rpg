@@ -1,21 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { CHARACTER_PORTRAITS, PAPER_DOLL_SLOTS } from '../equipmentLayout'
-import type { CharacterClass, EquipmentSlot } from '../../types'
+import { CHARACTER_PORTRAIT, PAPER_DOLL_SLOTS } from '../equipmentLayout'
+import type { EquipmentSlot } from '../../types'
 
 describe('equipmentLayout', () => {
-  describe('CHARACTER_PORTRAITS', () => {
-    it('should have portraits for all character classes', () => {
-      expect(CHARACTER_PORTRAITS.warrior).toBe('/game/rpg/characters/warrior.jpg')
-      expect(CHARACTER_PORTRAITS.mage).toBe('/game/rpg/characters/mage.jpg')
-      expect(CHARACTER_PORTRAITS.ranger).toBe('/game/rpg/characters/ranger.jpg')
-    })
-
-    it('should have correct paths for each class', () => {
-      const classes: CharacterClass[] = ['warrior', 'mage', 'ranger']
-      classes.forEach(cls => {
-        expect(CHARACTER_PORTRAITS[cls]).toContain(cls)
-        expect(CHARACTER_PORTRAITS[cls]).toContain('.jpg')
-      })
+  describe('CHARACTER_PORTRAIT', () => {
+    it('should use the character portrait', () => {
+      expect(CHARACTER_PORTRAIT).toBe('/game/rpg/characters/mage.jpg')
     })
   })
 
