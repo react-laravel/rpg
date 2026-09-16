@@ -198,56 +198,58 @@ export function CombatPanel() {
         <section className={`${interfaceStyles.panel} ${interfaceStyles.arenaPanel} relative overflow-hidden`}>
           {currentMap ? (
             <div
-              className="relative mx-auto aspect-[4/5] w-full overflow-hidden sm:aspect-[4/3] lg:aspect-[16/10]"
+              className="relative mx-auto w-full overflow-hidden"
               style={getMapBackgroundStyle(currentMap, { useOrigin: true, fill: true })}
             >
-              <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-2 px-2 py-2 sm:px-3">
-                <div className="pointer-events-auto min-w-0 flex-1">
-                  <CombatMapPicker overlay />
+              <div className="relative aspect-[4/5] w-full overflow-hidden sm:aspect-[4/3] lg:aspect-[16/10]">
+                <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-2 px-2 py-2 sm:px-3">
+                  <div className="pointer-events-auto min-w-0 flex-1">
+                    <CombatMapPicker overlay />
+                  </div>
+                  <div className="pointer-events-auto flex shrink-0 items-center gap-2">
+                    <VSSwords
+                      isFighting={isFighting}
+                      isLoading={isLoading}
+                      isDead={isCharacterDead}
+                      onToggle={handleCombatToggle}
+                      variant="inline"
+                    />
+                  </div>
                 </div>
-                <div className="pointer-events-auto flex shrink-0 items-center gap-2">
-                  <VSSwords
-                    isFighting={isFighting}
-                    isLoading={isLoading}
-                    isDead={isCharacterDead}
-                    onToggle={handleCombatToggle}
-                    variant="inline"
-                  />
-                </div>
+                <BattleArena
+                  character={
+                    character
+                      ? { name: character.name, level: character.level }
+                      : null
+                  }
+                  combatStats={combatStats}
+                  currentHp={currentHp}
+                  currentMana={currentMana}
+                  monster={
+                    combatResult?.monster ?? getPrimaryCombatMonster(statusCombatMonsters) ?? null
+                  }
+                  monsterId={
+                    combatResult?.monster_id ??
+                    getPrimaryCombatMonsterId(statusCombatMonsters) ??
+                    undefined
+                  }
+                  monsterHpBeforeRound={combatResult?.monster_hp_before_round}
+                  monsters={normalizeCombatMonsterSlots(
+                    combatResult?.monsters ?? statusCombatMonsters
+                  )}
+                  isFighting={isFighting}
+                  isLoading={isLoading}
+                  skillUsed={combatResult?.skills_used?.[0]}
+                  skillTargetPositions={combatResult?.skill_target_positions}
+                  combatLogId={combatResult?.combat_log_id ?? null}
+                  roundNumber={combatResult?.rounds}
+                  damageTaken={combatResult?.damage_taken}
+                  roundRegen={combatResult?.round_regen}
+                  shield={combatResult?.shield ?? statusCombatShield}
+                  isCrit={combatResult?.is_crit === true}
+                  onRoundVisualSettled={handleRoundVisualSettled}
+                />
               </div>
-              <BattleArena
-                character={
-                  character
-                    ? { name: character.name, level: character.level }
-                    : null
-                }
-                combatStats={combatStats}
-                currentHp={currentHp}
-                currentMana={currentMana}
-                monster={
-                  combatResult?.monster ?? getPrimaryCombatMonster(statusCombatMonsters) ?? null
-                }
-                monsterId={
-                  combatResult?.monster_id ??
-                  getPrimaryCombatMonsterId(statusCombatMonsters) ??
-                  undefined
-                }
-                monsterHpBeforeRound={combatResult?.monster_hp_before_round}
-                monsters={normalizeCombatMonsterSlots(
-                  combatResult?.monsters ?? statusCombatMonsters
-                )}
-                isFighting={isFighting}
-                isLoading={isLoading}
-                skillUsed={combatResult?.skills_used?.[0]}
-                skillTargetPositions={combatResult?.skill_target_positions}
-                combatLogId={combatResult?.combat_log_id ?? null}
-                roundNumber={combatResult?.rounds}
-                damageTaken={combatResult?.damage_taken}
-                roundRegen={combatResult?.round_regen}
-                shield={combatResult?.shield ?? statusCombatShield}
-                isCrit={combatResult?.is_crit === true}
-                onRoundVisualSettled={handleRoundVisualSettled}
-              />
               <MapFarmStats />
             </div>
           ) : (

@@ -5,11 +5,23 @@ import { useShallow } from 'zustand/react/shallow'
 import { useGameStore } from '../../stores/gameStore'
 import { computeFarmRates, formatEta } from '../../utils/farmStats'
 import { getLevelProgress } from '../../utils/experience'
-import { CopperDisplay } from '../shared/CopperDisplay'
+import interfaceStyles from '../../interface.module.css'
 
-function formatRate(value: number | null): string {
-  if (value == null) return '统计中'
-  return `${value.toLocaleString('zh-CN')}/分钟`
+function formatRate(value: number): string {
+  return value.toLocaleString('zh-CN', {
+    notation: value >= 10_000 ? 'compact' : 'standard',
+    maximumFractionDigits: 1,
+  })
+}
+
+function RateValue({ value, copper = false }: { value: number | null; copper?: boolean }) {
+  if (value == null) return <>统计中</>
+  return (
+    <span title={`${value.toLocaleString('zh-CN')}${copper ? ' 铜币' : ''}/分钟`}>
+      {formatRate(value)}
+      <span className={interfaceStyles.farmStatUnit}>{copper ? '铜/分钟' : '/分钟'}</span>
+    </span>
+  )
 }
 
 export function MapFarmStats() {
@@ -38,26 +50,34 @@ export function MapFarmStats() {
   const eta = formatEta(remaining, rates.expPerMin)
 
   return (
-    <div
-      className="pointer-events-none absolute top-14 left-2 z-10 grid max-w-[11.5rem] grid-cols-2 gap-x-2 gap-y-0.5 rounded-md bg-black/40 px-2 py-1 text-[10px] leading-4 text-white/90 tabular-nums shadow-[0_1px_6px_rgb(0_0_0/0.45)] sm:top-16 sm:max-w-none sm:text-[11px]"
+    <dl
+      className={interfaceStyles.farmStats}
       aria-label="当前地图收益速度"
     >
-      <div>伤害 {formatRate(rates.damagePerMin)}</div>
-      <div>承伤 {formatRate(rates.takenPerMin)}</div>
-      <div>击杀 {formatRate(rates.killsPerMin)}</div>
-      <div className="flex items-center gap-1">
-        <span>掉落</span>
-        {rates.lootPerMin == null ? (
-          <span>统计中</span>
-        ) : (
-          <>
-            <CopperDisplay copper={rates.lootPerMin} size="xs" nowrap />
-            <span>/分钟</span>
-          </>
-        )}
+      <div>
+        <dt>经验</dt>
+        <dd><RateValue value={rates.expPerMin} /></dd>
       </div>
-      <div>经验 {formatRate(rates.expPerMin)}</div>
-      <div>升级 {eta ?? '统计中'}</div>
-    </div>
+      <div>
+        <dt>掉落</dt>
+        <dd><RateValue value={rates.lootPerMin} copper /></dd>
+      </div>
+      <div>
+        <dt>升级</dt>
+        <dd>{eta ?? '统计中'}</dd>
+      </div>
+      <div>
+        <dt>伤害</dt>
+        <dd><RateValue value={rates.damagePerMin} /></dd>
+      </div>
+      <div>
+        <dt>击杀</dt>
+        <dd><RateValue value={rates.killsPerMin} /></dd>
+      </div>
+      <div>
+        <dt>承伤</dt>
+        <dd><RateValue value={rates.takenPerMin} /></dd>
+      </div>
+    </dl>
   )
 }
