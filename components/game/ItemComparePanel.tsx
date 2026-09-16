@@ -63,7 +63,7 @@ function CompareItemHeader({
   const requiredLevel = item?.definition?.required_level
 
   return (
-    <div className="mb-2 flex items-start gap-2">
+    <div className="mb-2 flex min-h-[3.25rem] items-start gap-2">
       {item ? (
         <CompareItemIconSlot
           item={item}
@@ -82,6 +82,15 @@ function CompareItemHeader({
           <p className="text-muted-foreground mt-0.5 text-xs">需求等级: {requiredLevel}</p>
         ) : null}
       </div>
+    </div>
+  )
+}
+
+function CompareSellRow({ copper }: { copper: number }) {
+  return (
+    <div className="text-muted-foreground flex h-6 items-center justify-between gap-1 text-xs">
+      <span className="shrink-0">卖出</span>
+      <CopperDisplay copper={copper} size="sm" nowrap className="font-medium" />
     </div>
   )
 }
@@ -325,11 +334,11 @@ export function FullComparePanel({
 
   const newItemDisplayPrice =
     newItem.sell_price ?? Math.floor((newItem.definition?.buy_price ?? 0) / 2)
-
-  // 获取已装备物品的价格信息
+  const newItemBuyPrice = newItem.definition?.buy_price ?? 0
   const equippedItemBuyPrice = equippedItem.definition?.buy_price ?? 0
   const equippedItemSellPrice =
     equippedItem.sell_price ?? Math.floor((equippedItem.definition?.buy_price ?? 0) / 2)
+  const showBuyPrice = equippedItemBuyPrice > 0 || newItemBuyPrice > 0
 
   const showUpgradeIndicator = isHigherValueThanEquipped(newItem, equippedItem)
 
@@ -340,45 +349,47 @@ export function FullComparePanel({
     }))
   )
 
+  const collapsed = compareEquippedCollapsed
+  const leftCard = 'bg-card border-border border-r-0'
+  const rightCard = 'bg-card border-border'
+
   return (
     <div
-      className={`relative flex max-w-full items-stretch ${getFullComparePanelWidthClass(compareEquippedCollapsed)}`}
+      className={`relative grid max-w-full grid-rows-[auto_1fr_auto_auto] ${getFullComparePanelWidthClass(collapsed)} ${
+        collapsed ? 'grid-cols-1' : 'grid-cols-[minmax(0,156px)_minmax(0,200px)]'
+      }`}
     >
-      {!compareEquippedCollapsed && (
-        <aside className="bg-card border-border min-w-0 flex-[0_1_156px] rounded-l-lg border border-r-0 p-2 shadow-md">
-          <CompareItemHeader
-            item={equippedItem}
-            name={getItemDisplayName(equippedItem)}
-            nameColor={QUALITY_COLORS[equippedItem.quality as ItemQuality]}
-          />
-          <CompareStatList
-            statKeys={compareStatKeys}
-            stats={equippedStats}
-            compareStats={newStats}
-          />
-          <div className="border-border/50 mt-2 space-y-0.5 border-t pt-1">
-            <div className="text-muted-foreground flex justify-between gap-1 text-xs">
-              <span className="shrink-0">卖出</span>
-              <CopperDisplay
-                copper={equippedItemSellPrice}
-                size="sm"
-                nowrap
-                className="font-medium"
-              />
-            </div>
-            {equippedItemBuyPrice > 0 && (
-              <div className="flex justify-between gap-1 text-xs text-purple-600 dark:text-purple-400">
+      {!collapsed && (
+        <>
+          <div className={`${leftCard} col-start-1 row-start-1 rounded-tl-lg border-b-0 p-2`}>
+            <CompareItemHeader
+              item={equippedItem}
+              name={getItemDisplayName(equippedItem)}
+              nameColor={QUALITY_COLORS[equippedItem.quality as ItemQuality]}
+            />
+          </div>
+          <div className={`${leftCard} col-start-1 row-start-2 border-y-0 px-2`}>
+            <CompareStatList
+              statKeys={compareStatKeys}
+              stats={equippedStats}
+              compareStats={newStats}
+            />
+          </div>
+          <div className={`${leftCard} col-start-1 row-start-3 border-y px-2 py-1`}>
+            <CompareSellRow copper={equippedItemSellPrice} />
+            {showBuyPrice && (
+              <div className="flex h-6 items-center justify-between gap-1 text-xs text-purple-600 dark:text-purple-400">
                 <span className="shrink-0">买价</span>
-                <span>{equippedItemBuyPrice}</span>
+                <span>{equippedItemBuyPrice > 0 ? equippedItemBuyPrice : '—'}</span>
               </div>
             )}
           </div>
-        </aside>
+          <div className={`${leftCard} col-start-1 row-start-4 rounded-bl-lg border-t-0 bg-muted/30`} />
+        </>
       )}
+
       <div
-        className={`bg-card border-border flex min-w-0 flex-col border p-2 shadow-md ${
-          compareEquippedCollapsed ? 'w-[200px] rounded-lg' : 'flex-[1_1_200px] rounded-r-lg'
-        }`}
+        className={`${rightCard} row-start-1 border-b-0 p-2 ${collapsed ? 'rounded-t-lg' : 'col-start-2 rounded-tr-lg'}`}
       >
         <CompareItemHeader
           item={newItem}
@@ -386,39 +397,46 @@ export function FullComparePanel({
           nameColor={QUALITY_COLORS[newItem.quality as ItemQuality]}
           showUpgradeIndicator={showUpgradeIndicator}
         />
+      </div>
+      <div className={`${rightCard} row-start-2 border-y-0 px-2 ${collapsed ? '' : 'col-start-2'}`}>
         <CompareStatList
           statKeys={compareStatKeys}
           stats={newStats}
           compareStats={equippedStats}
-          mirrored={!compareEquippedCollapsed}
+          mirrored={!collapsed}
         />
-        <div className="border-border/50 mt-2 space-y-0.5 border-t pt-1">
-          <div className="text-muted-foreground flex justify-between gap-1 text-xs">
-            <span className="shrink-0">卖出</span>
-            <CopperDisplay copper={newItemDisplayPrice} size="sm" nowrap className="font-medium" />
+      </div>
+      <div className={`${rightCard} row-start-3 border-y px-2 py-1 ${collapsed ? '' : 'col-start-2'}`}>
+        <CompareSellRow copper={newItemDisplayPrice} />
+        {showBuyPrice && (
+          <div className="flex h-6 items-center justify-between gap-1 text-xs text-purple-600 dark:text-purple-400">
+            <span className="shrink-0">买价</span>
+            <span>{newItemBuyPrice > 0 ? newItemBuyPrice : '—'}</span>
           </div>
-        </div>
-        <div className="-mx-2 -mb-2 mt-2">
-          <ItemActions
-            actions={actions ?? []}
-            onAction={action => onAction?.(action)}
-            compact
-            leadingAction={
-              <>
-                <button
-                  type="button"
-                  onClick={toggleCompareEquippedCollapsed}
-                  className="bg-muted hover:bg-muted/80 text-foreground border-border inline-flex min-w-12 items-center justify-center rounded border px-2.5 py-1.5 text-xs transition-colors"
-                  aria-label={compareEquippedCollapsed ? '展开对比' : '收起对比'}
-                  title={compareEquippedCollapsed ? '展开对比' : '收起对比'}
-                >
-                  {compareEquippedCollapsed ? '对比' : '收起'}
-                </button>
-                {footer ? <div className="min-w-0 flex-1">{footer}</div> : null}
-              </>
-            }
-          />
-        </div>
+        )}
+      </div>
+      <div
+        className={`${rightCard} row-start-4 border-t-0 ${collapsed ? 'rounded-b-lg' : 'col-start-2 rounded-br-lg'}`}
+      >
+        <ItemActions
+          actions={actions ?? []}
+          onAction={action => onAction?.(action)}
+          compact
+          leadingAction={
+            <>
+              <button
+                type="button"
+                onClick={toggleCompareEquippedCollapsed}
+                className="bg-muted hover:bg-muted/80 text-foreground border-border inline-flex min-w-12 items-center justify-center rounded border px-2.5 py-1.5 text-xs transition-colors"
+                aria-label={collapsed ? '展开对比' : '收起对比'}
+                title={collapsed ? '展开对比' : '收起对比'}
+              >
+                {collapsed ? '对比' : '收起'}
+              </button>
+              {footer ? <div className="min-w-0 flex-1">{footer}</div> : null}
+            </>
+          }
+        />
       </div>
     </div>
   )
