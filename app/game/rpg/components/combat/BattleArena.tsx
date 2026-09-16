@@ -35,6 +35,7 @@ export function BattleArena({
   damageTaken,
   roundRegen,
   shield,
+  isCrit = false,
   onRoundVisualSettled,
 }: {
   character: { name: string; level: number } | null
@@ -61,6 +62,7 @@ export function BattleArena({
   damageTaken?: number
   roundRegen?: Record<string, { name: string; restored: number }> | null
   shield?: CombatShield | null
+  isCrit?: boolean
   onRoundVisualSettled?: () => void
 }) {
   const finalMonsterHp = monster?.hp ?? 0
@@ -385,6 +387,7 @@ export function BattleArena({
               skillUsed={skillUsed}
               skillTargetPositions={skillTargetPositions}
               showDamageAndHp={showDamageAndHp}
+              isCrit={isCrit}
               onAppearActiveChange={handleAppearActiveChange}
             />
           ) : !isLoading && isFighting && monster ? (

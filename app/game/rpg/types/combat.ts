@@ -67,6 +67,8 @@ export interface CombatResult {
   monster_hp_before_round?: number
   damage_dealt: number
   damage_taken: number
+  /** 本回合玩家攻击是否暴击 */
+  is_crit?: boolean
   /** 兼容旧推送；新服务端恒为 0，冷却已改为剩余次数 */
   rounds?: number
   experience_gained: number
@@ -180,6 +182,7 @@ export interface CombatLogDetail {
   battle: {
     alive_count: number
     killed_count: number
+    is_crit?: boolean
   }
   difficulty: {
     tier: number

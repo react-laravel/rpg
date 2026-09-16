@@ -29,6 +29,7 @@ type PersistedCombatLogFields = {
   round_number?: number
   monsters_alive_count?: number
   monsters_killed_count?: number
+  is_crit?: boolean
   difficulty_tier?: number
   difficulty_multiplier?: number
   loot_dropped?: Record<string, unknown> | null
@@ -198,6 +199,7 @@ export function buildCombatLogDetailFromEntry(
       battle: {
         alive_count: log.monsters_alive_count ?? 0,
         killed_count: log.monsters_killed_count ?? 0,
+        is_crit: log.is_crit ?? false,
       },
       difficulty: {
         tier: log.difficulty_tier ?? 0,
@@ -256,6 +258,7 @@ export function buildCombatLogDetailFromEntry(
     battle: {
       alive_count: 0,
       killed_count: result.victory ? 1 : 0,
+      is_crit: result.is_crit ?? false,
     },
     difficulty: {
       tier: result.character?.difficulty_tier ?? 0,

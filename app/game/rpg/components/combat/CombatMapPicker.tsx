@@ -5,6 +5,7 @@ import { Check, ChevronDown, LoaderCircle, MapPin, RefreshCw } from 'lucide-reac
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { useGameStore } from '../../stores/gameStore'
 import { getActName } from '../../utils/combat'
+import { DIFFICULTY_COLORS, getDifficultyLabel } from '../../utils/difficulty'
 import { getMapBackgroundStyle } from '../../utils/mapBackground'
 import { MapCardMonsterAvatar } from './MapCardMonsterAvatar'
 import { MapWinRateBadge } from './MapWinRateBadge'
@@ -62,7 +63,7 @@ export function CombatMapPicker({ overlay = false }: { overlay?: boolean }) {
       <PopoverTrigger asChild>
         <button
           type="button"
-          aria-label={`切换地图，当前${currentMap?.name ?? '未选择地图'}`}
+          aria-label={`切换地图，当前${currentMap?.name ?? '未选择地图'}，难度${getDifficultyLabel(character?.difficulty_tier)}`}
           className={
             overlay
               ? 'flex min-h-11 min-w-0 flex-1 items-center gap-2 rounded-lg px-2 py-1.5 text-left text-white transition-colors hover:bg-black/25'
@@ -82,13 +83,20 @@ export function CombatMapPicker({ overlay = false }: { overlay?: boolean }) {
               {currentMap?.name ?? '选择冒险地图'}
             </span>
             <span
-              className={`block text-[11px] ${
+              className={`flex items-center gap-1.5 text-[11px] ${
                 overlay
                   ? 'text-white/75 drop-shadow-[0_1px_2px_rgba(0,0,0,0.85)]'
                   : 'text-muted-foreground'
               }`}
             >
-              {currentMap ? `${getActName(currentMap.act)} · ` : ''}切换地图
+              {currentMap ? `${getActName(currentMap.act)} · ` : ''}
+              <span
+                className={`rounded px-1 py-px text-[10px] font-semibold text-white ${
+                  DIFFICULTY_COLORS[character?.difficulty_tier ?? 0] ?? 'bg-green-600'
+                }`}
+              >
+                {getDifficultyLabel(character?.difficulty_tier)}
+              </span>
             </span>
           </span>
           <ChevronDown

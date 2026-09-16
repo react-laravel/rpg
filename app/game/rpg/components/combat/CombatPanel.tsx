@@ -245,6 +245,7 @@ export function CombatPanel() {
                 damageTaken={combatResult?.damage_taken}
                 roundRegen={combatResult?.round_regen}
                 shield={combatResult?.shield ?? statusCombatShield}
+                isCrit={combatResult?.is_crit === true}
                 onRoundVisualSettled={handleRoundVisualSettled}
               />
               <MapFarmStats />

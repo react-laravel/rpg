@@ -56,6 +56,7 @@ export function MonsterGroup({
   skillUsed,
   skillTargetPositions,
   showDamageAndHp = true,
+  isCrit = false,
   onAppearActiveChange,
 }: {
   monsters: (MonsterWithMeta | null)[]
@@ -63,6 +64,7 @@ export function MonsterGroup({
   skillTargetPositions?: number[]
   /** 为 false 时表示技能动画中，不显示扣血/伤害/受击，并清空已有状态避免重复播放 */
   showDamageAndHp?: boolean
+  isCrit?: boolean
   /** 出现动画进行中（用于延迟技能特效与扣血显示） */
   onAppearActiveChange?: (active: boolean) => void
 }) {
@@ -363,8 +365,10 @@ export function MonsterGroup({
               <div data-effect-target={pos} className="relative flex flex-col items-center">
                 {damage !== undefined && damage > 0 && (
                   <span
-                    className={`${styles['damage-number']} pointer-events-none absolute bottom-full left-1/2 z-20 mb-0.5 -translate-x-1/2 whitespace-nowrap`}
+                    className={`${styles['damage-number']} ${isCrit ? styles['damage-number-crit'] : ''} pointer-events-none absolute bottom-full left-1/2 z-20 mb-0.5 -translate-x-1/2 whitespace-nowrap`}
+                    data-crit={isCrit ? 'true' : undefined}
                   >
+                    {isCrit && <span className={styles['crit-label']}>暴击</span>}
                     -{damage}
                   </span>
                 )}

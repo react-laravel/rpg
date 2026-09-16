@@ -16,6 +16,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Trash2 } from 'lucide-react'
+import { DIFFICULTY_COLORS, DIFFICULTY_OPTIONS } from '../../utils/difficulty'
 
 interface Character {
   id: number
@@ -38,26 +39,7 @@ const AVATARS = {
   female: 'wizard-female',
 } as const
 
-export const DIFFICULTY_OPTIONS: { tier: number; label: string }[] = [
-  { tier: 0, label: '普通' },
-  { tier: 1, label: '困难' },
-  { tier: 2, label: '高手' },
-  { tier: 3, label: '大师' },
-  ...Array.from({ length: 6 }, (_, i) => ({ tier: i + 4, label: `痛苦${i + 1}` })),
-]
-
-export const DIFFICULTY_COLORS: Record<number, string> = {
-  0: 'bg-green-600', // 普通 - 绿色
-  1: 'bg-blue-600', // 困难 - 蓝色
-  2: 'bg-yellow-600', // 高手 - 黄色
-  3: 'bg-orange-600', // 大师 - 橙色
-  4: 'bg-red-600', // 痛苦1 - 红色
-  5: 'bg-rose-700', // 痛苦2
-  6: 'bg-pink-700', // 痛苦3
-  7: 'bg-fuchsia-700', // 痛苦4
-  8: 'bg-purple-800', // 痛苦5
-  9: 'bg-violet-900', // 痛苦6
-}
+export { DIFFICULTY_COLORS, DIFFICULTY_OPTIONS } from '../../utils/difficulty'
 
 export function CharacterSelect({ onBack, onCreateCharacter }: CharacterSelectProps) {
   const {

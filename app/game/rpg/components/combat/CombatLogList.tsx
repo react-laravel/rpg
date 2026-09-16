@@ -22,7 +22,7 @@ import {
   type CombatLogEntry,
 } from '../../stores/combatHelpers'
 import { formatItemStatValue } from '../../utils/itemUtils'
-import { Award, ChevronRight, CircleCheckBig, Coins, ScrollText, Shield, Skull, Swords, Target, X, Zap } from 'lucide-react'
+import { ChevronRight, CircleCheckBig, Coins, ScrollText, Swords, X } from 'lucide-react'
 import type { SkillUsedEntry } from '../../types'
 import interfaceStyles from '../../interface.module.css'
 
@@ -175,11 +175,17 @@ function CombatLogDetailDialog({
 
   const d = detail
   const playerSkillsUsed = filterPlayerSkillsUsed(d.skills_used, playerSkillIds)
-  const hasBattleInfo = d.battle?.alive_count != null || d.battle?.killed_count != null
+  const isCrit = d.battle?.is_crit === true || (d.damage_detail?.crit_damage ?? 0) > 0
+  const outcome =
+    d.victory ? '胜利' : (d.duration_seconds ?? 0) > 0 ? '战败' : '战斗中'
+  const defenseMitigated = Math.round(
+    (d.monster_stats?.defense ?? 0) * (d.damage_detail?.defense_reduction ?? 0.5)
+  )
+  const usedSkill = (d.damage_detail?.skill_damage ?? 0) > 0 || playerSkillsUsed.length > 0
 
   return (
     <div className="fixed inset-0 z-[10080] flex items-center justify-center bg-black/60 p-4">
-      <div className="bg-card border-border relative flex max-h-[calc(100dvh-2rem)] w-full max-w-lg min-h-0 flex-col overflow-hidden rounded-lg border">
+      <div className="bg-card border-border relative flex max-h-[calc(100dvh-2rem)] w-full max-w-md min-h-0 flex-col overflow-hidden rounded-xl border shadow-xl">
         <button
           onClick={onClose}
           className="hover:bg-muted absolute top-2 right-2 z-10 rounded-full p-1"
@@ -187,162 +193,145 @@ function CombatLogDetailDialog({
         >
           <X className="h-5 w-5" />
         </button>
-        <div className="min-h-0 flex-1 touch-pan-y overflow-y-auto overscroll-contain px-4 pt-4 pb-3 [-webkit-overflow-scrolling:touch] sm:px-6 sm:pt-6 sm:pb-4">
-          <div className="space-y-3">
-            <h3 className="text-foreground flex items-center gap-2 pr-8 text-lg font-bold">
-              {d.victory
-                ? '✅ 胜利'
-                : (d.duration_seconds ?? 0) > 0
-                  ? '💀 战败'
-                  : '⚔️ 战斗中'}
-              <span className="text-muted-foreground text-sm font-normal">
-                {d.map?.name || '未知地图'}
+        <div className="min-h-0 flex-1 touch-pan-y overflow-y-auto overscroll-contain px-4 pt-4 pb-4 [-webkit-overflow-scrolling:touch] sm:px-5">
+          <header className="mb-3 flex items-start justify-between gap-3 pr-8">
+            <div>
+              <h3 className="text-foreground text-lg font-bold">{outcome}</h3>
+              <p className="text-muted-foreground text-sm">{d.map?.name || '未知地图'}</p>
+            </div>
+            {isCrit && (
+              <span className="rounded-md bg-amber-400 px-2 py-0.5 text-xs font-extrabold tracking-wide text-black">
+                暴击
               </span>
-            </h3>
+            )}
+          </header>
 
-            {/* 角色属性 */}
-            <div className="bg-muted/50 rounded-lg p-3">
-              <h4 className="text-muted-foreground mb-2 text-sm font-medium">
-                角色属性 (Lv.{d.character?.level ?? '?'})
-              </h4>
+          <section className="mb-3 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+            <div className="bg-muted/40 rounded-lg p-2.5">
+              <p className="text-muted-foreground mb-1 text-[11px]">你 · Lv.{d.character?.level ?? '?'}</p>
               {d.character?.attack != null ? (
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
-                  <div className="flex shrink-0 items-center gap-1 whitespace-nowrap">
-                    <Swords className="h-4 w-4 shrink-0 text-red-500" />
-                    <span>攻击: {d.character.attack}</span>
+                <dl className="space-y-0.5 text-xs">
+                  <div className="flex justify-between gap-2">
+                    <dt className="text-muted-foreground">攻击</dt>
+                    <dd>{d.character.attack}</dd>
                   </div>
-                  <div className="flex shrink-0 items-center gap-1 whitespace-nowrap">
-                    <Shield className="h-4 w-4 shrink-0 text-blue-500" />
-                    <span>防御: {d.character.defense}</span>
+                  <div className="flex justify-between gap-2">
+                    <dt className="text-muted-foreground">防御</dt>
+                    <dd>{d.character.defense}</dd>
                   </div>
-                  <div className="flex shrink-0 items-center gap-1 whitespace-nowrap">
-                    <Zap className="h-4 w-4 shrink-0 text-yellow-500" />
-                    <span>暴击: {formatItemStatValue(d.character.crit_rate, 'crit_rate')}</span>
+                  <div className="flex justify-between gap-2">
+                    <dt className="text-muted-foreground">暴击</dt>
+                    <dd>{formatItemStatValue(d.character.crit_rate, 'crit_rate')}</dd>
                   </div>
-                </div>
+                </dl>
               ) : (
-                <p className="text-muted-foreground text-sm italic">暂无数据（旧日志）</p>
+                <p className="text-muted-foreground text-xs italic">旧日志</p>
               )}
             </div>
-
-            {/* 怪物属性 */}
-            <div className="bg-muted/50 rounded-lg p-3">
-              <h4 className="text-muted-foreground mb-2 flex items-center gap-1 text-sm font-medium">
-                <Skull className="h-4 w-4" />
-                怪物信息 (Lv.{d.monster_stats?.level ?? '?'} {d.monster?.name ?? '?'})
-              </h4>
+            <span className="text-muted-foreground text-[11px] font-semibold">VS</span>
+            <div className="bg-muted/40 rounded-lg p-2.5">
+              <p className="text-muted-foreground mb-1 truncate text-[11px]">
+                {d.monster?.name ?? '?'} · Lv.{d.monster_stats?.level ?? '?'}
+              </p>
               {d.monster_stats?.hp != null ? (
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div>攻击: {d.monster_stats.attack}</div>
-                  <div>防御: {d.monster_stats.defense}</div>
-                  <div>
-                    HP: {d.monster_stats.hp}/{d.monster_stats.max_hp}
+                <dl className="space-y-0.5 text-xs">
+                  <div className="flex justify-between gap-2">
+                    <dt className="text-muted-foreground">攻击</dt>
+                    <dd>{d.monster_stats.attack}</dd>
                   </div>
-                  <div>经验: {d.monster_stats.experience}</div>
-                </div>
+                  <div className="flex justify-between gap-2">
+                    <dt className="text-muted-foreground">防御</dt>
+                    <dd>{d.monster_stats.defense}</dd>
+                  </div>
+                  <div className="flex justify-between gap-2">
+                    <dt className="text-muted-foreground">生命</dt>
+                    <dd>
+                      {d.monster_stats.hp}/{d.monster_stats.max_hp}
+                    </dd>
+                  </div>
+                </dl>
               ) : (
-                <p className="text-muted-foreground text-sm italic">暂无数据（旧日志）</p>
+                <p className="text-muted-foreground text-xs italic">旧日志</p>
               )}
             </div>
+          </section>
 
-            {/* 伤害详情 */}
-            <div className="bg-muted/50 rounded-lg p-3">
-              <h4 className="text-muted-foreground mb-2 flex items-center gap-1 text-sm font-medium">
-                <Target className="h-4 w-4" />
-                伤害构成
-              </h4>
-              {d.damage_detail?.total != null ? (
-                <div className="space-y-1 text-sm">
-                  {(d.damage_detail.skill_damage ?? 0) > 0 || playerSkillsUsed.length > 0 ? (
-                    <div className="flex justify-between gap-2">
-                      <span className="flex min-w-0 flex-wrap items-center gap-1.5">
-                        <span className="shrink-0">技能伤害:</span>
-                        {playerSkillsUsed.length > 0 && (
-                          <CombatLogSkillIcons skills={playerSkillsUsed} />
-                        )}
-                      </span>
-                      {(d.damage_detail.skill_damage ?? 0) > 0 ? (
-                        <span className="shrink-0 text-orange-500">
-                          {d.damage_detail.skill_damage}
-                        </span>
-                      ) : null}
-                    </div>
-                  ) : (
-                    <div className="flex justify-between">
-                      <span>普攻伤害:</span>
-                      <span className="text-red-500">{d.damage_detail.base_attack}</span>
-                    </div>
-                  )}
-                  {d.damage_detail.crit_damage > 0 && (
-                    <div className="flex justify-between">
-                      <span>暴击额外伤害:</span>
-                      <span className="text-yellow-500">+{d.damage_detail.crit_damage}</span>
-                    </div>
-                  )}
-                  {d.damage_detail.aoe_damage > 0 && (
-                    <div className="flex justify-between">
-                      <span>AOE减免:</span>
-                      <span className="text-gray-500">-{d.damage_detail.aoe_damage}</span>
-                    </div>
-                  )}
-                  <div className="border-muted flex justify-between border-t pt-1 font-medium">
-                    <span>实际造成:</span>
-                    <span className="text-red-500">{d.damage_detail.total}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>怪物防御减免:</span>
-                    <span className="text-gray-500">
-                      {Math.round((d.monster_stats?.defense ?? 0) * (d.damage_detail.defense_reduction ?? 0.5))}
-                      （系数{' '}
-                      {(
-                        d.damage_detail.defense_reduction_percent ??
-                        (d.damage_detail.defense_reduction ?? 0) * 100
-                      ).toFixed(0)}
-                      %）
+          <section className="bg-muted/40 mb-3 rounded-lg p-3">
+            <h4 className="text-muted-foreground mb-2 text-xs font-medium tracking-wide uppercase">
+              本回合
+            </h4>
+            {d.damage_detail?.total != null ? (
+              <div className="space-y-1.5 text-sm">
+                {usedSkill ? (
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="flex min-w-0 items-center gap-1.5">
+                      <span>技能</span>
+                      {playerSkillsUsed.length > 0 && (
+                        <CombatLogSkillIcons skills={playerSkillsUsed} />
+                      )}
+                    </span>
+                    <span className="tabular-nums text-orange-500">
+                      {d.damage_detail.skill_damage || '—'}
                     </span>
                   </div>
+                ) : (
                   <div className="flex justify-between">
-                    <span>怪物反击伤害:</span>
-                    <span className="text-green-500">-{d.damage_detail.counter_damage}</span>
+                    <span>普攻</span>
+                    <span className="tabular-nums text-red-500">{d.damage_detail.base_attack}</span>
                   </div>
-                </div>
-              ) : (
-                <p className="text-muted-foreground text-sm italic">暂无数据（旧日志）</p>
-              )}
-            </div>
-
-            {/* 战斗信息 */}
-            <div className="bg-muted/50 rounded-lg p-3">
-              <h4 className="text-muted-foreground mb-2 text-sm font-medium">战斗信息</h4>
-              {hasBattleInfo ? (
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div>存活: {d.battle.alive_count}只</div>
-                  <div>击杀: {d.battle.killed_count}只</div>
-                  <div>
-                    难度: {d.difficulty?.tier ?? 0} ({d.difficulty?.multiplier ?? 1}x)
-                  </div>
-                </div>
-              ) : (
-                <p className="text-muted-foreground text-sm italic">暂无数据（旧日志）</p>
-              )}
-            </div>
-
-            {/* 收益 */}
-            <div className="bg-muted/50 rounded-lg p-3">
-              <h4 className="text-muted-foreground mb-2 flex items-center gap-1 text-sm font-medium">
-                <Award className="h-4 w-4" />
-                收益
-              </h4>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
-                <span className="text-purple-500">+{d.experience_gained} 经验</span>
-                {(d.copper_gained ?? 0) > 0 && (
-                  <span className="flex items-center gap-1 text-yellow-500">
-                    <Coins className="h-4 w-4 shrink-0" />+{d.copper_gained} 铜币
-                  </span>
                 )}
+                {isCrit && (
+                  <div className="flex justify-between text-amber-500">
+                    <span>暴击</span>
+                    <span className="tabular-nums">
+                      {(d.damage_detail.crit_damage ?? 0) > 0
+                        ? `+${d.damage_detail.crit_damage}`
+                        : '触发'}
+                    </span>
+                  </div>
+                )}
+                {defenseMitigated > 0 && (
+                  <div className="text-muted-foreground flex justify-between">
+                    <span>防御减免</span>
+                    <span className="tabular-nums">-{defenseMitigated}</span>
+                  </div>
+                )}
+                {(d.damage_detail.aoe_damage ?? 0) > 0 && (
+                  <div className="text-muted-foreground flex justify-between">
+                    <span>全体分摊</span>
+                    <span className="tabular-nums">-{d.damage_detail.aoe_damage}</span>
+                  </div>
+                )}
+                <div className="border-border flex justify-between border-t pt-1.5 font-semibold">
+                  <span>造成</span>
+                  <span className="tabular-nums text-red-500">{d.damage_detail.total}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>受到反击</span>
+                  <span className="tabular-nums text-emerald-500">
+                    -{d.damage_detail.counter_damage}
+                  </span>
+                </div>
               </div>
-            </div>
-          </div>
+            ) : (
+              <p className="text-muted-foreground text-sm italic">暂无数据（旧日志）</p>
+            )}
+          </section>
+
+          <footer className="flex flex-wrap items-center justify-between gap-2 text-xs">
+            <span className="text-muted-foreground">
+              击杀 {d.battle?.killed_count ?? 0} · 存活 {d.battle?.alive_count ?? 0}
+              {d.difficulty ? ` · 难度 ${d.difficulty.tier}` : ''}
+            </span>
+            <span className="flex items-center gap-3 font-medium">
+              <span className="text-violet-500">+{d.experience_gained} 经验</span>
+              {(d.copper_gained ?? 0) > 0 && (
+                <span className="flex items-center gap-0.5 text-amber-500">
+                  <Coins className="h-3.5 w-3.5" />+{d.copper_gained}
+                </span>
+              )}
+            </span>
+          </footer>
         </div>
       </div>
     </div>
