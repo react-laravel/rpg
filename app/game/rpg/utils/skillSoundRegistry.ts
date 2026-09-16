@@ -1,6 +1,5 @@
 import skillSoundManifestData from '../data/skill-sound-manifest.json'
 import type { SkillUsedEntry } from '../types'
-import { gameAsset } from '@/lib/helpers/assets'
 
 export interface SkillSoundManifestEntry {
   skillName: string
@@ -24,7 +23,9 @@ for (const entry of skillSoundManifest) {
   }
 }
 
-const toSkillSoundUrl = (fileName: string) => gameAsset(`${SKILL_SOUND_BASE_PATH}/${fileName}`)
+// Serve SFX from the Next app, not the image CDN. Upyun is missing several clips
+// and Web Audio fetches also need CORS there.
+const toSkillSoundUrl = (fileName: string) => `${SKILL_SOUND_BASE_PATH}/${fileName}`
 
 export function getSkillSoundUrl(
   skill?: Pick<SkillUsedEntry, 'name' | 'effect_key'> | null
