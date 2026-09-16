@@ -22,6 +22,7 @@ import {
   type CombatLogEntry,
 } from '../../stores/combatHelpers'
 import { formatItemStatValue } from '../../utils/itemUtils'
+import { getDifficultyLabel } from '../../utils/difficulty'
 import { ChevronRight, CircleCheckBig, Coins, ScrollText, Swords, X } from 'lucide-react'
 import type { SkillUsedEntry } from '../../types'
 import interfaceStyles from '../../interface.module.css'
@@ -321,7 +322,7 @@ function CombatLogDetailDialog({
           <footer className="flex flex-wrap items-center justify-between gap-2 text-xs">
             <span className="text-muted-foreground">
               击杀 {d.battle?.killed_count ?? 0} · 存活 {d.battle?.alive_count ?? 0}
-              {d.difficulty ? ` · 难度 ${d.difficulty.tier}` : ''}
+              {d.difficulty ? ` · ${getDifficultyLabel(d.difficulty.tier)}` : ''}
             </span>
             <span className="flex items-center gap-3 font-medium">
               <span className="text-violet-500">+{d.experience_gained} 经验</span>

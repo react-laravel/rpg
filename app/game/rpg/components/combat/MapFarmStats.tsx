@@ -39,7 +39,7 @@ export function MapFarmStats() {
 
   return (
     <div
-      className="pointer-events-none absolute bottom-2 left-2 z-20 grid grid-cols-2 gap-x-3 gap-y-0.5 rounded-md bg-black/45 px-2 py-1 text-[11px] leading-4 text-white/90 tabular-nums shadow-[0_1px_6px_rgb(0_0_0/0.45)] sm:text-xs"
+      className="pointer-events-none absolute top-14 left-2 z-10 grid max-w-[11.5rem] grid-cols-2 gap-x-2 gap-y-0.5 rounded-md bg-black/40 px-2 py-1 text-[10px] leading-4 text-white/90 tabular-nums shadow-[0_1px_6px_rgb(0_0_0/0.45)] sm:top-16 sm:max-w-none sm:text-[11px]"
       aria-label="当前地图收益速度"
     >
       <div>伤害 {formatRate(rates.damagePerMin)}</div>

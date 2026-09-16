@@ -505,18 +505,6 @@ export function BattleArena({
                 </div>
               )}
             </div>
-
-            <p
-              className="w-full truncate px-0.5 text-center text-[9px] font-medium text-white/90 drop-shadow sm:text-[11px]"
-              title={character?.name ?? '冒险者'}
-            >
-              {character?.name ?? '冒险者'}
-            </p>
-            {character && (
-              <p className="w-full truncate px-0.5 text-center text-[8px] text-white/60 sm:text-[9px]">
-                Lv.{character.level}
-              </p>
-            )}
           </div>
         </div>
       </div>
