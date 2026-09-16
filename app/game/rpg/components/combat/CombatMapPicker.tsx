@@ -7,6 +7,8 @@ import { useGameStore } from '../../stores/gameStore'
 import { getActName } from '../../utils/combat'
 import { getMapBackgroundStyle } from '../../utils/mapBackground'
 import { MapCardMonsterAvatar } from './MapCardMonsterAvatar'
+import { MapWinRateBadge } from './MapWinRateBadge'
+import { estimateMapWinRate, playerFromLoadout } from '../../utils/mapWinRate'
 
 /** Travel controls own their pending/error feedback independently of background requests. */
 export function CombatMapPicker({ overlay = false }: { overlay?: boolean }) {
@@ -16,6 +18,14 @@ export function CombatMapPicker({ overlay = false }: { overlay?: boolean }) {
   const fetchMaps = useGameStore(s => s.fetchMaps)
   const pendingMapId = useGameStore(s => s.pendingMapId)
   const combatAction = useGameStore(s => s.combatAction)
+  const character = useGameStore(s => s.character)
+  const combatStats = useGameStore(s => s.combatStats)
+  const skills = useGameStore(s => s.skills)
+  const enabledSkillIds = useGameStore(s => s.enabledSkillIds)
+  const winRatePlayer = useMemo(
+    () => playerFromLoadout(character, combatStats, skills, enabledSkillIds),
+    [character, combatStats, skills, enabledSkillIds]
+  )
   const [open, setOpen] = useState(false)
   const [selectedAct, setSelectedAct] = useState<number | null>(null)
   const [travelError, setTravelError] = useState<string | null>(null)
@@ -136,6 +146,10 @@ export function CombatMapPicker({ overlay = false }: { overlay?: boolean }) {
               const levelText = levels.length
                 ? `Lv.${Math.min(...levels)}–${Math.max(...levels)}`
                 : '未知'
+              const winRate =
+                winRatePlayer != null
+                  ? estimateMapWinRate(map, winRatePlayer, character?.difficulty_tier ?? 0)
+                  : null
               return (
                 <button
                   key={map.id}
@@ -158,7 +172,10 @@ export function CombatMapPicker({ overlay = false }: { overlay?: boolean }) {
                   />
                   <span className="relative flex min-w-0 flex-1 items-center gap-3 p-3">
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-semibold">{map.name}</span>
+                      <span className="flex items-center gap-2">
+                        <span className="block min-w-0 truncate text-sm font-semibold">{map.name}</span>
+                        <MapWinRateBadge result={winRate} compact />
+                      </span>
                       <span className="mt-1 block text-xs text-white/80">怪物 {levelText}</span>
                       {pending && (
                         <span role="status" className="mt-1 flex items-center gap-1 text-xs">

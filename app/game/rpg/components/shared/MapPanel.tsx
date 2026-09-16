@@ -5,6 +5,8 @@ import { useGameStore } from '../../stores/gameStore'
 import { GameCharacter, MapDefinition, MonsterDefinition } from '../../types'
 import { getMapBackgroundStyle } from '../../utils/mapBackground'
 import { MonsterInfoDialog } from '../combat/MonsterInfoDialog'
+import { MapWinRateBadge } from '../combat/MapWinRateBadge'
+import { estimateMapWinRate, playerFromLoadout } from '../../utils/mapWinRate'
 
 const CN_DIGITS = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九']
 
@@ -142,7 +144,12 @@ const MapDetailDialog = ({
 }
 
 export function MapPanel() {
-  const { character, maps, currentMap, enterMap, teleportToMap, isLoading } = useGameStore()
+  const { character, maps, currentMap, enterMap, teleportToMap, isLoading, combatStats, skills, enabledSkillIds } =
+    useGameStore()
+  const winRatePlayer = useMemo(
+    () => playerFromLoadout(character, combatStats, skills, enabledSkillIds),
+    [character, combatStats, skills, enabledSkillIds]
+  )
 
   const [selectedMap, setSelectedMap] = useState<MapDefinition | null>(null)
   const [selectedMonster, setSelectedMonster] = useState<MonsterDefinition | null>(null)
@@ -239,6 +246,10 @@ export function MapPanel() {
                     minMonsterLevel != null && maxMonsterLevel != null
                       ? `Lv.${minMonsterLevel}-${maxMonsterLevel}`
                       : '—'
+                  const winRate =
+                    winRatePlayer != null
+                      ? estimateMapWinRate(map, winRatePlayer, character?.difficulty_tier ?? 0)
+                      : null
 
                   return (
                     <div
@@ -268,7 +279,10 @@ export function MapPanel() {
                           {map.description}
                         </p>
                         <div className="mb-1.5 flex items-center justify-between text-xs">
-                          <span className="text-muted-foreground">怪物 {levelText}</span>
+                          <span className="text-muted-foreground flex items-center gap-2">
+                            怪物 {levelText}
+                            <MapWinRateBadge result={winRate} />
+                          </span>
                           <div className="flex gap-1">
                             <span className="text-blue-600 dark:text-blue-400" title="传送点已解锁">
                               🌀
