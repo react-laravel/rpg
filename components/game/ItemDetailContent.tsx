@@ -5,7 +5,6 @@ import { QUALITY_COLORS, QUALITY_NAMES, STAT_NAMES } from '@/app/game/rpg/types'
 import { ItemTipIcon } from './ItemTipIcon'
 import {
   formatItemStatValue,
-  formatAffixLine,
   getDisplayableItemStats,
   getItemDisplayName,
   getItemTotalStats,
@@ -18,15 +17,9 @@ interface ItemDetailContentProps {
   type: 'inventory' | 'equipment'
 }
 
-export function ItemDetailContent({ item, type }: ItemDetailContentProps) {
+export function ItemDetailContent({ item }: ItemDetailContentProps) {
   const quality = item.quality
   const stats = getDisplayableItemStats(getItemTotalStats(item))
-  const affixLines =
-    type === 'inventory'
-      ? (item.affixes ?? [])
-          .map(affix => formatAffixLine(affix))
-          .filter((line): line is string => line != null)
-      : []
   const displayName = getItemDisplayName(item)
   const typeName = ITEM_TYPE_NAMES[item.definition?.type ?? '']
   const subType = item.definition?.sub_type
@@ -34,10 +27,7 @@ export function ItemDetailContent({ item, type }: ItemDetailContentProps) {
   const price = item.sell_price
   const buyPrice = item.definition?.buy_price
   const hasStatBlock =
-    Object.keys(stats).length > 0 ||
-    affixLines.length > 0 ||
-    (buyPrice != null && buyPrice > 0) ||
-    (price != null && price > 0)
+    Object.keys(stats).length > 0 || (buyPrice != null && buyPrice > 0) || (price != null && price > 0)
 
   return (
     <div
@@ -74,12 +64,6 @@ export function ItemDetailContent({ item, type }: ItemDetailContentProps) {
             {Object.entries(stats).map(([stat, value]) => (
               <p key={stat} className="text-green-600 dark:text-green-400">
                 +{formatItemStatValue(Number(value), stat)} {STAT_NAMES[stat] || stat}
-              </p>
-            ))}
-
-            {affixLines.map((line, i) => (
-              <p key={i} className="text-blue-600 dark:text-blue-400">
-                {line}
               </p>
             ))}
 

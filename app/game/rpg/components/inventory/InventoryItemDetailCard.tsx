@@ -5,7 +5,6 @@ import { CopperDisplay } from '../shared/CopperDisplay'
 import { GameItem, QUALITY_COLORS, QUALITY_NAMES, STAT_NAMES } from '../../types'
 import {
   formatItemStatValue,
-  formatAffixLine,
   getDisplayableItemStats,
   getItemDisplayName,
   getItemTotalStats,
@@ -62,12 +61,9 @@ export function EquipmentDetailBody({
   showBuyPrice = false,
 }: EquipmentDetailBodyProps) {
   const displayStats = getDisplayableItemStats(getItemTotalStats(item))
-  const affixLines = (item.affixes ?? [])
-    .map(affix => formatAffixLine(affix))
-    .filter((line): line is string => line != null)
   const hasBuyPrice =
     showBuyPrice && item.definition?.buy_price != null && item.definition.buy_price > 0
-  const hasStatBlock = Object.keys(displayStats).length > 0 || affixLines.length > 0 || hasBuyPrice
+  const hasStatBlock = Object.keys(displayStats).length > 0 || hasBuyPrice
 
   return (
     <>
@@ -80,12 +76,6 @@ export function EquipmentDetailBody({
               +{formatItemStatValue(Number(value), stat)} {STAT_NAMES[stat] || stat}
             </p>
           ))}
-          {item.definition?.type !== 'gem' &&
-            affixLines.map((line, idx) => (
-              <p key={idx} className="text-blue-600 dark:text-blue-400">
-                {line}
-              </p>
-            ))}
           {hasBuyPrice && (
             <p className="text-purple-600 dark:text-purple-400">
               售价:{' '}

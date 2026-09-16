@@ -253,11 +253,7 @@ function CombatLogDetailDialog({
               </h4>
               {d.damage_detail?.total != null ? (
                 <div className="space-y-1 text-sm">
-                  <div className="flex justify-between">
-                    <span>普攻伤害:</span>
-                    <span className="text-red-500">{d.damage_detail.base_attack}</span>
-                  </div>
-                  {((d.damage_detail.skill_damage ?? 0) > 0 || playerSkillsUsed.length > 0) && (
+                  {(d.damage_detail.skill_damage ?? 0) > 0 || playerSkillsUsed.length > 0 ? (
                     <div className="flex justify-between gap-2">
                       <span className="flex min-w-0 flex-wrap items-center gap-1.5">
                         <span className="shrink-0">技能伤害:</span>
@@ -267,9 +263,14 @@ function CombatLogDetailDialog({
                       </span>
                       {(d.damage_detail.skill_damage ?? 0) > 0 ? (
                         <span className="shrink-0 text-orange-500">
-                          +{d.damage_detail.skill_damage}
+                          {d.damage_detail.skill_damage}
                         </span>
                       ) : null}
+                    </div>
+                  ) : (
+                    <div className="flex justify-between">
+                      <span>普攻伤害:</span>
+                      <span className="text-red-500">{d.damage_detail.base_attack}</span>
                     </div>
                   )}
                   {d.damage_detail.crit_damage > 0 && (
