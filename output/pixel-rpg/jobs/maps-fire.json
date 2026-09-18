@@ -1,0 +1,47 @@
+{
+  "id": "maps-fire",
+  "kind": "maps",
+  "cols": 3,
+  "rows": 2,
+  "tileSize": 256,
+  "tiles": [
+    {
+      "key": "pixel-map-15",
+      "name": "炽砂戈壁",
+      "ordinal": 15,
+      "aliases": [
+        "abyss-entrance",
+        "map_15"
+      ]
+    },
+    {
+      "key": "pixel-map-16",
+      "name": "熔岩裂谷",
+      "ordinal": 16,
+      "aliases": [
+        "dark-maze",
+        "map_16"
+      ]
+    },
+    {
+      "key": "pixel-map-17",
+      "name": "烈阳祭坛",
+      "ordinal": 17,
+      "aliases": [
+        "void-rift",
+        "map_17"
+      ]
+    },
+    {
+      "key": "pixel-map-18",
+      "name": "太阳熔炉",
+      "ordinal": 18,
+      "aliases": [
+        "abyss-throne",
+        "map_18"
+      ]
+    }
+  ],
+  "prompt": "复古像素RPG战斗地图背景合集，烈阳火域主题，赤红、橙金、黑岩配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.炽热红砂戈壁，风化石柱与远处火山；2.熔岩河穿过黑色岩谷，中央完整石台；3.落日下的太阳祭坛，红砂石阶与金色日轮；4.巨型太阳熔炉与环形黑曜石平台，赤金光芒。剩余格子留纯黑空白。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。",
+  "source": "output/pixel-rpg/sources/maps-fire.png"
+}

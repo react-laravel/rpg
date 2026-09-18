@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
+import Image from '@/components/game/GameImage'
 import { useShallow } from 'zustand/react/shallow'
 import { useGameStore } from '../../stores/gameStore'
 import { EquipmentSlot, GameItem } from '../../types'

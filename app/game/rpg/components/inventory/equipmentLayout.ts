@@ -4,7 +4,7 @@ export const CHARACTER_PORTRAIT = '/game/rpg/characters/mage.jpg'
 
 /**
  * 纸娃娃槽位布局：人物居中，装备槽分列左右四行。
- * 左列：头盔、武器、手套、靴子；右列：护符、衣服、戒指、腰带。
+ * 左列：头饰、武器、手套、靴子；右列：护符、衣服、戒指、腰带。
  */
 export const PAPER_DOLL_SLOTS: Array<{
   slot: EquipmentSlot

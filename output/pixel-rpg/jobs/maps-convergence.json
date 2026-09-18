@@ -1,0 +1,65 @@
+{
+  "id": "maps-convergence",
+  "kind": "maps",
+  "cols": 3,
+  "rows": 2,
+  "tileSize": 256,
+  "tiles": [
+    {
+      "key": "pixel-map-36",
+      "name": "元素交汇地",
+      "ordinal": 36,
+      "aliases": [
+        "chaos-gate",
+        "map_36"
+      ]
+    },
+    {
+      "key": "pixel-map-37",
+      "name": "日月回廊",
+      "ordinal": 37,
+      "aliases": [
+        "void-edge",
+        "map_37"
+      ]
+    },
+    {
+      "key": "pixel-map-38",
+      "name": "星砂裂隙",
+      "ordinal": 38,
+      "aliases": [
+        "chaos-rift",
+        "map_38"
+      ]
+    },
+    {
+      "key": "pixel-map-39",
+      "name": "时轮遗迹",
+      "ordinal": 39,
+      "aliases": [
+        "chaos-demon-hall",
+        "map_39"
+      ]
+    },
+    {
+      "key": "pixel-map-40",
+      "name": "七曜圣堂",
+      "ordinal": 40,
+      "aliases": [
+        "chaos-origin-point",
+        "map_40"
+      ]
+    },
+    {
+      "key": "pixel-map-41",
+      "name": "元初王庭",
+      "ordinal": 41,
+      "aliases": [
+        "chaos-king-throne",
+        "map_41"
+      ]
+    }
+  ],
+  "prompt": "复古像素RPG战斗地图背景合集，七曜终境主题，七元素彩光、深蓝、星金配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.山水火风交汇的古代石台，各元素地貌分区；2.太阳与月亮对称的白石回廊，金蓝双色天幕；3.星空裂隙中的浮岩与星砂，蓝紫宇宙背景；4.巨型时钟遗迹，黄铜齿轮、沙漏和时间光环；5.七元素水晶环绕的圣堂，星形地面和中央空台；6.星海中的终章王庭，七色巨柱与宏伟元素王座。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。",
+  "source": "output/pixel-rpg/sources/maps-convergence.png"
+}

@@ -1,0 +1,146 @@
+{
+  "id": "monsters-water",
+  "kind": "monsters",
+  "cols": 5,
+  "rows": 3,
+  "tileSize": 96,
+  "tiles": [
+    {
+      "key": "pixel-monster-028",
+      "name": "溪水史莱姆",
+      "ordinal": 28,
+      "aliases": [
+        "archangel",
+        "monster_28"
+      ]
+    },
+    {
+      "key": "pixel-monster-029",
+      "name": "蓝鳍鱼人",
+      "ordinal": 29,
+      "aliases": [
+        "fallen-angel",
+        "monster_29"
+      ]
+    },
+    {
+      "key": "pixel-monster-030",
+      "name": "巨钳河蟹",
+      "ordinal": 30,
+      "aliases": [
+        "archangel-chief",
+        "monster_30"
+      ]
+    },
+    {
+      "key": "pixel-monster-031",
+      "name": "贝壳寄居蟹",
+      "ordinal": 31,
+      "aliases": [
+        "temple-knight",
+        "monster_31"
+      ]
+    },
+    {
+      "key": "pixel-monster-032",
+      "name": "水箭海马",
+      "ordinal": 32,
+      "aliases": [
+        "divine-servant",
+        "monster_32"
+      ]
+    },
+    {
+      "key": "pixel-monster-033",
+      "name": "浪潮巨龟",
+      "ordinal": 33,
+      "aliases": [
+        "divine-messenger",
+        "monster_33"
+      ]
+    },
+    {
+      "key": "pixel-monster-034",
+      "name": "锈锚亡灵",
+      "ordinal": 34,
+      "aliases": [
+        "divine-general",
+        "monster_34"
+      ]
+    },
+    {
+      "key": "pixel-monster-035",
+      "name": "灯笼水母",
+      "ordinal": 35,
+      "aliases": [
+        "divine-priest",
+        "monster_35"
+      ]
+    },
+    {
+      "key": "pixel-monster-036",
+      "name": "铁钩船长",
+      "ordinal": 36,
+      "aliases": [
+        "god-king-avatar",
+        "monster_36"
+      ]
+    },
+    {
+      "key": "pixel-monster-037",
+      "name": "冰晶蝠",
+      "ordinal": 37,
+      "aliases": [
+        "judgment-angel",
+        "monster_37"
+      ]
+    },
+    {
+      "key": "pixel-monster-038",
+      "name": "雪原狐",
+      "ordinal": 38,
+      "aliases": [
+        "eternal-guardian",
+        "monster_38"
+      ]
+    },
+    {
+      "key": "pixel-monster-039",
+      "name": "霜爪巨熊",
+      "ordinal": 39,
+      "aliases": [
+        "time-space-rift-creature",
+        "monster_39"
+      ]
+    },
+    {
+      "key": "pixel-monster-040",
+      "name": "珊瑚守卫",
+      "ordinal": 40,
+      "aliases": [
+        "eternal-warrior",
+        "monster_40"
+      ]
+    },
+    {
+      "key": "pixel-monster-041",
+      "name": "旋流海蛇",
+      "ordinal": 41,
+      "aliases": [
+        "eternal-mage",
+        "monster_41"
+      ]
+    },
+    {
+      "key": "pixel-monster-042",
+      "name": "沧海蛟龙",
+      "ordinal": 42,
+      "aliases": [
+        "eternal-king",
+        "monster_42"
+      ]
+    }
+  ],
+  "prompt": "复古奇幻RPG怪物精灵图，沧澜水境主题，湖蓝、银白、冰青配色。严格5列3行等大网格，按从左到右、从上到下依次画：溪水史莱姆、蓝鳍鱼人、巨钳河蟹、贝壳寄居蟹、水箭海马、浪潮巨龟、锈锚亡灵、灯笼水母、铁钩船长、冰晶蝠、雪原狐、霜爪巨熊、珊瑚守卫、旋流海蛇、沧海蛟龙。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。",
+  "source": "output/pixel-rpg/sources/monsters-water.png"
+}

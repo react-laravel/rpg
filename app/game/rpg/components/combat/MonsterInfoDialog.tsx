@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import Image from '@/components/game/GameImage'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { useMonsterDrops } from '../../hooks/useMonsterDrops'
 import type { CombatMonster } from '../../types'
 import { getRpgMonsterImageUrl } from '../../utils/assetUrls'
@@ -29,7 +29,8 @@ export function MonsterInfoDialog({ monster, onClose }: MonsterInfoDialogProps) 
   return (
     <>
       <Dialog open={!!monster && !viewingImage} onOpenChange={open => !open && onClose()}>
-        <DialogContent className="max-h-[80vh] max-w-md overflow-y-auto">
+        <DialogContent className="max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-md overflow-y-auto p-4">
+          {!compendiumMonsterDrops && <DialogTitle className="sr-only">{monster.name}</DialogTitle>}
           {compendiumMonsterDrops ? (
             <div className="space-y-4">
               {/* 顶部：图片 + 属性 */}
@@ -37,7 +38,7 @@ export function MonsterInfoDialog({ monster, onClose }: MonsterInfoDialogProps) 
                 {/* 左侧图片 */}
                 <button
                   type="button"
-                  className="relative h-[200px] w-[200px] shrink-0 cursor-zoom-in"
+                  className="relative h-28 w-28 shrink-0 cursor-zoom-in sm:h-40 sm:w-40"
                   onClick={e => {
                     e.stopPropagation()
                     setViewingImage(getRpgMonsterImageUrl(monster.icon, true))
@@ -51,9 +52,9 @@ export function MonsterInfoDialog({ monster, onClose }: MonsterInfoDialogProps) 
                   />
                 </button>
                 {/* 右侧属性 */}
-                <div className="flex-1 space-y-3">
+                <div className="min-w-0 flex-1 space-y-3">
                   <div>
-                    <h3 className="text-lg font-bold">{compendiumMonsterDrops.monster.name}</h3>
+                    <DialogTitle className="pr-5 text-lg font-bold">{compendiumMonsterDrops.monster.name}</DialogTitle>
                     <p className="text-muted-foreground text-sm">
                       Lv.{monsterStats?.level ?? compendiumMonsterDrops.monster.level} ·{' '}
                       {getMonsterTypeName(compendiumMonsterDrops.monster.type)}

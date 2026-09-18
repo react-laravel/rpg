@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import Image from '@/components/game/GameImage'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { getRpgMonsterImageUrl } from '../../utils/assetUrls'
 

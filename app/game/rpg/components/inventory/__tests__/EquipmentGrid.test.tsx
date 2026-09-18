@@ -162,7 +162,7 @@ describe('EquipmentGrid', () => {
   it('renders slot labels for empty equipment slots', () => {
     const view = render(<EquipmentGrid equipment={createEquipment()} onUnequip={vi.fn()} />)
 
-    expect(view.getByRole('button', { name: '头盔' })).toBeDisabled()
+    expect(view.getByRole('button', { name: '头饰' })).toBeDisabled()
     expect(view.getByRole('button', { name: '戒指' })).toBeDisabled()
     expect(view.getByRole('button', { name: '护符' })).toBeDisabled()
   })

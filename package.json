@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "type-check": "tsc --noEmit",
     "test": "vitest --run",
-    "test:watch": "vitest --watch"
+    "test:watch": "vitest --watch",
+    "assets:pixel": "node scripts/build-pixel-rpg.mjs --verify"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.15",

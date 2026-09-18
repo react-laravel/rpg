@@ -1,0 +1,17 @@
+{
+    "passed": true,
+    "database": "isolated PostgreSQL on 127.0.0.1:55439",
+    "backup": "pixel-v1-20260918-201430.json.gz",
+    "backup_bytes": 10156,
+    "checks": {
+        "backup_contains_original_gear": true,
+        "legacy_sword_removed": true,
+        "mage_staff_preserved": true,
+        "character_location_preserved": true,
+        "character_discoveries_preserved": true,
+        "world_complete": true,
+        "sets_complete": true,
+        "postgres_sequence_advanced": true,
+        "old_slot_cleared": true
+    }
+}

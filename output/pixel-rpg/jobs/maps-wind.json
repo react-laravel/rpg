@@ -1,0 +1,65 @@
+{
+  "id": "maps-wind",
+  "kind": "maps",
+  "cols": 3,
+  "rows": 2,
+  "tileSize": 256,
+  "tiles": [
+    {
+      "key": "pixel-map-24",
+      "name": "风铃草原",
+      "ordinal": 24,
+      "aliases": [
+        "god-realm-entrance",
+        "map_24"
+      ]
+    },
+    {
+      "key": "pixel-map-25",
+      "name": "云桥峭壁",
+      "ordinal": 25,
+      "aliases": [
+        "god-servant-hall",
+        "map_25"
+      ]
+    },
+    {
+      "key": "pixel-map-26",
+      "name": "悬空群岛",
+      "ordinal": 26,
+      "aliases": [
+        "god-priest-temple",
+        "map_26"
+      ]
+    },
+    {
+      "key": "pixel-map-27",
+      "name": "风暴回廊",
+      "ordinal": 27,
+      "aliases": [
+        "god-general-palace",
+        "map_27"
+      ]
+    },
+    {
+      "key": "pixel-map-28",
+      "name": "苍穹观星台",
+      "ordinal": 28,
+      "aliases": [
+        "god-king-temple",
+        "map_28"
+      ]
+    },
+    {
+      "key": "pixel-map-29",
+      "name": "天空之门",
+      "ordinal": 29,
+      "aliases": [
+        "judgment-court",
+        "map_29"
+      ]
+    }
+  ],
+  "prompt": "复古像素RPG战斗地图背景合集，天空群岛主题，天青、象牙白、薄荷绿配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.微风吹拂的高原草地，风铃木架与远山白云；2.云海峭壁上的悬索桥和开阔石台；3.天空中的漂浮小岛，瀑布流入云海；4.浮空遗迹回廊，旋风石柱和青绿色气流；5.云端观星台，黄铜望远镜、星盘与蓝天；6.宏伟白石天空门，云海台阶与展开的羽翼雕刻。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。",
+  "source": "output/pixel-rpg/sources/maps-wind.png"
+}

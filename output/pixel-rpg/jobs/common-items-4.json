@@ -1,0 +1,59 @@
+{
+  "id": "common-items-4",
+  "kind": "items",
+  "cols": 3,
+  "rows": 2,
+  "tileSize": 64,
+  "tiles": [
+    {
+      "key": "attack-gem",
+      "name": "攻击宝石",
+      "ordinal": 146,
+      "aliases": [
+        "item_146"
+      ]
+    },
+    {
+      "key": "defense-gem",
+      "name": "防御宝石",
+      "ordinal": 147,
+      "aliases": [
+        "item_147"
+      ]
+    },
+    {
+      "key": "hp-gem",
+      "name": "生命宝石",
+      "ordinal": 148,
+      "aliases": [
+        "item_148"
+      ]
+    },
+    {
+      "key": "mana-gem",
+      "name": "法力宝石",
+      "ordinal": 149,
+      "aliases": [
+        "item_149"
+      ]
+    },
+    {
+      "key": "crit-gem",
+      "name": "暴击宝石",
+      "ordinal": 150,
+      "aliases": [
+        "item_150"
+      ]
+    },
+    {
+      "key": "crit-damage-gem",
+      "name": "暴击伤害宝石",
+      "ordinal": 151,
+      "aliases": [
+        "item_151"
+      ]
+    }
+  ],
+  "prompt": "复古RPG像素装备精灵图，清晰像素块、有限配色。严格3列2行等大网格，依照从左到右从上到下的顺序画：攻击宝石（宝石）、防御宝石（宝石）、生命宝石（宝石）、法力宝石（宝石）、暴击宝石（宝石）、暴击伤害宝石（宝石）。每格一件对应装备，完整居中留空，不接触邻格。法杖都是法师武器；饰品外形清晰易辨。真实透明背景，无人物无文字无格线。",
+  "source": "output/pixel-rpg/sources/common-items-4.png"
+}

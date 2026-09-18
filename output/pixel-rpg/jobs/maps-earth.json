@@ -1,0 +1,56 @@
+{
+  "id": "maps-earth",
+  "kind": "maps",
+  "cols": 3,
+  "rows": 2,
+  "tileSize": 256,
+  "tiles": [
+    {
+      "key": "pixel-map-01",
+      "name": "晨光营地",
+      "ordinal": 1,
+      "aliases": [
+        "safe-training-camp",
+        "map_1"
+      ]
+    },
+    {
+      "key": "pixel-map-02",
+      "name": "砾石小径",
+      "ordinal": 2,
+      "aliases": [
+        "dark-enchanted-forest",
+        "map_2"
+      ]
+    },
+    {
+      "key": "pixel-map-03",
+      "name": "赤土荒坡",
+      "ordinal": 3,
+      "aliases": [
+        "goblin-cave-lair",
+        "map_3"
+      ]
+    },
+    {
+      "key": "pixel-map-04",
+      "name": "古矿坑道",
+      "ordinal": 4,
+      "aliases": [
+        "wild-boar-plains",
+        "map_4"
+      ]
+    },
+    {
+      "key": "pixel-map-05",
+      "name": "大地石庭",
+      "ordinal": 5,
+      "aliases": [
+        "treant-sacred-grove",
+        "map_5"
+      ]
+    }
+  ],
+  "prompt": "复古像素RPG战斗地图背景合集，大地边境主题，土棕、草绿、暖阳配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.晨光中的青草营地，木栅栏、帐篷和泥土练习场；2.碎石小径穿过低矮草坡，石堆与路牌；3.红土荒坡、层叠砂岩和稀疏灌木；4.废弃矿坑、木支架、矿车和发光矿石；5.巨石环绕的开阔祭庭，岩石符文与山脉。剩余格子留纯黑空白。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。",
+  "source": "output/pixel-rpg/sources/maps-earth.png"
+}

@@ -1,0 +1,146 @@
+{
+  "id": "monsters-earth",
+  "kind": "monsters",
+  "cols": 5,
+  "rows": 3,
+  "tileSize": 96,
+  "tiles": [
+    {
+      "key": "pixel-monster-001",
+      "name": "泥团史莱姆",
+      "ordinal": 1,
+      "aliases": [
+        "training-pig",
+        "monster_1"
+      ]
+    },
+    {
+      "key": "pixel-monster-002",
+      "name": "草地野猪",
+      "ordinal": 2,
+      "aliases": [
+        "training-deer",
+        "monster_2"
+      ]
+    },
+    {
+      "key": "pixel-monster-003",
+      "name": "短耳兔",
+      "ordinal": 3,
+      "aliases": [
+        "training-rabbit",
+        "monster_3"
+      ]
+    },
+    {
+      "key": "pixel-monster-004",
+      "name": "岩壳甲虫",
+      "ordinal": 4,
+      "aliases": [
+        "wild-boar",
+        "monster_4"
+      ]
+    },
+    {
+      "key": "pixel-monster-005",
+      "name": "砂尾蜥",
+      "ordinal": 5,
+      "aliases": [
+        "wild-wolf",
+        "monster_5"
+      ]
+    },
+    {
+      "key": "pixel-monster-006",
+      "name": "巨角野猪",
+      "ordinal": 6,
+      "aliases": [
+        "forest-goblin",
+        "monster_6"
+      ]
+    },
+    {
+      "key": "pixel-monster-007",
+      "name": "土灵",
+      "ordinal": 7,
+      "aliases": [
+        "giant-alpha-wolf",
+        "monster_7"
+      ]
+    },
+    {
+      "key": "pixel-monster-008",
+      "name": "荒原狼",
+      "ordinal": 8,
+      "aliases": [
+        "treant-elder",
+        "monster_8"
+      ]
+    },
+    {
+      "key": "pixel-monster-009",
+      "name": "岩背犀",
+      "ordinal": 9,
+      "aliases": [
+        "wild-boar-king",
+        "monster_9"
+      ]
+    },
+    {
+      "key": "pixel-monster-010",
+      "name": "矿洞蝙蝠",
+      "ordinal": 10,
+      "aliases": [
+        "cave-bat",
+        "monster_10"
+      ]
+    },
+    {
+      "key": "pixel-monster-011",
+      "name": "铜牙鼠",
+      "ordinal": 11,
+      "aliases": [
+        "cave-spider",
+        "monster_11"
+      ]
+    },
+    {
+      "key": "pixel-monster-012",
+      "name": "矿镐傀儡",
+      "ordinal": 12,
+      "aliases": [
+        "skeleton-soldier",
+        "monster_12"
+      ]
+    },
+    {
+      "key": "pixel-monster-013",
+      "name": "石拳魔像",
+      "ordinal": 13,
+      "aliases": [
+        "skeleton-mage",
+        "monster_13"
+      ]
+    },
+    {
+      "key": "pixel-monster-014",
+      "name": "砂晶蝎",
+      "ordinal": 14,
+      "aliases": [
+        "bone-king",
+        "monster_14"
+      ]
+    },
+    {
+      "key": "pixel-monster-015",
+      "name": "磐石巨灵",
+      "ordinal": 15,
+      "aliases": [
+        "giant-spider",
+        "monster_15"
+      ]
+    }
+  ],
+  "prompt": "复古奇幻RPG怪物精灵图，大地边境主题，土棕、草绿、暖阳配色。严格5列3行等大网格，按从左到右、从上到下依次画：泥团史莱姆、草地野猪、短耳兔、岩壳甲虫、砂尾蜥、巨角野猪、土灵、荒原狼、岩背犀、矿洞蝙蝠、铜牙鼠、矿镐傀儡、石拳魔像、砂晶蝎、磐石巨灵。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。",
+  "source": "output/pixel-rpg/sources/monsters-earth.png"
+}

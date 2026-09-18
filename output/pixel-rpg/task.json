@@ -1,0 +1,155 @@
+{
+  "version": "pixel-v1",
+  "automationId": "rpg",
+  "state": "implementation_complete",
+  "scope": {
+    "equipmentSets": 7,
+    "equipmentItems": 110,
+    "maps": 41,
+    "monsters": 123,
+    "renameAndReassign": true,
+    "pushBothRepositories": true,
+    "setItems": 56,
+    "commonItems": 54
+  },
+  "generated": [
+    {
+      "id": "equipment-metal",
+      "count": 8
+    },
+    {
+      "id": "equipment-wood",
+      "count": 8
+    },
+    {
+      "id": "equipment-water",
+      "count": 8
+    },
+    {
+      "id": "equipment-fire",
+      "count": 8
+    },
+    {
+      "id": "equipment-earth",
+      "count": 8
+    },
+    {
+      "id": "equipment-wind",
+      "count": 8
+    },
+    {
+      "id": "equipment-thunder",
+      "count": 8
+    },
+    {
+      "id": "common-items-1",
+      "count": 16
+    },
+    {
+      "id": "common-items-2",
+      "count": 16
+    },
+    {
+      "id": "common-items-3",
+      "count": 16
+    },
+    {
+      "id": "common-items-4",
+      "count": 6
+    },
+    {
+      "id": "maps-convergence",
+      "count": 6
+    },
+    {
+      "id": "maps-earth",
+      "count": 5
+    },
+    {
+      "id": "maps-fire",
+      "count": 4
+    },
+    {
+      "id": "maps-metal",
+      "count": 5
+    },
+    {
+      "id": "maps-thunder",
+      "count": 6
+    },
+    {
+      "id": "maps-water",
+      "count": 5
+    },
+    {
+      "id": "maps-wind",
+      "count": 6
+    },
+    {
+      "id": "maps-wood",
+      "count": 4
+    },
+    {
+      "id": "monsters-convergence",
+      "count": 18
+    },
+    {
+      "id": "monsters-earth",
+      "count": 15
+    },
+    {
+      "id": "monsters-fire",
+      "count": 12
+    },
+    {
+      "id": "monsters-metal",
+      "count": 15
+    },
+    {
+      "id": "monsters-thunder",
+      "count": 18
+    },
+    {
+      "id": "monsters-water",
+      "count": 15
+    },
+    {
+      "id": "monsters-wind",
+      "count": 18
+    },
+    {
+      "id": "monsters-wood",
+      "count": 12
+    }
+  ],
+  "completed": [],
+  "remaining": [
+    "publish frontend and verify deployment",
+    "publish API and verify deployment",
+    "verify remote parity and clean worktrees",
+    "close automation rpg"
+  ],
+  "processed": {
+    "items": 110,
+    "monsters": 123,
+    "maps": 41
+  },
+  "assetReady": true,
+  "warnings": [],
+  "updatedAt": "2026-09-18T20:27:28.126Z",
+  "integrated": true,
+  "verified": {
+    "assetIntegrity": true,
+    "backendTests": 49,
+    "frontendTests": 330,
+    "browserWidths": [
+      320,
+      768,
+      1440
+    ],
+    "sqliteUpgrade": true,
+    "postgresUpgrade": true,
+    "backendAssertions": 1504
+  },
+  "deliveryStatusFile": "output/pixel-rpg/delivery.local.json"
+}

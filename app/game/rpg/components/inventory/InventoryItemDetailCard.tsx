@@ -67,6 +67,11 @@ export function EquipmentDetailBody({
 
   return (
     <>
+      {item.definition?.description && (
+        <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
+          {item.definition.description}
+        </p>
+      )}
       <EquipmentGemSockets item={item} isLoading={isLoading} onUnsocketGem={onUnsocketGem} />
 
       {hasStatBlock && (

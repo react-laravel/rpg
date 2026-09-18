@@ -1,0 +1,18 @@
+{
+  "assets": 274,
+  "counts": {
+    "items": 110,
+    "monsters": 123,
+    "maps": 41
+  },
+  "pngBytes": 1343066,
+  "validated": [
+    "dimensions",
+    "checksums",
+    "nonempty",
+    "transparent backgrounds",
+    "binary alpha",
+    "2px padding"
+  ],
+  "passed": true
+}

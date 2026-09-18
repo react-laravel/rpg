@@ -1,0 +1,56 @@
+{
+  "id": "maps-water",
+  "kind": "maps",
+  "cols": 3,
+  "rows": 2,
+  "tileSize": 256,
+  "tiles": [
+    {
+      "key": "pixel-map-10",
+      "name": "雾溪浅滩",
+      "ordinal": 10,
+      "aliases": [
+        "hell-gate",
+        "map_10"
+      ]
+    },
+    {
+      "key": "pixel-map-11",
+      "name": "潮汐沙洲",
+      "ordinal": 11,
+      "aliases": [
+        "burning-fire-plains",
+        "map_11"
+      ]
+    },
+    {
+      "key": "pixel-map-12",
+      "name": "沉船暗湾",
+      "ordinal": 12,
+      "aliases": [
+        "fire-demon-cave",
+        "map_12"
+      ]
+    },
+    {
+      "key": "pixel-map-13",
+      "name": "寒晶冰窟",
+      "ordinal": 13,
+      "aliases": [
+        "demon-fortress",
+        "map_13"
+      ]
+    },
+    {
+      "key": "pixel-map-14",
+      "name": "沧澜龙宫",
+      "ordinal": 14,
+      "aliases": [
+        "demon-king-palace",
+        "map_14"
+      ]
+    }
+  ],
+  "prompt": "复古像素RPG战斗地图背景合集，沧澜水境主题，湖蓝、银白、冰青配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.薄雾溪流与鹅卵石浅滩，芦苇和小木桥；2.碧蓝海湾里的沙洲，潮池、贝壳和礁石；3.月光下的沉船海湾，破船残骸、灯笼与湿沙；4.蓝色冰窟、巨大冰晶柱与冻结水池；5.水下珊瑚龙宫，碧蓝穹顶、贝壳石柱和开阔地面。剩余格子留纯黑空白。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。",
+  "source": "output/pixel-rpg/sources/maps-water.png"
+}

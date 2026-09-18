@@ -1,0 +1,173 @@
+{
+  "id": "monsters-convergence",
+  "kind": "monsters",
+  "cols": 6,
+  "rows": 3,
+  "tileSize": 96,
+  "tiles": [
+    {
+      "key": "pixel-monster-106",
+      "name": "岩焰龟",
+      "ordinal": 106,
+      "aliases": [
+        "map-36-boar",
+        "monster_106"
+      ]
+    },
+    {
+      "key": "pixel-monster-107",
+      "name": "水木精",
+      "ordinal": 107,
+      "aliases": [
+        "map-36-deer",
+        "monster_107"
+      ]
+    },
+    {
+      "key": "pixel-monster-108",
+      "name": "风雷獾",
+      "ordinal": 108,
+      "aliases": [
+        "map-36-rabbit",
+        "monster_108"
+      ]
+    },
+    {
+      "key": "pixel-monster-109",
+      "name": "日辉守卫",
+      "ordinal": 109,
+      "aliases": [
+        "map-37-boar",
+        "monster_109"
+      ]
+    },
+    {
+      "key": "pixel-monster-110",
+      "name": "月影鹿",
+      "ordinal": 110,
+      "aliases": [
+        "map-37-deer",
+        "monster_110"
+      ]
+    },
+    {
+      "key": "pixel-monster-111",
+      "name": "蚀光双首狼",
+      "ordinal": 111,
+      "aliases": [
+        "map-37-rabbit",
+        "monster_111"
+      ]
+    },
+    {
+      "key": "pixel-monster-112",
+      "name": "星砂蝎",
+      "ordinal": 112,
+      "aliases": [
+        "map-38-boar",
+        "monster_112"
+      ]
+    },
+    {
+      "key": "pixel-monster-113",
+      "name": "晶翼蝶",
+      "ordinal": 113,
+      "aliases": [
+        "map-38-deer",
+        "monster_113"
+      ]
+    },
+    {
+      "key": "pixel-monster-114",
+      "name": "陨星巨像",
+      "ordinal": 114,
+      "aliases": [
+        "map-38-rabbit",
+        "monster_114"
+      ]
+    },
+    {
+      "key": "pixel-monster-115",
+      "name": "钟摆傀儡",
+      "ordinal": 115,
+      "aliases": [
+        "map-39-boar",
+        "monster_115"
+      ]
+    },
+    {
+      "key": "pixel-monster-116",
+      "name": "时砂幽灵",
+      "ordinal": 116,
+      "aliases": [
+        "map-39-deer",
+        "monster_116"
+      ]
+    },
+    {
+      "key": "pixel-monster-117",
+      "name": "刻轮守卫",
+      "ordinal": 117,
+      "aliases": [
+        "map-39-rabbit",
+        "monster_117"
+      ]
+    },
+    {
+      "key": "pixel-monster-118",
+      "name": "七曜灵偶",
+      "ordinal": 118,
+      "aliases": [
+        "map-40-boar",
+        "monster_118"
+      ]
+    },
+    {
+      "key": "pixel-monster-119",
+      "name": "流光狮鹫",
+      "ordinal": 119,
+      "aliases": [
+        "map-40-deer",
+        "monster_119"
+      ]
+    },
+    {
+      "key": "pixel-monster-120",
+      "name": "星环祭司",
+      "ordinal": 120,
+      "aliases": [
+        "map-40-rabbit",
+        "monster_120"
+      ]
+    },
+    {
+      "key": "pixel-monster-121",
+      "name": "元素卫士",
+      "ordinal": 121,
+      "aliases": [
+        "map-41-boar",
+        "monster_121"
+      ]
+    },
+    {
+      "key": "pixel-monster-122",
+      "name": "星界游蛇",
+      "ordinal": 122,
+      "aliases": [
+        "map-41-deer",
+        "monster_122"
+      ]
+    },
+    {
+      "key": "pixel-monster-123",
+      "name": "元初巨龙",
+      "ordinal": 123,
+      "aliases": [
+        "map-41-rabbit",
+        "monster_123"
+      ]
+    }
+  ],
+  "prompt": "复古奇幻RPG怪物精灵图，七曜终境主题，七元素彩光、深蓝、星金配色。严格6列3行等大网格，按从左到右、从上到下依次画：岩焰龟、水木精、风雷獾、日辉守卫、月影鹿、蚀光双首狼、星砂蝎、晶翼蝶、陨星巨像、钟摆傀儡、时砂幽灵、刻轮守卫、七曜灵偶、流光狮鹫、星环祭司、元素卫士、星界游蛇、元初巨龙。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。 Transparent alpha PNG. 每个主体只占格子的七成面积，四周留足透明空白，不画任何背景或背景光晕。",
+  "source": "output/pixel-rpg/sources/monsters-convergence.png"
+}

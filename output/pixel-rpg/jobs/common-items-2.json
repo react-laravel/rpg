@@ -1,0 +1,139 @@
+{
+  "id": "common-items-2",
+  "kind": "items",
+  "cols": 4,
+  "rows": 4,
+  "tileSize": 64,
+  "tiles": [
+    {
+      "key": "cloth-boots",
+      "name": "布鞋",
+      "ordinal": 80,
+      "aliases": [
+        "item_80"
+      ]
+    },
+    {
+      "key": "cloth-belt",
+      "name": "布腰带",
+      "ordinal": 93,
+      "aliases": [
+        "item_93"
+      ]
+    },
+    {
+      "key": "copper-ring",
+      "name": "铜戒指",
+      "ordinal": 106,
+      "aliases": [
+        "item_106"
+      ]
+    },
+    {
+      "key": "silver-ring",
+      "name": "银戒指",
+      "ordinal": 107,
+      "aliases": [
+        "item_107"
+      ]
+    },
+    {
+      "key": "gold-ring",
+      "name": "金戒指",
+      "ordinal": 108,
+      "aliases": [
+        "item_108"
+      ]
+    },
+    {
+      "key": "ruby-ring",
+      "name": "红宝石戒指",
+      "ordinal": 109,
+      "aliases": [
+        "item_109"
+      ]
+    },
+    {
+      "key": "sapphire-ring",
+      "name": "蓝宝石戒指",
+      "ordinal": 110,
+      "aliases": [
+        "item_110"
+      ]
+    },
+    {
+      "key": "jade-ring",
+      "name": "翡翠戒指",
+      "ordinal": 111,
+      "aliases": [
+        "item_111"
+      ]
+    },
+    {
+      "key": "raven-ring",
+      "name": "乌鸦之戒",
+      "ordinal": 112,
+      "aliases": [
+        "item_112"
+      ]
+    },
+    {
+      "key": "stone-of-jordan-ring",
+      "name": "星辉之戒",
+      "ordinal": 113,
+      "aliases": [
+        "item_113"
+      ]
+    },
+    {
+      "key": "dwarf-ring",
+      "name": "矮人戒指",
+      "ordinal": 114,
+      "aliases": [
+        "item_114"
+      ]
+    },
+    {
+      "key": "magic-ring",
+      "name": "魔法戒指",
+      "ordinal": 115,
+      "aliases": [
+        "item_115"
+      ]
+    },
+    {
+      "key": "angel-ring",
+      "name": "天使之戒",
+      "ordinal": 117,
+      "aliases": [
+        "item_117"
+      ]
+    },
+    {
+      "key": "divine-ring",
+      "name": "辉耀之戒",
+      "ordinal": 118,
+      "aliases": [
+        "item_118"
+      ]
+    },
+    {
+      "key": "eternal-ring",
+      "name": "永恒之戒",
+      "ordinal": 119,
+      "aliases": [
+        "item_119"
+      ]
+    },
+    {
+      "key": "chaos-ring",
+      "name": "混沌之戒",
+      "ordinal": 120,
+      "aliases": [
+        "item_120"
+      ]
+    }
+  ],
+  "prompt": "复古RPG像素装备精灵图，清晰像素块、有限配色。严格4列4行等大网格，依照从左到右从上到下的顺序画：布鞋（靴子）、布腰带（腰带）、铜戒指（戒指）、银戒指（戒指）、金戒指（戒指）、红宝石戒指（戒指）、蓝宝石戒指（戒指）、翡翠戒指（戒指）、乌鸦之戒（戒指）、星辉之戒（戒指）、矮人戒指（戒指）、魔法戒指（戒指）、天使之戒（戒指）、辉耀之戒（戒指）、永恒之戒（戒指）、混沌之戒（戒指）。每格一件对应装备，完整居中留空，不接触邻格。法杖都是法师武器；饰品外形清晰易辨。真实透明背景，无人物无文字无格线。 Transparent alpha PNG. 每个主体只占格子的七成面积，四周留足透明空白，不画任何背景或背景光晕。",
+  "source": "output/pixel-rpg/sources/common-items-2.png"
+}

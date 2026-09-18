@@ -1,0 +1,119 @@
+{
+  "id": "monsters-wood",
+  "kind": "monsters",
+  "cols": 4,
+  "rows": 3,
+  "tileSize": 96,
+  "tiles": [
+    {
+      "key": "pixel-monster-016",
+      "name": "苔叶蜥",
+      "ordinal": 16,
+      "aliases": [
+        "small-demon-imp",
+        "monster_16"
+      ]
+    },
+    {
+      "key": "pixel-monster-017",
+      "name": "树冠蜂",
+      "ordinal": 17,
+      "aliases": [
+        "fire-elemental",
+        "monster_17"
+      ]
+    },
+    {
+      "key": "pixel-monster-018",
+      "name": "藤鞭花妖",
+      "ordinal": 18,
+      "aliases": [
+        "hell-knight",
+        "monster_18"
+      ]
+    },
+    {
+      "key": "pixel-monster-019",
+      "name": "伞帽蘑菇怪",
+      "ordinal": 19,
+      "aliases": [
+        "hell-demon-king",
+        "monster_19"
+      ]
+    },
+    {
+      "key": "pixel-monster-020",
+      "name": "沼泽蛙",
+      "ordinal": 20,
+      "aliases": [
+        "fire-demon",
+        "monster_20"
+      ]
+    },
+    {
+      "key": "pixel-monster-021",
+      "name": "毒孢树精",
+      "ordinal": 21,
+      "aliases": [
+        "demon-wizard",
+        "monster_21"
+      ]
+    },
+    {
+      "key": "pixel-monster-022",
+      "name": "橡果精",
+      "ordinal": 22,
+      "aliases": [
+        "abyss-worm",
+        "monster_22"
+      ]
+    },
+    {
+      "key": "pixel-monster-023",
+      "name": "荆棘螳螂",
+      "ordinal": 23,
+      "aliases": [
+        "shadow-ghost",
+        "monster_23"
+      ]
+    },
+    {
+      "key": "pixel-monster-024",
+      "name": "森卫鹿灵",
+      "ordinal": 24,
+      "aliases": [
+        "void-walker",
+        "monster_24"
+      ]
+    },
+    {
+      "key": "pixel-monster-025",
+      "name": "树皮守卫",
+      "ordinal": 25,
+      "aliases": [
+        "abyss-lord",
+        "monster_25"
+      ]
+    },
+    {
+      "key": "pixel-monster-026",
+      "name": "翡翠蝶",
+      "ordinal": 26,
+      "aliases": [
+        "angel-guardian",
+        "monster_26"
+      ]
+    },
+    {
+      "key": "pixel-monster-027",
+      "name": "古榕之心",
+      "ordinal": 27,
+      "aliases": [
+        "seraph",
+        "monster_27"
+      ]
+    }
+  ],
+  "prompt": "复古奇幻RPG怪物精灵图，青藤秘境主题，翠绿、棕褐、萤光配色。严格4列3行等大网格，按从左到右、从上到下依次画：苔叶蜥、树冠蜂、藤鞭花妖、伞帽蘑菇怪、沼泽蛙、毒孢树精、橡果精、荆棘螳螂、森卫鹿灵、树皮守卫、翡翠蝶、古榕之心。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。",
+  "source": "output/pixel-rpg/sources/monsters-wood.png"
+}

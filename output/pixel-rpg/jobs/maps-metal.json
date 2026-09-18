@@ -1,0 +1,56 @@
+{
+  "id": "maps-metal",
+  "kind": "maps",
+  "cols": 3,
+  "rows": 2,
+  "tileSize": 256,
+  "tiles": [
+    {
+      "key": "pixel-map-19",
+      "name": "镀金遗道",
+      "ordinal": 19,
+      "aliases": [
+        "heaven-gate",
+        "map_19"
+      ]
+    },
+    {
+      "key": "pixel-map-20",
+      "name": "黄铜工坊",
+      "ordinal": 20,
+      "aliases": [
+        "angel-temple",
+        "map_20"
+      ]
+    },
+    {
+      "key": "pixel-map-21",
+      "name": "银辉镜殿",
+      "ordinal": 21,
+      "aliases": [
+        "hall-of-glory",
+        "map_21"
+      ]
+    },
+    {
+      "key": "pixel-map-22",
+      "name": "黄金宝库",
+      "ordinal": 22,
+      "aliases": [
+        "fallen-angel-realm",
+        "map_22"
+      ]
+    },
+    {
+      "key": "pixel-map-23",
+      "name": "铸星王庭",
+      "ordinal": 23,
+      "aliases": [
+        "archangel-temple",
+        "map_23"
+      ]
+    }
+  ],
+  "prompt": "复古像素RPG战斗地图背景合集，鎏金古国主题，黄金、黄铜、银白配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.金色遗迹道路，古代石像、金属拱门和野草；2.黄铜机械工坊，齿轮、管道、工作台和空地；3.银白镜面神殿，反光石柱与几何地砖；4.古代黄金宝库，金币堆、宝箱、金色石门；5.金属王庭与铸星熔炉，宏伟铂金王座和星徽。剩余格子留纯黑空白。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。",
+  "source": "output/pixel-rpg/sources/maps-metal.png"
+}

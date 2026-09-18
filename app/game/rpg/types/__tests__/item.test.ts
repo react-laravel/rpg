@@ -36,8 +36,8 @@ describe('item types', () => {
 
   it('should have correct slot names', () => {
     expect(SLOT_NAMES.weapon).toBe('武器')
-    expect(SLOT_NAMES.helmet).toBe('头盔')
-    expect(SLOT_NAMES.armor).toBe('盔甲')
+    expect(SLOT_NAMES.helmet).toBe('头饰')
+    expect(SLOT_NAMES.armor).toBe('法袍')
     expect(SLOT_NAMES.gloves).toBe('手套')
     expect(SLOT_NAMES.boots).toBe('靴子')
     expect(SLOT_NAMES.belt).toBe('腰带')

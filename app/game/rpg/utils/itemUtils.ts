@@ -19,8 +19,8 @@ type ItemWithDefinition =
 
 // 物品类型图标映射
 export const ITEM_TYPE_ICONS: Record<string, string> = {
-  weapon: '⚔️',
-  helmet: '🪖',
+  weapon: '🪄',
+  helmet: '🎓',
   armor: '👕',
   gloves: '🧤',
   boots: '👢',
@@ -33,8 +33,8 @@ export const ITEM_TYPE_ICONS: Record<string, string> = {
 // 物品类型中文名
 export const ITEM_TYPE_NAMES: Record<string, string> = {
   weapon: '武器',
-  helmet: '头盔',
-  armor: '盔甲',
+  helmet: '头饰',
+  armor: '法袍',
   gloves: '手套',
   boots: '靴子',
   belt: '腰带',

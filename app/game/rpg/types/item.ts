@@ -79,8 +79,8 @@ export const QUALITY_NAMES: Record<ItemQuality, string> = {
 
 export const SLOT_NAMES: Record<EquipmentSlot, string> = {
   weapon: '武器',
-  helmet: '头盔',
-  armor: '盔甲',
+  helmet: '头饰',
+  armor: '法袍',
   gloves: '手套',
   boots: '靴子',
   belt: '腰带',

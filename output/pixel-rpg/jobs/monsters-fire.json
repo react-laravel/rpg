@@ -1,0 +1,119 @@
+{
+  "id": "monsters-fire",
+  "kind": "monsters",
+  "cols": 4,
+  "rows": 3,
+  "tileSize": 96,
+  "tiles": [
+    {
+      "key": "pixel-monster-043",
+      "name": "火蜥蜴",
+      "ordinal": 43,
+      "aliases": [
+        "eternal-knight",
+        "monster_43"
+      ]
+    },
+    {
+      "key": "pixel-monster-044",
+      "name": "熔壳甲虫",
+      "ordinal": 44,
+      "aliases": [
+        "chaos-sprite",
+        "monster_44"
+      ]
+    },
+    {
+      "key": "pixel-monster-045",
+      "name": "赤鬃狮",
+      "ordinal": 45,
+      "aliases": [
+        "void-lord",
+        "monster_45"
+      ]
+    },
+    {
+      "key": "pixel-monster-046",
+      "name": "岩浆史莱姆",
+      "ordinal": 46,
+      "aliases": [
+        "chaos-warrior",
+        "monster_46"
+      ]
+    },
+    {
+      "key": "pixel-monster-047",
+      "name": "熔岩蟹",
+      "ordinal": 47,
+      "aliases": [
+        "chaos-demon-god",
+        "monster_47"
+      ]
+    },
+    {
+      "key": "pixel-monster-048",
+      "name": "熔核巨像",
+      "ordinal": 48,
+      "aliases": [
+        "chaos-origin",
+        "monster_48"
+      ]
+    },
+    {
+      "key": "pixel-monster-049",
+      "name": "灰烬侍从",
+      "ordinal": 49,
+      "aliases": [
+        "chaos-king",
+        "monster_49"
+      ]
+    },
+    {
+      "key": "pixel-monster-050",
+      "name": "火羽鹰",
+      "ordinal": 50,
+      "aliases": [
+        "map-17-deer",
+        "monster_50"
+      ]
+    },
+    {
+      "key": "pixel-monster-051",
+      "name": "焰冠祭司",
+      "ordinal": 51,
+      "aliases": [
+        "map-17-rabbit",
+        "monster_51"
+      ]
+    },
+    {
+      "key": "pixel-monster-052",
+      "name": "炎铠卫士",
+      "ordinal": 52,
+      "aliases": [
+        "map-18-boar",
+        "monster_52"
+      ]
+    },
+    {
+      "key": "pixel-monster-053",
+      "name": "烈焰元素",
+      "ordinal": 53,
+      "aliases": [
+        "map-18-deer",
+        "monster_53"
+      ]
+    },
+    {
+      "key": "pixel-monster-054",
+      "name": "赤日凤凰",
+      "ordinal": 54,
+      "aliases": [
+        "map-18-rabbit",
+        "monster_54"
+      ]
+    }
+  ],
+  "prompt": "复古奇幻RPG怪物精灵图，烈阳火域主题，赤红、橙金、黑岩配色。严格4列3行等大网格，按从左到右、从上到下依次画：火蜥蜴、熔壳甲虫、赤鬃狮、岩浆史莱姆、熔岩蟹、熔核巨像、灰烬侍从、火羽鹰、焰冠祭司、炎铠卫士、烈焰元素、赤日凤凰。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。 每个怪物只占格子的七成面积，四周留足透明空白。",
+  "source": "output/pixel-rpg/sources/monsters-fire.png"
+}

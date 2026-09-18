@@ -1,0 +1,1638 @@
+[
+  {
+    "id": "monsters-earth",
+    "kind": "monsters",
+    "cols": 5,
+    "rows": 3,
+    "tileSize": 96,
+    "tiles": [
+      {
+        "key": "pixel-monster-001",
+        "name": "泥团史莱姆",
+        "ordinal": 1,
+        "aliases": [
+          "training-pig",
+          "monster_1"
+        ]
+      },
+      {
+        "key": "pixel-monster-002",
+        "name": "草地野猪",
+        "ordinal": 2,
+        "aliases": [
+          "training-deer",
+          "monster_2"
+        ]
+      },
+      {
+        "key": "pixel-monster-003",
+        "name": "短耳兔",
+        "ordinal": 3,
+        "aliases": [
+          "training-rabbit",
+          "monster_3"
+        ]
+      },
+      {
+        "key": "pixel-monster-004",
+        "name": "岩壳甲虫",
+        "ordinal": 4,
+        "aliases": [
+          "wild-boar",
+          "monster_4"
+        ]
+      },
+      {
+        "key": "pixel-monster-005",
+        "name": "砂尾蜥",
+        "ordinal": 5,
+        "aliases": [
+          "wild-wolf",
+          "monster_5"
+        ]
+      },
+      {
+        "key": "pixel-monster-006",
+        "name": "巨角野猪",
+        "ordinal": 6,
+        "aliases": [
+          "forest-goblin",
+          "monster_6"
+        ]
+      },
+      {
+        "key": "pixel-monster-007",
+        "name": "土灵",
+        "ordinal": 7,
+        "aliases": [
+          "giant-alpha-wolf",
+          "monster_7"
+        ]
+      },
+      {
+        "key": "pixel-monster-008",
+        "name": "荒原狼",
+        "ordinal": 8,
+        "aliases": [
+          "treant-elder",
+          "monster_8"
+        ]
+      },
+      {
+        "key": "pixel-monster-009",
+        "name": "岩背犀",
+        "ordinal": 9,
+        "aliases": [
+          "wild-boar-king",
+          "monster_9"
+        ]
+      },
+      {
+        "key": "pixel-monster-010",
+        "name": "矿洞蝙蝠",
+        "ordinal": 10,
+        "aliases": [
+          "cave-bat",
+          "monster_10"
+        ]
+      },
+      {
+        "key": "pixel-monster-011",
+        "name": "铜牙鼠",
+        "ordinal": 11,
+        "aliases": [
+          "cave-spider",
+          "monster_11"
+        ]
+      },
+      {
+        "key": "pixel-monster-012",
+        "name": "矿镐傀儡",
+        "ordinal": 12,
+        "aliases": [
+          "skeleton-soldier",
+          "monster_12"
+        ]
+      },
+      {
+        "key": "pixel-monster-013",
+        "name": "石拳魔像",
+        "ordinal": 13,
+        "aliases": [
+          "skeleton-mage",
+          "monster_13"
+        ]
+      },
+      {
+        "key": "pixel-monster-014",
+        "name": "砂晶蝎",
+        "ordinal": 14,
+        "aliases": [
+          "bone-king",
+          "monster_14"
+        ]
+      },
+      {
+        "key": "pixel-monster-015",
+        "name": "磐石巨灵",
+        "ordinal": 15,
+        "aliases": [
+          "giant-spider",
+          "monster_15"
+        ]
+      }
+    ],
+    "prompt": "复古奇幻RPG怪物精灵图，大地边境主题，土棕、草绿、暖阳配色。严格5列3行等大网格，按从左到右、从上到下依次画：泥团史莱姆、草地野猪、短耳兔、岩壳甲虫、砂尾蜥、巨角野猪、土灵、荒原狼、岩背犀、矿洞蝙蝠、铜牙鼠、矿镐傀儡、石拳魔像、砂晶蝎、磐石巨灵。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。"
+  },
+  {
+    "id": "maps-earth",
+    "kind": "maps",
+    "cols": 3,
+    "rows": 2,
+    "tileSize": 256,
+    "tiles": [
+      {
+        "key": "pixel-map-01",
+        "name": "晨光营地",
+        "ordinal": 1,
+        "aliases": [
+          "safe-training-camp",
+          "map_1"
+        ]
+      },
+      {
+        "key": "pixel-map-02",
+        "name": "砾石小径",
+        "ordinal": 2,
+        "aliases": [
+          "dark-enchanted-forest",
+          "map_2"
+        ]
+      },
+      {
+        "key": "pixel-map-03",
+        "name": "赤土荒坡",
+        "ordinal": 3,
+        "aliases": [
+          "goblin-cave-lair",
+          "map_3"
+        ]
+      },
+      {
+        "key": "pixel-map-04",
+        "name": "古矿坑道",
+        "ordinal": 4,
+        "aliases": [
+          "wild-boar-plains",
+          "map_4"
+        ]
+      },
+      {
+        "key": "pixel-map-05",
+        "name": "大地石庭",
+        "ordinal": 5,
+        "aliases": [
+          "treant-sacred-grove",
+          "map_5"
+        ]
+      }
+    ],
+    "prompt": "复古像素RPG战斗地图背景合集，大地边境主题，土棕、草绿、暖阳配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.晨光中的青草营地，木栅栏、帐篷和泥土练习场；2.碎石小径穿过低矮草坡，石堆与路牌；3.红土荒坡、层叠砂岩和稀疏灌木；4.废弃矿坑、木支架、矿车和发光矿石；5.巨石环绕的开阔祭庭，岩石符文与山脉。剩余格子留纯黑空白。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。"
+  },
+  {
+    "id": "monsters-wood",
+    "kind": "monsters",
+    "cols": 4,
+    "rows": 3,
+    "tileSize": 96,
+    "tiles": [
+      {
+        "key": "pixel-monster-016",
+        "name": "苔叶蜥",
+        "ordinal": 16,
+        "aliases": [
+          "small-demon-imp",
+          "monster_16"
+        ]
+      },
+      {
+        "key": "pixel-monster-017",
+        "name": "树冠蜂",
+        "ordinal": 17,
+        "aliases": [
+          "fire-elemental",
+          "monster_17"
+        ]
+      },
+      {
+        "key": "pixel-monster-018",
+        "name": "藤鞭花妖",
+        "ordinal": 18,
+        "aliases": [
+          "hell-knight",
+          "monster_18"
+        ]
+      },
+      {
+        "key": "pixel-monster-019",
+        "name": "伞帽蘑菇怪",
+        "ordinal": 19,
+        "aliases": [
+          "hell-demon-king",
+          "monster_19"
+        ]
+      },
+      {
+        "key": "pixel-monster-020",
+        "name": "沼泽蛙",
+        "ordinal": 20,
+        "aliases": [
+          "fire-demon",
+          "monster_20"
+        ]
+      },
+      {
+        "key": "pixel-monster-021",
+        "name": "毒孢树精",
+        "ordinal": 21,
+        "aliases": [
+          "demon-wizard",
+          "monster_21"
+        ]
+      },
+      {
+        "key": "pixel-monster-022",
+        "name": "橡果精",
+        "ordinal": 22,
+        "aliases": [
+          "abyss-worm",
+          "monster_22"
+        ]
+      },
+      {
+        "key": "pixel-monster-023",
+        "name": "荆棘螳螂",
+        "ordinal": 23,
+        "aliases": [
+          "shadow-ghost",
+          "monster_23"
+        ]
+      },
+      {
+        "key": "pixel-monster-024",
+        "name": "森卫鹿灵",
+        "ordinal": 24,
+        "aliases": [
+          "void-walker",
+          "monster_24"
+        ]
+      },
+      {
+        "key": "pixel-monster-025",
+        "name": "树皮守卫",
+        "ordinal": 25,
+        "aliases": [
+          "abyss-lord",
+          "monster_25"
+        ]
+      },
+      {
+        "key": "pixel-monster-026",
+        "name": "翡翠蝶",
+        "ordinal": 26,
+        "aliases": [
+          "angel-guardian",
+          "monster_26"
+        ]
+      },
+      {
+        "key": "pixel-monster-027",
+        "name": "古榕之心",
+        "ordinal": 27,
+        "aliases": [
+          "seraph",
+          "monster_27"
+        ]
+      }
+    ],
+    "prompt": "复古奇幻RPG怪物精灵图，青藤秘境主题，翠绿、棕褐、萤光配色。严格4列3行等大网格，按从左到右、从上到下依次画：苔叶蜥、树冠蜂、藤鞭花妖、伞帽蘑菇怪、沼泽蛙、毒孢树精、橡果精、荆棘螳螂、森卫鹿灵、树皮守卫、翡翠蝶、古榕之心。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。"
+  },
+  {
+    "id": "maps-wood",
+    "kind": "maps",
+    "cols": 3,
+    "rows": 2,
+    "tileSize": 256,
+    "tiles": [
+      {
+        "key": "pixel-map-06",
+        "name": "青藤林缘",
+        "ordinal": 6,
+        "aliases": [
+          "dark-cave-entrance",
+          "map_6"
+        ]
+      },
+      {
+        "key": "pixel-map-07",
+        "name": "巨蕈湿地",
+        "ordinal": 7,
+        "aliases": [
+          "spider-cave",
+          "map_7"
+        ]
+      },
+      {
+        "key": "pixel-map-08",
+        "name": "古木回廊",
+        "ordinal": 8,
+        "aliases": [
+          "skeleton-graveyard",
+          "map_8"
+        ]
+      },
+      {
+        "key": "pixel-map-09",
+        "name": "翠叶圣林",
+        "ordinal": 9,
+        "aliases": [
+          "bone-hall",
+          "map_9"
+        ]
+      }
+    ],
+    "prompt": "复古像素RPG战斗地图背景合集，青藤秘境主题，翠绿、棕褐、萤光配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.明亮树林边缘，藤蔓拱门、野花和蜿蜒土路；2.巨型蘑菇与浅水沼泽，发光孢子、木栈道；3.古树树根构成回廊，苔藓石台和林间光束；4.参天古榕围绕的绿色圣林，中央树根祭坛。剩余格子留纯黑空白。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。"
+  },
+  {
+    "id": "monsters-water",
+    "kind": "monsters",
+    "cols": 5,
+    "rows": 3,
+    "tileSize": 96,
+    "tiles": [
+      {
+        "key": "pixel-monster-028",
+        "name": "溪水史莱姆",
+        "ordinal": 28,
+        "aliases": [
+          "archangel",
+          "monster_28"
+        ]
+      },
+      {
+        "key": "pixel-monster-029",
+        "name": "蓝鳍鱼人",
+        "ordinal": 29,
+        "aliases": [
+          "fallen-angel",
+          "monster_29"
+        ]
+      },
+      {
+        "key": "pixel-monster-030",
+        "name": "巨钳河蟹",
+        "ordinal": 30,
+        "aliases": [
+          "archangel-chief",
+          "monster_30"
+        ]
+      },
+      {
+        "key": "pixel-monster-031",
+        "name": "贝壳寄居蟹",
+        "ordinal": 31,
+        "aliases": [
+          "temple-knight",
+          "monster_31"
+        ]
+      },
+      {
+        "key": "pixel-monster-032",
+        "name": "水箭海马",
+        "ordinal": 32,
+        "aliases": [
+          "divine-servant",
+          "monster_32"
+        ]
+      },
+      {
+        "key": "pixel-monster-033",
+        "name": "浪潮巨龟",
+        "ordinal": 33,
+        "aliases": [
+          "divine-messenger",
+          "monster_33"
+        ]
+      },
+      {
+        "key": "pixel-monster-034",
+        "name": "锈锚亡灵",
+        "ordinal": 34,
+        "aliases": [
+          "divine-general",
+          "monster_34"
+        ]
+      },
+      {
+        "key": "pixel-monster-035",
+        "name": "灯笼水母",
+        "ordinal": 35,
+        "aliases": [
+          "divine-priest",
+          "monster_35"
+        ]
+      },
+      {
+        "key": "pixel-monster-036",
+        "name": "铁钩船长",
+        "ordinal": 36,
+        "aliases": [
+          "god-king-avatar",
+          "monster_36"
+        ]
+      },
+      {
+        "key": "pixel-monster-037",
+        "name": "冰晶蝠",
+        "ordinal": 37,
+        "aliases": [
+          "judgment-angel",
+          "monster_37"
+        ]
+      },
+      {
+        "key": "pixel-monster-038",
+        "name": "雪原狐",
+        "ordinal": 38,
+        "aliases": [
+          "eternal-guardian",
+          "monster_38"
+        ]
+      },
+      {
+        "key": "pixel-monster-039",
+        "name": "霜爪巨熊",
+        "ordinal": 39,
+        "aliases": [
+          "time-space-rift-creature",
+          "monster_39"
+        ]
+      },
+      {
+        "key": "pixel-monster-040",
+        "name": "珊瑚守卫",
+        "ordinal": 40,
+        "aliases": [
+          "eternal-warrior",
+          "monster_40"
+        ]
+      },
+      {
+        "key": "pixel-monster-041",
+        "name": "旋流海蛇",
+        "ordinal": 41,
+        "aliases": [
+          "eternal-mage",
+          "monster_41"
+        ]
+      },
+      {
+        "key": "pixel-monster-042",
+        "name": "沧海蛟龙",
+        "ordinal": 42,
+        "aliases": [
+          "eternal-king",
+          "monster_42"
+        ]
+      }
+    ],
+    "prompt": "复古奇幻RPG怪物精灵图，沧澜水境主题，湖蓝、银白、冰青配色。严格5列3行等大网格，按从左到右、从上到下依次画：溪水史莱姆、蓝鳍鱼人、巨钳河蟹、贝壳寄居蟹、水箭海马、浪潮巨龟、锈锚亡灵、灯笼水母、铁钩船长、冰晶蝠、雪原狐、霜爪巨熊、珊瑚守卫、旋流海蛇、沧海蛟龙。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。"
+  },
+  {
+    "id": "maps-water",
+    "kind": "maps",
+    "cols": 3,
+    "rows": 2,
+    "tileSize": 256,
+    "tiles": [
+      {
+        "key": "pixel-map-10",
+        "name": "雾溪浅滩",
+        "ordinal": 10,
+        "aliases": [
+          "hell-gate",
+          "map_10"
+        ]
+      },
+      {
+        "key": "pixel-map-11",
+        "name": "潮汐沙洲",
+        "ordinal": 11,
+        "aliases": [
+          "burning-fire-plains",
+          "map_11"
+        ]
+      },
+      {
+        "key": "pixel-map-12",
+        "name": "沉船暗湾",
+        "ordinal": 12,
+        "aliases": [
+          "fire-demon-cave",
+          "map_12"
+        ]
+      },
+      {
+        "key": "pixel-map-13",
+        "name": "寒晶冰窟",
+        "ordinal": 13,
+        "aliases": [
+          "demon-fortress",
+          "map_13"
+        ]
+      },
+      {
+        "key": "pixel-map-14",
+        "name": "沧澜龙宫",
+        "ordinal": 14,
+        "aliases": [
+          "demon-king-palace",
+          "map_14"
+        ]
+      }
+    ],
+    "prompt": "复古像素RPG战斗地图背景合集，沧澜水境主题，湖蓝、银白、冰青配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.薄雾溪流与鹅卵石浅滩，芦苇和小木桥；2.碧蓝海湾里的沙洲，潮池、贝壳和礁石；3.月光下的沉船海湾，破船残骸、灯笼与湿沙；4.蓝色冰窟、巨大冰晶柱与冻结水池；5.水下珊瑚龙宫，碧蓝穹顶、贝壳石柱和开阔地面。剩余格子留纯黑空白。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。"
+  },
+  {
+    "id": "monsters-fire",
+    "kind": "monsters",
+    "cols": 4,
+    "rows": 3,
+    "tileSize": 96,
+    "tiles": [
+      {
+        "key": "pixel-monster-043",
+        "name": "火蜥蜴",
+        "ordinal": 43,
+        "aliases": [
+          "eternal-knight",
+          "monster_43"
+        ]
+      },
+      {
+        "key": "pixel-monster-044",
+        "name": "熔壳甲虫",
+        "ordinal": 44,
+        "aliases": [
+          "chaos-sprite",
+          "monster_44"
+        ]
+      },
+      {
+        "key": "pixel-monster-045",
+        "name": "赤鬃狮",
+        "ordinal": 45,
+        "aliases": [
+          "void-lord",
+          "monster_45"
+        ]
+      },
+      {
+        "key": "pixel-monster-046",
+        "name": "岩浆史莱姆",
+        "ordinal": 46,
+        "aliases": [
+          "chaos-warrior",
+          "monster_46"
+        ]
+      },
+      {
+        "key": "pixel-monster-047",
+        "name": "熔岩蟹",
+        "ordinal": 47,
+        "aliases": [
+          "chaos-demon-god",
+          "monster_47"
+        ]
+      },
+      {
+        "key": "pixel-monster-048",
+        "name": "熔核巨像",
+        "ordinal": 48,
+        "aliases": [
+          "chaos-origin",
+          "monster_48"
+        ]
+      },
+      {
+        "key": "pixel-monster-049",
+        "name": "灰烬侍从",
+        "ordinal": 49,
+        "aliases": [
+          "chaos-king",
+          "monster_49"
+        ]
+      },
+      {
+        "key": "pixel-monster-050",
+        "name": "火羽鹰",
+        "ordinal": 50,
+        "aliases": [
+          "map-17-deer",
+          "monster_50"
+        ]
+      },
+      {
+        "key": "pixel-monster-051",
+        "name": "焰冠祭司",
+        "ordinal": 51,
+        "aliases": [
+          "map-17-rabbit",
+          "monster_51"
+        ]
+      },
+      {
+        "key": "pixel-monster-052",
+        "name": "炎铠卫士",
+        "ordinal": 52,
+        "aliases": [
+          "map-18-boar",
+          "monster_52"
+        ]
+      },
+      {
+        "key": "pixel-monster-053",
+        "name": "烈焰元素",
+        "ordinal": 53,
+        "aliases": [
+          "map-18-deer",
+          "monster_53"
+        ]
+      },
+      {
+        "key": "pixel-monster-054",
+        "name": "赤日凤凰",
+        "ordinal": 54,
+        "aliases": [
+          "map-18-rabbit",
+          "monster_54"
+        ]
+      }
+    ],
+    "prompt": "复古奇幻RPG怪物精灵图，烈阳火域主题，赤红、橙金、黑岩配色。严格4列3行等大网格，按从左到右、从上到下依次画：火蜥蜴、熔壳甲虫、赤鬃狮、岩浆史莱姆、熔岩蟹、熔核巨像、灰烬侍从、火羽鹰、焰冠祭司、炎铠卫士、烈焰元素、赤日凤凰。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。"
+  },
+  {
+    "id": "maps-fire",
+    "kind": "maps",
+    "cols": 3,
+    "rows": 2,
+    "tileSize": 256,
+    "tiles": [
+      {
+        "key": "pixel-map-15",
+        "name": "炽砂戈壁",
+        "ordinal": 15,
+        "aliases": [
+          "abyss-entrance",
+          "map_15"
+        ]
+      },
+      {
+        "key": "pixel-map-16",
+        "name": "熔岩裂谷",
+        "ordinal": 16,
+        "aliases": [
+          "dark-maze",
+          "map_16"
+        ]
+      },
+      {
+        "key": "pixel-map-17",
+        "name": "烈阳祭坛",
+        "ordinal": 17,
+        "aliases": [
+          "void-rift",
+          "map_17"
+        ]
+      },
+      {
+        "key": "pixel-map-18",
+        "name": "太阳熔炉",
+        "ordinal": 18,
+        "aliases": [
+          "abyss-throne",
+          "map_18"
+        ]
+      }
+    ],
+    "prompt": "复古像素RPG战斗地图背景合集，烈阳火域主题，赤红、橙金、黑岩配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.炽热红砂戈壁，风化石柱与远处火山；2.熔岩河穿过黑色岩谷，中央完整石台；3.落日下的太阳祭坛，红砂石阶与金色日轮；4.巨型太阳熔炉与环形黑曜石平台，赤金光芒。剩余格子留纯黑空白。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。"
+  },
+  {
+    "id": "monsters-metal",
+    "kind": "monsters",
+    "cols": 5,
+    "rows": 3,
+    "tileSize": 96,
+    "tiles": [
+      {
+        "key": "pixel-monster-055",
+        "name": "铜羽雀",
+        "ordinal": 55,
+        "aliases": [
+          "map-19-boar",
+          "monster_55"
+        ]
+      },
+      {
+        "key": "pixel-monster-056",
+        "name": "齿轮蜘蛛",
+        "ordinal": 56,
+        "aliases": [
+          "map-19-deer",
+          "monster_56"
+        ]
+      },
+      {
+        "key": "pixel-monster-057",
+        "name": "铁甲犰狳",
+        "ordinal": 57,
+        "aliases": [
+          "map-19-rabbit",
+          "monster_57"
+        ]
+      },
+      {
+        "key": "pixel-monster-058",
+        "name": "发条鼠",
+        "ordinal": 58,
+        "aliases": [
+          "map-20-boar",
+          "monster_58"
+        ]
+      },
+      {
+        "key": "pixel-monster-059",
+        "name": "扳手傀儡",
+        "ordinal": 59,
+        "aliases": [
+          "map-20-deer",
+          "monster_59"
+        ]
+      },
+      {
+        "key": "pixel-monster-060",
+        "name": "重锤机兵",
+        "ordinal": 60,
+        "aliases": [
+          "map-20-rabbit",
+          "monster_60"
+        ]
+      },
+      {
+        "key": "pixel-monster-061",
+        "name": "镜面史莱姆",
+        "ordinal": 61,
+        "aliases": [
+          "map-21-boar",
+          "monster_61"
+        ]
+      },
+      {
+        "key": "pixel-monster-062",
+        "name": "银翼蛾",
+        "ordinal": 62,
+        "aliases": [
+          "map-21-deer",
+          "monster_62"
+        ]
+      },
+      {
+        "key": "pixel-monster-063",
+        "name": "镜刃哨卫",
+        "ordinal": 63,
+        "aliases": [
+          "map-21-rabbit",
+          "monster_63"
+        ]
+      },
+      {
+        "key": "pixel-monster-064",
+        "name": "宝箱怪",
+        "ordinal": 64,
+        "aliases": [
+          "map-22-boar",
+          "monster_64"
+        ]
+      },
+      {
+        "key": "pixel-monster-065",
+        "name": "金币精",
+        "ordinal": 65,
+        "aliases": [
+          "map-22-deer",
+          "monster_65"
+        ]
+      },
+      {
+        "key": "pixel-monster-066",
+        "name": "金甲狮鹫",
+        "ordinal": 66,
+        "aliases": [
+          "map-22-rabbit",
+          "monster_66"
+        ]
+      },
+      {
+        "key": "pixel-monster-067",
+        "name": "铂金卫士",
+        "ordinal": 67,
+        "aliases": [
+          "map-23-boar",
+          "monster_67"
+        ]
+      },
+      {
+        "key": "pixel-monster-068",
+        "name": "鎏金飞蛇",
+        "ordinal": 68,
+        "aliases": [
+          "map-23-deer",
+          "monster_68"
+        ]
+      },
+      {
+        "key": "pixel-monster-069",
+        "name": "铸星巨兵",
+        "ordinal": 69,
+        "aliases": [
+          "map-23-rabbit",
+          "monster_69"
+        ]
+      }
+    ],
+    "prompt": "复古奇幻RPG怪物精灵图，鎏金古国主题，黄金、黄铜、银白配色。严格5列3行等大网格，按从左到右、从上到下依次画：铜羽雀、齿轮蜘蛛、铁甲犰狳、发条鼠、扳手傀儡、重锤机兵、镜面史莱姆、银翼蛾、镜刃哨卫、宝箱怪、金币精、金甲狮鹫、铂金卫士、鎏金飞蛇、铸星巨兵。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。"
+  },
+  {
+    "id": "maps-metal",
+    "kind": "maps",
+    "cols": 3,
+    "rows": 2,
+    "tileSize": 256,
+    "tiles": [
+      {
+        "key": "pixel-map-19",
+        "name": "镀金遗道",
+        "ordinal": 19,
+        "aliases": [
+          "heaven-gate",
+          "map_19"
+        ]
+      },
+      {
+        "key": "pixel-map-20",
+        "name": "黄铜工坊",
+        "ordinal": 20,
+        "aliases": [
+          "angel-temple",
+          "map_20"
+        ]
+      },
+      {
+        "key": "pixel-map-21",
+        "name": "银辉镜殿",
+        "ordinal": 21,
+        "aliases": [
+          "hall-of-glory",
+          "map_21"
+        ]
+      },
+      {
+        "key": "pixel-map-22",
+        "name": "黄金宝库",
+        "ordinal": 22,
+        "aliases": [
+          "fallen-angel-realm",
+          "map_22"
+        ]
+      },
+      {
+        "key": "pixel-map-23",
+        "name": "铸星王庭",
+        "ordinal": 23,
+        "aliases": [
+          "archangel-temple",
+          "map_23"
+        ]
+      }
+    ],
+    "prompt": "复古像素RPG战斗地图背景合集，鎏金古国主题，黄金、黄铜、银白配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.金色遗迹道路，古代石像、金属拱门和野草；2.黄铜机械工坊，齿轮、管道、工作台和空地；3.银白镜面神殿，反光石柱与几何地砖；4.古代黄金宝库，金币堆、宝箱、金色石门；5.金属王庭与铸星熔炉，宏伟铂金王座和星徽。剩余格子留纯黑空白。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。"
+  },
+  {
+    "id": "monsters-wind",
+    "kind": "monsters",
+    "cols": 6,
+    "rows": 3,
+    "tileSize": 96,
+    "tiles": [
+      {
+        "key": "pixel-monster-070",
+        "name": "旋风精",
+        "ordinal": 70,
+        "aliases": [
+          "map-24-boar",
+          "monster_70"
+        ]
+      },
+      {
+        "key": "pixel-monster-071",
+        "name": "疾风兔",
+        "ordinal": 71,
+        "aliases": [
+          "map-24-deer",
+          "monster_71"
+        ]
+      },
+      {
+        "key": "pixel-monster-072",
+        "name": "长翼隼",
+        "ordinal": 72,
+        "aliases": [
+          "map-24-rabbit",
+          "monster_72"
+        ]
+      },
+      {
+        "key": "pixel-monster-073",
+        "name": "石羽鸟",
+        "ordinal": 73,
+        "aliases": [
+          "map-25-boar",
+          "monster_73"
+        ]
+      },
+      {
+        "key": "pixel-monster-074",
+        "name": "风铃妖",
+        "ordinal": 74,
+        "aliases": [
+          "map-25-deer",
+          "monster_74"
+        ]
+      },
+      {
+        "key": "pixel-monster-075",
+        "name": "云鬃山羊",
+        "ordinal": 75,
+        "aliases": [
+          "map-25-rabbit",
+          "monster_75"
+        ]
+      },
+      {
+        "key": "pixel-monster-076",
+        "name": "浮空水母",
+        "ordinal": 76,
+        "aliases": [
+          "map-26-boar",
+          "monster_76"
+        ]
+      },
+      {
+        "key": "pixel-monster-077",
+        "name": "羽尾蜥",
+        "ordinal": 77,
+        "aliases": [
+          "map-26-deer",
+          "monster_77"
+        ]
+      },
+      {
+        "key": "pixel-monster-078",
+        "name": "苍羽狮鹫",
+        "ordinal": 78,
+        "aliases": [
+          "map-26-rabbit",
+          "monster_78"
+        ]
+      },
+      {
+        "key": "pixel-monster-079",
+        "name": "气旋狼",
+        "ordinal": 79,
+        "aliases": [
+          "map-27-boar",
+          "monster_79"
+        ]
+      },
+      {
+        "key": "pixel-monster-080",
+        "name": "薄翼蝶",
+        "ordinal": 80,
+        "aliases": [
+          "map-27-deer",
+          "monster_80"
+        ]
+      },
+      {
+        "key": "pixel-monster-081",
+        "name": "旋风武僧",
+        "ordinal": 81,
+        "aliases": [
+          "map-27-rabbit",
+          "monster_81"
+        ]
+      },
+      {
+        "key": "pixel-monster-082",
+        "name": "云纹哨卫",
+        "ordinal": 82,
+        "aliases": [
+          "map-28-boar",
+          "monster_82"
+        ]
+      },
+      {
+        "key": "pixel-monster-083",
+        "name": "星羽鸮",
+        "ordinal": 83,
+        "aliases": [
+          "map-28-deer",
+          "monster_83"
+        ]
+      },
+      {
+        "key": "pixel-monster-084",
+        "name": "风语贤者",
+        "ordinal": 84,
+        "aliases": [
+          "map-28-rabbit",
+          "monster_84"
+        ]
+      },
+      {
+        "key": "pixel-monster-085",
+        "name": "风环守卫",
+        "ordinal": 85,
+        "aliases": [
+          "map-29-boar",
+          "monster_85"
+        ]
+      },
+      {
+        "key": "pixel-monster-086",
+        "name": "流云元素",
+        "ordinal": 86,
+        "aliases": [
+          "map-29-deer",
+          "monster_86"
+        ]
+      },
+      {
+        "key": "pixel-monster-087",
+        "name": "天穹巨鹏",
+        "ordinal": 87,
+        "aliases": [
+          "map-29-rabbit",
+          "monster_87"
+        ]
+      }
+    ],
+    "prompt": "复古奇幻RPG怪物精灵图，天空群岛主题，天青、象牙白、薄荷绿配色。严格6列3行等大网格，按从左到右、从上到下依次画：旋风精、疾风兔、长翼隼、石羽鸟、风铃妖、云鬃山羊、浮空水母、羽尾蜥、苍羽狮鹫、气旋狼、薄翼蝶、旋风武僧、云纹哨卫、星羽鸮、风语贤者、风环守卫、流云元素、天穹巨鹏。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。"
+  },
+  {
+    "id": "maps-wind",
+    "kind": "maps",
+    "cols": 3,
+    "rows": 2,
+    "tileSize": 256,
+    "tiles": [
+      {
+        "key": "pixel-map-24",
+        "name": "风铃草原",
+        "ordinal": 24,
+        "aliases": [
+          "god-realm-entrance",
+          "map_24"
+        ]
+      },
+      {
+        "key": "pixel-map-25",
+        "name": "云桥峭壁",
+        "ordinal": 25,
+        "aliases": [
+          "god-servant-hall",
+          "map_25"
+        ]
+      },
+      {
+        "key": "pixel-map-26",
+        "name": "悬空群岛",
+        "ordinal": 26,
+        "aliases": [
+          "god-priest-temple",
+          "map_26"
+        ]
+      },
+      {
+        "key": "pixel-map-27",
+        "name": "风暴回廊",
+        "ordinal": 27,
+        "aliases": [
+          "god-general-palace",
+          "map_27"
+        ]
+      },
+      {
+        "key": "pixel-map-28",
+        "name": "苍穹观星台",
+        "ordinal": 28,
+        "aliases": [
+          "god-king-temple",
+          "map_28"
+        ]
+      },
+      {
+        "key": "pixel-map-29",
+        "name": "天空之门",
+        "ordinal": 29,
+        "aliases": [
+          "judgment-court",
+          "map_29"
+        ]
+      }
+    ],
+    "prompt": "复古像素RPG战斗地图背景合集，天空群岛主题，天青、象牙白、薄荷绿配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.微风吹拂的高原草地，风铃木架与远山白云；2.云海峭壁上的悬索桥和开阔石台；3.天空中的漂浮小岛，瀑布流入云海；4.浮空遗迹回廊，旋风石柱和青绿色气流；5.云端观星台，黄铜望远镜、星盘与蓝天；6.宏伟白石天空门，云海台阶与展开的羽翼雕刻。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。"
+  },
+  {
+    "id": "monsters-thunder",
+    "kind": "monsters",
+    "cols": 6,
+    "rows": 3,
+    "tileSize": 96,
+    "tiles": [
+      {
+        "key": "pixel-monster-088",
+        "name": "电尾鼠",
+        "ordinal": 88,
+        "aliases": [
+          "map-30-boar",
+          "monster_88"
+        ]
+      },
+      {
+        "key": "pixel-monster-089",
+        "name": "雷纹狼",
+        "ordinal": 89,
+        "aliases": [
+          "map-30-deer",
+          "monster_89"
+        ]
+      },
+      {
+        "key": "pixel-monster-090",
+        "name": "闪角公羊",
+        "ordinal": 90,
+        "aliases": [
+          "map-30-rabbit",
+          "monster_90"
+        ]
+      },
+      {
+        "key": "pixel-monster-091",
+        "name": "电晶蝠",
+        "ordinal": 91,
+        "aliases": [
+          "map-31-boar",
+          "monster_91"
+        ]
+      },
+      {
+        "key": "pixel-monster-092",
+        "name": "磁石甲虫",
+        "ordinal": 92,
+        "aliases": [
+          "map-31-deer",
+          "monster_92"
+        ]
+      },
+      {
+        "key": "pixel-monster-093",
+        "name": "紫晶巨蝎",
+        "ordinal": 93,
+        "aliases": [
+          "map-31-rabbit",
+          "monster_93"
+        ]
+      },
+      {
+        "key": "pixel-monster-094",
+        "name": "电弧史莱姆",
+        "ordinal": 94,
+        "aliases": [
+          "map-32-boar",
+          "monster_94"
+        ]
+      },
+      {
+        "key": "pixel-monster-095",
+        "name": "悬磁傀儡",
+        "ordinal": 95,
+        "aliases": [
+          "map-32-deer",
+          "monster_95"
+        ]
+      },
+      {
+        "key": "pixel-monster-096",
+        "name": "铁羽雷鹫",
+        "ordinal": 96,
+        "aliases": [
+          "map-32-rabbit",
+          "monster_96"
+        ]
+      },
+      {
+        "key": "pixel-monster-097",
+        "name": "雷符纸偶",
+        "ordinal": 97,
+        "aliases": [
+          "map-33-boar",
+          "monster_97"
+        ]
+      },
+      {
+        "key": "pixel-monster-098",
+        "name": "电刃卫士",
+        "ordinal": 98,
+        "aliases": [
+          "map-33-deer",
+          "monster_98"
+        ]
+      },
+      {
+        "key": "pixel-monster-099",
+        "name": "惊雷术士",
+        "ordinal": 99,
+        "aliases": [
+          "map-33-rabbit",
+          "monster_99"
+        ]
+      },
+      {
+        "key": "pixel-monster-100",
+        "name": "雷霆元素",
+        "ordinal": 100,
+        "aliases": [
+          "map-34-boar",
+          "monster_100"
+        ]
+      },
+      {
+        "key": "pixel-monster-101",
+        "name": "紫电脉蛇",
+        "ordinal": 101,
+        "aliases": [
+          "map-34-deer",
+          "monster_101"
+        ]
+      },
+      {
+        "key": "pixel-monster-102",
+        "name": "雷鼓力士",
+        "ordinal": 102,
+        "aliases": [
+          "map-34-rabbit",
+          "monster_102"
+        ]
+      },
+      {
+        "key": "pixel-monster-103",
+        "name": "天罚哨卫",
+        "ordinal": 103,
+        "aliases": [
+          "map-35-boar",
+          "monster_103"
+        ]
+      },
+      {
+        "key": "pixel-monster-104",
+        "name": "雷羽狮鹫",
+        "ordinal": 104,
+        "aliases": [
+          "map-35-deer",
+          "monster_104"
+        ]
+      },
+      {
+        "key": "pixel-monster-105",
+        "name": "九霄雷龙",
+        "ordinal": 105,
+        "aliases": [
+          "map-35-rabbit",
+          "monster_105"
+        ]
+      }
+    ],
+    "prompt": "复古奇幻RPG怪物精灵图，雷霆天域主题，紫罗兰、银黑、电蓝配色。严格6列3行等大网格，按从左到右、从上到下依次画：电尾鼠、雷纹狼、闪角公羊、电晶蝠、磁石甲虫、紫晶巨蝎、电弧史莱姆、悬磁傀儡、铁羽雷鹫、雷符纸偶、电刃卫士、惊雷术士、雷霆元素、紫电脉蛇、雷鼓力士、天罚哨卫、雷羽狮鹫、九霄雷龙。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。"
+  },
+  {
+    "id": "maps-thunder",
+    "kind": "maps",
+    "cols": 3,
+    "rows": 2,
+    "tileSize": 256,
+    "tiles": [
+      {
+        "key": "pixel-map-30",
+        "name": "雷雨高地",
+        "ordinal": 30,
+        "aliases": [
+          "eternal-gate",
+          "map_30"
+        ]
+      },
+      {
+        "key": "pixel-map-31",
+        "name": "紫电矿脉",
+        "ordinal": 31,
+        "aliases": [
+          "time-space-rift",
+          "map_31"
+        ]
+      },
+      {
+        "key": "pixel-map-32",
+        "name": "磁暴荒原",
+        "ordinal": 32,
+        "aliases": [
+          "eternal-battlefield",
+          "map_32"
+        ]
+      },
+      {
+        "key": "pixel-map-33",
+        "name": "惊雷古塔",
+        "ordinal": 33,
+        "aliases": [
+          "eternal-mage-tower",
+          "map_33"
+        ]
+      },
+      {
+        "key": "pixel-map-34",
+        "name": "风雷祭庭",
+        "ordinal": 34,
+        "aliases": [
+          "eternal-throne",
+          "map_34"
+        ]
+      },
+      {
+        "key": "pixel-map-35",
+        "name": "雷神王座",
+        "ordinal": 35,
+        "aliases": [
+          "eternal-sanctuary",
+          "map_35"
+        ]
+      }
+    ],
+    "prompt": "复古像素RPG战斗地图背景合集，雷霆天域主题，紫罗兰、银黑、电蓝配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.雷雨高地草坡，远处闪电、潮湿岩石；2.紫色电晶矿洞，晶簇与交错闪电；3.悬浮磁石荒原，电弧石环和龟裂大地；4.古老雷塔内部，雷符墙面、螺旋石阶和紫电灯；5.山巅雷霆祭庭，雷鼓、石柱和风暴天空；6.风暴云海上的雷神王座，紫电巨柱与金色日冕。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。"
+  },
+  {
+    "id": "monsters-convergence",
+    "kind": "monsters",
+    "cols": 6,
+    "rows": 3,
+    "tileSize": 96,
+    "tiles": [
+      {
+        "key": "pixel-monster-106",
+        "name": "岩焰龟",
+        "ordinal": 106,
+        "aliases": [
+          "map-36-boar",
+          "monster_106"
+        ]
+      },
+      {
+        "key": "pixel-monster-107",
+        "name": "水木精",
+        "ordinal": 107,
+        "aliases": [
+          "map-36-deer",
+          "monster_107"
+        ]
+      },
+      {
+        "key": "pixel-monster-108",
+        "name": "风雷獾",
+        "ordinal": 108,
+        "aliases": [
+          "map-36-rabbit",
+          "monster_108"
+        ]
+      },
+      {
+        "key": "pixel-monster-109",
+        "name": "日辉守卫",
+        "ordinal": 109,
+        "aliases": [
+          "map-37-boar",
+          "monster_109"
+        ]
+      },
+      {
+        "key": "pixel-monster-110",
+        "name": "月影鹿",
+        "ordinal": 110,
+        "aliases": [
+          "map-37-deer",
+          "monster_110"
+        ]
+      },
+      {
+        "key": "pixel-monster-111",
+        "name": "蚀光双首狼",
+        "ordinal": 111,
+        "aliases": [
+          "map-37-rabbit",
+          "monster_111"
+        ]
+      },
+      {
+        "key": "pixel-monster-112",
+        "name": "星砂蝎",
+        "ordinal": 112,
+        "aliases": [
+          "map-38-boar",
+          "monster_112"
+        ]
+      },
+      {
+        "key": "pixel-monster-113",
+        "name": "晶翼蝶",
+        "ordinal": 113,
+        "aliases": [
+          "map-38-deer",
+          "monster_113"
+        ]
+      },
+      {
+        "key": "pixel-monster-114",
+        "name": "陨星巨像",
+        "ordinal": 114,
+        "aliases": [
+          "map-38-rabbit",
+          "monster_114"
+        ]
+      },
+      {
+        "key": "pixel-monster-115",
+        "name": "钟摆傀儡",
+        "ordinal": 115,
+        "aliases": [
+          "map-39-boar",
+          "monster_115"
+        ]
+      },
+      {
+        "key": "pixel-monster-116",
+        "name": "时砂幽灵",
+        "ordinal": 116,
+        "aliases": [
+          "map-39-deer",
+          "monster_116"
+        ]
+      },
+      {
+        "key": "pixel-monster-117",
+        "name": "刻轮守卫",
+        "ordinal": 117,
+        "aliases": [
+          "map-39-rabbit",
+          "monster_117"
+        ]
+      },
+      {
+        "key": "pixel-monster-118",
+        "name": "七曜灵偶",
+        "ordinal": 118,
+        "aliases": [
+          "map-40-boar",
+          "monster_118"
+        ]
+      },
+      {
+        "key": "pixel-monster-119",
+        "name": "流光狮鹫",
+        "ordinal": 119,
+        "aliases": [
+          "map-40-deer",
+          "monster_119"
+        ]
+      },
+      {
+        "key": "pixel-monster-120",
+        "name": "星环祭司",
+        "ordinal": 120,
+        "aliases": [
+          "map-40-rabbit",
+          "monster_120"
+        ]
+      },
+      {
+        "key": "pixel-monster-121",
+        "name": "元素卫士",
+        "ordinal": 121,
+        "aliases": [
+          "map-41-boar",
+          "monster_121"
+        ]
+      },
+      {
+        "key": "pixel-monster-122",
+        "name": "星界游蛇",
+        "ordinal": 122,
+        "aliases": [
+          "map-41-deer",
+          "monster_122"
+        ]
+      },
+      {
+        "key": "pixel-monster-123",
+        "name": "元初巨龙",
+        "ordinal": 123,
+        "aliases": [
+          "map-41-rabbit",
+          "monster_123"
+        ]
+      }
+    ],
+    "prompt": "复古奇幻RPG怪物精灵图，七曜终境主题，七元素彩光、深蓝、星金配色。严格6列3行等大网格，按从左到右、从上到下依次画：岩焰龟、水木精、风雷獾、日辉守卫、月影鹿、蚀光双首狼、星砂蝎、晶翼蝶、陨星巨像、钟摆傀儡、时砂幽灵、刻轮守卫、七曜灵偶、流光狮鹫、星环祭司、元素卫士、星界游蛇、元初巨龙。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。"
+  },
+  {
+    "id": "maps-convergence",
+    "kind": "maps",
+    "cols": 3,
+    "rows": 2,
+    "tileSize": 256,
+    "tiles": [
+      {
+        "key": "pixel-map-36",
+        "name": "元素交汇地",
+        "ordinal": 36,
+        "aliases": [
+          "chaos-gate",
+          "map_36"
+        ]
+      },
+      {
+        "key": "pixel-map-37",
+        "name": "日月回廊",
+        "ordinal": 37,
+        "aliases": [
+          "void-edge",
+          "map_37"
+        ]
+      },
+      {
+        "key": "pixel-map-38",
+        "name": "星砂裂隙",
+        "ordinal": 38,
+        "aliases": [
+          "chaos-rift",
+          "map_38"
+        ]
+      },
+      {
+        "key": "pixel-map-39",
+        "name": "时轮遗迹",
+        "ordinal": 39,
+        "aliases": [
+          "chaos-demon-hall",
+          "map_39"
+        ]
+      },
+      {
+        "key": "pixel-map-40",
+        "name": "七曜圣堂",
+        "ordinal": 40,
+        "aliases": [
+          "chaos-origin-point",
+          "map_40"
+        ]
+      },
+      {
+        "key": "pixel-map-41",
+        "name": "元初王庭",
+        "ordinal": 41,
+        "aliases": [
+          "chaos-king-throne",
+          "map_41"
+        ]
+      }
+    ],
+    "prompt": "复古像素RPG战斗地图背景合集，七曜终境主题，七元素彩光、深蓝、星金配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.山水火风交汇的古代石台，各元素地貌分区；2.太阳与月亮对称的白石回廊，金蓝双色天幕；3.星空裂隙中的浮岩与星砂，蓝紫宇宙背景；4.巨型时钟遗迹，黄铜齿轮、沙漏和时间光环；5.七元素水晶环绕的圣堂，星形地面和中央空台；6.星海中的终章王庭，七色巨柱与宏伟元素王座。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。"
+  }
+]

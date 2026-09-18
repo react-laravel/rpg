@@ -1,5 +1,6 @@
 import type { MapDefinition } from '../types'
 import { gameAsset } from '@/lib/helpers/assets'
+import { getPixelAssetUrl } from './pixelAssets'
 
 const BG_BASE = gameAsset('/game/rpg/bg')
 
@@ -30,6 +31,8 @@ function toOriginFilename(filename: string): string | null {
  */
 export function getMapBackgroundUrls(map: MapDefinition | null, useOrigin = false): string[] {
   if (!map?.background) return []
+  const pixel = getPixelAssetUrl('maps', map.background)
+  if (pixel) return [pixel]
   const bg = map.background.trim()
   if (bg.startsWith('http://') || bg.startsWith('https://')) return [bg]
 
@@ -92,5 +95,6 @@ export function getMapBackgroundStyle(
     backgroundSize: sizes.join(', '),
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
+    ...(getPixelAssetUrl('maps', map?.background) ? { imageRendering: 'pixelated' as const } : {}),
   }
 }

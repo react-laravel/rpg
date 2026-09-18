@@ -3,7 +3,7 @@
 import type { ItemQuality } from '../../types'
 
 export const INVENTORY_CATEGORIES = [
-  { id: 'weapon', emoji: '⚔️', label: '武器', types: ['weapon'] },
+  { id: 'weapon', emoji: '🪄', label: '武器', types: ['weapon'] },
   { id: 'armor', emoji: '🛡️', label: '防具', types: ['helmet', 'armor', 'belt'] },
   { id: 'gloves', emoji: '🧤', label: '手套', types: ['gloves'] },
   { id: 'boots', emoji: '👢', label: '靴子', types: ['boots'] },

@@ -1,0 +1,65 @@
+{
+  "id": "maps-thunder",
+  "kind": "maps",
+  "cols": 3,
+  "rows": 2,
+  "tileSize": 256,
+  "tiles": [
+    {
+      "key": "pixel-map-30",
+      "name": "雷雨高地",
+      "ordinal": 30,
+      "aliases": [
+        "eternal-gate",
+        "map_30"
+      ]
+    },
+    {
+      "key": "pixel-map-31",
+      "name": "紫电矿脉",
+      "ordinal": 31,
+      "aliases": [
+        "time-space-rift",
+        "map_31"
+      ]
+    },
+    {
+      "key": "pixel-map-32",
+      "name": "磁暴荒原",
+      "ordinal": 32,
+      "aliases": [
+        "eternal-battlefield",
+        "map_32"
+      ]
+    },
+    {
+      "key": "pixel-map-33",
+      "name": "惊雷古塔",
+      "ordinal": 33,
+      "aliases": [
+        "eternal-mage-tower",
+        "map_33"
+      ]
+    },
+    {
+      "key": "pixel-map-34",
+      "name": "风雷祭庭",
+      "ordinal": 34,
+      "aliases": [
+        "eternal-throne",
+        "map_34"
+      ]
+    },
+    {
+      "key": "pixel-map-35",
+      "name": "雷神王座",
+      "ordinal": 35,
+      "aliases": [
+        "eternal-sanctuary",
+        "map_35"
+      ]
+    }
+  ],
+  "prompt": "复古像素RPG战斗地图背景合集，雷霆天域主题，紫罗兰、银黑、电蓝配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.雷雨高地草坡，远处闪电、潮湿岩石；2.紫色电晶矿洞，晶簇与交错闪电；3.悬浮磁石荒原，电弧石环和龟裂大地；4.古老雷塔内部，雷符墙面、螺旋石阶和紫电灯；5.山巅雷霆祭庭，雷鼓、石柱和风暴天空；6.风暴云海上的雷神王座，紫电巨柱与金色日冕。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。",
+  "source": "output/pixel-rpg/sources/maps-thunder.png"
+}

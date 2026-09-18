@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import Image from '@/components/game/GameImage'
 import { gameAsset } from '@/lib/helpers/assets'
 import { useEffect, useState, useMemo, useCallback } from 'react'
 import { useGameStore } from '../../stores/gameStore'

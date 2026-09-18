@@ -1,0 +1,64 @@
+[
+  {
+    "key": "metal",
+    "prompt": "按参考图左上角的「金」系衣服，生成一整套配套的复古像素装备精灵图，金色和象牙白，保持衣服款式一致。严格4列2行的等大网格，第一行从左到右：法杖、法师头饰、衣服、一双手套；第二行：一双靴子、腰带、戒指、护符。每格只有对应的一件装备，完整居中、四周留空、互不接触。粗清晰像素，适合缩为64×64图标。横向2:1画布，真实透明背景，无文字、无格线、无人物。",
+    "source": "output/pixel-rpg/sources/equipment-metal.png",
+    "references": [
+      "output/pixel-rpg/reference-approved.png"
+    ]
+  },
+  {
+    "key": "wood",
+    "prompt": "按第一张参考图上排第二件木系衣服，森林绿、棕色枝条和叶片纹样，生成这套配套的复古像素装备精灵图。保持参考衣服款式和像素画风一致，第二张图只参考网格排列。严格4列2行等大网格，上排依次法杖、法师头饰、衣服、一双手套，下排依次一双靴子、腰带、戒指、护符。每格只放对应装备，完整居中，四周留空，不能跨格。粗清晰像素，适合64×64图标。横向2:1画布，真实透明背景，无文字无格线无人物。",
+    "source": "output/pixel-rpg/sources/equipment-wood.png",
+    "references": [
+      "output/pixel-rpg/reference-approved.png",
+      "output/pixel-rpg/sources/equipment-metal.png"
+    ]
+  },
+  {
+    "key": "water",
+    "prompt": "按第一张参考图上排第三件水系衣服，深浅蓝与银白、水波纹样，生成这套配套的复古像素装备精灵图。保持参考衣服款式和像素画风一致，第二张图只参考网格排列。严格4列2行等大网格，上排依次法杖、法师头饰、衣服、一双手套，下排依次一双靴子、腰带、戒指、护符。每格只放对应装备，完整居中，四周留空，不能跨格。粗清晰像素，适合64×64图标。横向2:1画布，真实透明背景，无文字无格线无人物。",
+    "source": "output/pixel-rpg/sources/equipment-water.png",
+    "references": [
+      "output/pixel-rpg/reference-approved.png",
+      "output/pixel-rpg/sources/equipment-metal.png"
+    ]
+  },
+  {
+    "key": "fire",
+    "prompt": "按第一张参考图上排第四件火系衣服，红黑和橙金、火焰肩饰与纹样，生成这套配套的复古像素装备精灵图。保持参考衣服款式和像素画风一致，第二张图只参考网格排列。严格4列2行等大网格，上排依次法杖、法师头饰、衣服、一双手套，下排依次一双靴子、腰带、戒指、护符。每格只放对应装备，完整居中，四周留空，不能跨格。粗清晰像素，适合64×64图标。横向2:1画布，真实透明背景，无文字无格线无人物。",
+    "source": "output/pixel-rpg/sources/equipment-fire.png",
+    "references": [
+      "output/pixel-rpg/reference-approved.png",
+      "output/pixel-rpg/sources/equipment-metal.png"
+    ]
+  },
+  {
+    "key": "earth",
+    "prompt": "按第一张参考图下排左侧土系衣服，土棕色、砂岩护肩和岩石纹样，生成这套配套的复古像素装备精灵图。保持参考衣服款式和像素画风一致，第二张图只参考排列。严格4列2行等大网格，上排依次法杖、法师头饰、衣服、一双手套，下排依次一双靴子、腰带、戒指、护符。每格只放对应装备，完整居中，四周留空，不能跨格。粗清晰像素，适合64×64图标。横向2:1画布，真实透明背景，无文字无格线无人物。",
+    "source": "output/pixel-rpg/sources/equipment-earth.png",
+    "references": [
+      "output/pixel-rpg/reference-approved.png",
+      "output/pixel-rpg/sources/equipment-metal.png"
+    ]
+  },
+  {
+    "key": "wind",
+    "prompt": "按第一张参考图下排中间风系衣服，象牙白和青绿色、风纹与轻飘带，生成这套配套的复古像素装备精灵图。保持参考衣服款式和像素画风一致，第二张图只参考排列。严格4列2行等大网格，上排依次法杖、法师头饰、衣服、一双手套，下排依次一双靴子、腰带、戒指、护符。每格只放对应装备，完整居中，四周留空，不能跨格。粗清晰像素，适合64×64图标。横向2:1画布，真实透明背景，无文字无格线无人物。",
+    "source": "output/pixel-rpg/sources/equipment-wind.png",
+    "references": [
+      "output/pixel-rpg/reference-approved.png",
+      "output/pixel-rpg/sources/equipment-metal.png"
+    ]
+  },
+  {
+    "key": "thunder",
+    "prompt": "按第一张参考图下排右侧雷系衣服，深紫黑与金色、鲜明的紫色闪电纹，生成这套配套的复古像素装备精灵图。保持参考衣服款式和像素画风一致，第二张图只参考排列。严格4列2行等大网格，上排依次法杖、法师头饰、衣服、一双手套，下排依次一双靴子、腰带、戒指、护符。每格只放对应装备，完整居中，四周留空，不能跨格。粗清晰像素，适合64×64图标。横向2:1画布，真实透明背景，无文字无格线无人物。",
+    "source": "output/pixel-rpg/sources/equipment-thunder.png",
+    "references": [
+      "output/pixel-rpg/reference-approved.png",
+      "output/pixel-rpg/sources/equipment-metal.png"
+    ]
+  }
+]

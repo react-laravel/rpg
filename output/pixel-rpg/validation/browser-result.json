@@ -1,0 +1,33 @@
+{
+  "assetRequests": 274,
+  "results": [
+    {
+      "width": 320,
+      "mapSwitch": true,
+      "compendiumItems": 110,
+      "compendiumMonsters": 123,
+      "pixelImages": true,
+      "overflow": false,
+      "consoleErrors": []
+    },
+    {
+      "width": 768,
+      "mapSwitch": true,
+      "compendiumItems": 110,
+      "compendiumMonsters": 123,
+      "pixelImages": true,
+      "overflow": false,
+      "consoleErrors": []
+    },
+    {
+      "width": 1440,
+      "mapSwitch": true,
+      "compendiumItems": 110,
+      "compendiumMonsters": 123,
+      "pixelImages": true,
+      "overflow": false,
+      "consoleErrors": []
+    }
+  ],
+  "passed": true
+}

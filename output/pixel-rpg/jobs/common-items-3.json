@@ -1,0 +1,139 @@
+{
+  "id": "common-items-3",
+  "kind": "items",
+  "cols": 4,
+  "rows": 4,
+  "tileSize": 64,
+  "tiles": [
+    {
+      "key": "creation-ring",
+      "name": "创世之戒",
+      "ordinal": 121,
+      "aliases": [
+        "item_121"
+      ]
+    },
+    {
+      "key": "god-king-ring",
+      "name": "神王之戒",
+      "ordinal": 122,
+      "aliases": [
+        "item_122"
+      ]
+    },
+    {
+      "key": "wooden-amulet",
+      "name": "木制护符",
+      "ordinal": 123,
+      "aliases": [
+        "item_123"
+      ]
+    },
+    {
+      "key": "bone-amulet",
+      "name": "骨制护符",
+      "ordinal": 124,
+      "aliases": [
+        "item_124"
+      ]
+    },
+    {
+      "key": "crystal-amulet",
+      "name": "水晶护符",
+      "ordinal": 125,
+      "aliases": [
+        "item_125"
+      ]
+    },
+    {
+      "key": "lion-amulet",
+      "name": "狮心护符",
+      "ordinal": 126,
+      "aliases": [
+        "item_126"
+      ]
+    },
+    {
+      "key": "cat-eye-amulet",
+      "name": "猫眼护符",
+      "ordinal": 127,
+      "aliases": [
+        "item_127"
+      ]
+    },
+    {
+      "key": "marshal-amulet",
+      "name": "统御护符",
+      "ordinal": 128,
+      "aliases": [
+        "item_128"
+      ]
+    },
+    {
+      "key": "infernal-amulet",
+      "name": "地狱护符",
+      "ordinal": 129,
+      "aliases": [
+        "item_129"
+      ]
+    },
+    {
+      "key": "sacred-amulet",
+      "name": "神圣护符",
+      "ordinal": 130,
+      "aliases": [
+        "item_130"
+      ]
+    },
+    {
+      "key": "angel-amulet",
+      "name": "天使护符",
+      "ordinal": 132,
+      "aliases": [
+        "item_132"
+      ]
+    },
+    {
+      "key": "sacred-angel-amulet",
+      "name": "炽天使护符",
+      "ordinal": 133,
+      "aliases": [
+        "item_133"
+      ]
+    },
+    {
+      "key": "eternal-amulet",
+      "name": "永恒护符",
+      "ordinal": 134,
+      "aliases": [
+        "item_134"
+      ]
+    },
+    {
+      "key": "chaos-amulet",
+      "name": "混沌护符",
+      "ordinal": 135,
+      "aliases": [
+        "item_135"
+      ]
+    },
+    {
+      "key": "creation-amulet",
+      "name": "创世护符",
+      "ordinal": 136,
+      "aliases": [
+        "item_136"
+      ]
+    },
+    {
+      "key": "god-king-amulet",
+      "name": "神王护符",
+      "ordinal": 137,
+      "aliases": [
+        "item_137"
+      ]
+    }
+  ],
+  "prompt": "复古RPG像素装备精灵图，清晰像素块、有限配色。严格4列4行等大网格，依照从左到右从上到下的顺序画：创世之戒（戒指）、神王之戒（戒指）、木制护符（护符）、骨制护符（护符）、水晶护符（护符）、狮心护符（护符）、猫眼护符（护符）、统御护符（护符）、地狱护符（护符）、神圣护符（护符）、天使护符（护符）、炽天使护符（护符）、永恒护符（护符）、混沌护符（护符）、创世护符（护符）、神王护符（护符）。每格一件对应装备，完整居中留空，不接触邻格。法杖都是法师武器；饰品外形清晰易辨。真实透明背景，无人物无文字无格线。 Transparent alpha PNG. 每个主体只占格子的七成面积，四周留足透明空白，不画任何背景或背景光晕。",
+  "source": "output/pixel-rpg/sources/common-items-3.png"
+}

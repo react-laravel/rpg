@@ -1,0 +1,139 @@
+{
+  "id": "common-items-1",
+  "kind": "items",
+  "cols": 4,
+  "rows": 4,
+  "tileSize": 64,
+  "tiles": [
+    {
+      "key": "beginner-staff",
+      "name": "学徒法杖",
+      "ordinal": 14,
+      "aliases": [
+        "item_14"
+      ]
+    },
+    {
+      "key": "oak-staff",
+      "name": "橡木法杖",
+      "ordinal": 15,
+      "aliases": [
+        "item_15"
+      ]
+    },
+    {
+      "key": "crystal-staff",
+      "name": "水晶法杖",
+      "ordinal": 16,
+      "aliases": [
+        "item_16"
+      ]
+    },
+    {
+      "key": "moon-staff",
+      "name": "月华法杖",
+      "ordinal": 17,
+      "aliases": [
+        "item_17"
+      ]
+    },
+    {
+      "key": "star-staff",
+      "name": "星辰法杖",
+      "ordinal": 18,
+      "aliases": [
+        "item_18"
+      ]
+    },
+    {
+      "key": "void-staff",
+      "name": "虚空法杖",
+      "ordinal": 19,
+      "aliases": [
+        "item_19"
+      ]
+    },
+    {
+      "key": "arcane-staff",
+      "name": "奥术法杖",
+      "ordinal": 20,
+      "aliases": [
+        "item_20"
+      ]
+    },
+    {
+      "key": "phoenix-staff",
+      "name": "凤凰法杖",
+      "ordinal": 21,
+      "aliases": [
+        "item_21"
+      ]
+    },
+    {
+      "key": "angel-staff",
+      "name": "天使法杖",
+      "ordinal": 22,
+      "aliases": [
+        "item_22"
+      ]
+    },
+    {
+      "key": "archmage-staff",
+      "name": "贤者法杖",
+      "ordinal": 23,
+      "aliases": [
+        "item_23"
+      ]
+    },
+    {
+      "key": "divine-revelation-staff",
+      "name": "启示权杖",
+      "ordinal": 24,
+      "aliases": [
+        "item_24"
+      ]
+    },
+    {
+      "key": "eternal-mana-source-staff",
+      "name": "永恒源杖",
+      "ordinal": 25,
+      "aliases": [
+        "item_25"
+      ]
+    },
+    {
+      "key": "chaos-wand",
+      "name": "混沌法杖",
+      "ordinal": 26,
+      "aliases": [
+        "item_26"
+      ]
+    },
+    {
+      "key": "cloth-cap-helmet",
+      "name": "布帽",
+      "ordinal": 40,
+      "aliases": [
+        "item_40"
+      ]
+    },
+    {
+      "key": "cloth-robe-armor",
+      "name": "布衣",
+      "ordinal": 53,
+      "aliases": [
+        "item_53"
+      ]
+    },
+    {
+      "key": "cloth-gloves",
+      "name": "布手套",
+      "ordinal": 67,
+      "aliases": [
+        "item_67"
+      ]
+    }
+  ],
+  "prompt": "复古RPG像素装备精灵图，清晰像素块、有限配色。严格4列4行等大网格，依照从左到右从上到下的顺序画：学徒法杖（法杖）、橡木法杖（法杖）、水晶法杖（法杖）、月华法杖（法杖）、星辰法杖（法杖）、虚空法杖（法杖）、奥术法杖（法杖）、凤凰法杖（法杖）、天使法杖（法杖）、贤者法杖（法杖）、启示权杖（法杖）、永恒源杖（法杖）、混沌法杖（法杖）、布帽（布帽）、布衣（布衣）、布手套（手套）。每格一件对应装备，完整居中留空，不接触邻格。法杖都是法师武器；饰品外形清晰易辨。真实透明背景，无人物无文字无格线。 Transparent alpha PNG. 每个主体只占格子的七成面积，四周留足透明空白，不画任何背景或背景光晕。",
+  "source": "output/pixel-rpg/sources/common-items-1.png"
+}

@@ -1,7 +1,7 @@
 'use client'
 
 import { memo, useCallback, useMemo, useState } from 'react'
-import Image from 'next/image'
+import Image from '@/components/game/GameImage'
 import type { GameItem, ItemQuality } from '@/app/game/rpg/types'
 import { QUALITY_COLORS } from '@/app/game/rpg/types'
 import { getItemIconFallback } from '@/app/game/rpg/utils/itemUtils'

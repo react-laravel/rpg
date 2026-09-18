@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import Image from 'next/image'
+import { useState, useMemo, useEffect } from 'react'
+import Image from '@/components/game/GameImage'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useGameStore } from '../../stores/gameStore'
 import { useMonsterDrops } from '../../hooks/useMonsterDrops'
@@ -63,7 +63,7 @@ export function CompendiumPanel() {
   }, [compendiumMonsters])
 
   // 加载数据 - 每次切换 Tab 都强制刷新
-  useMemo(() => {
+  useEffect(() => {
     if (activeTab === 'items') {
       fetchCompendiumItems()
     } else if (activeTab === 'monsters') {
@@ -218,13 +218,14 @@ export function CompendiumPanel() {
             open={!!selectedItem && !viewingImage}
             onOpenChange={open => !open && setSelectedItem(null)}
           >
-            <DialogContent className="bg-card w-[80%] max-w-sm gap-0 p-4">
+            <DialogContent className="bg-card w-[calc(100%-2rem)] max-w-sm gap-0 p-4">
               {selectedItem && (
-                <div className="flex gap-3">
+                <div className="flex flex-col gap-3 sm:flex-row">
                   {/* 左侧图片 */}
                   <button
                     type="button"
-                    className="border-border bg-muted relative flex h-40 w-40 shrink-0 cursor-zoom-in items-center justify-center rounded-lg border-2"
+                    disabled={!selectedItem.icon}
+                    className="border-border bg-muted relative mx-auto flex h-32 w-32 shrink-0 cursor-zoom-in items-center justify-center rounded-lg border-2 disabled:cursor-default sm:mx-0"
                     onClick={e => {
                       e.stopPropagation()
                       setViewingImage(getRpgItemImageUrl(selectedItem.icon, selectedItem.id, true))
@@ -238,12 +239,17 @@ export function CompendiumPanel() {
                     </span>
                   </button>
                   {/* 右侧信息 */}
-                  <div className="flex-1 space-y-3">
+                  <div className="min-w-0 flex-1 space-y-3">
                     <div>
-                      <h3 className="text-lg font-bold">{selectedItem.name}</h3>
+                      <DialogTitle className="text-lg font-bold">{selectedItem.name}</DialogTitle>
                       <p className="text-muted-foreground text-sm">
                         {ITEM_TYPE_NAMES[selectedItem.type] ?? selectedItem.type}
                       </p>
+                      {selectedItem.description && (
+                        <p className="text-muted-foreground mt-2 text-xs leading-relaxed">
+                          {selectedItem.description}
+                        </p>
+                      )}
                     </div>
                     <div className="space-y-1 text-sm">
                       {Object.entries(selectedItem.base_stats || {}).map(([stat, value]) => (
@@ -368,7 +374,8 @@ export function CompendiumPanel() {
             open={!!selectedMonster && !viewingImage}
             onOpenChange={open => !open && handleMonsterDialogClose()}
           >
-            <DialogContent className="bg-card max-h-[80vh] w-[80%] max-w-sm gap-0 overflow-y-auto p-4">
+            <DialogContent className="bg-card max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-sm gap-0 overflow-y-auto p-4">
+              {!compendiumMonsterDrops && <DialogTitle className="sr-only">{selectedMonster?.name ?? '怪物详情'}</DialogTitle>}
               {compendiumMonsterDrops ? (
                 <div className="space-y-4">
                   {/* 顶部：图片 + 属性 */}
@@ -376,7 +383,7 @@ export function CompendiumPanel() {
                     {/* 左侧图片 */}
                     <button
                       type="button"
-                      className="relative h-40 w-40 shrink-0 cursor-zoom-in"
+                      className="relative h-28 w-28 shrink-0 cursor-zoom-in sm:h-32 sm:w-32"
                       onClick={e => {
                         e.stopPropagation()
                         setViewingImage(getRpgMonsterImageUrl(selectedMonster?.icon, true))
@@ -390,9 +397,9 @@ export function CompendiumPanel() {
                       />
                     </button>
                     {/* 右侧属性 */}
-                    <div className="flex-1 space-y-3">
+                    <div className="min-w-0 flex-1 space-y-3">
                       <div>
-                        <h3 className="text-lg font-bold">{compendiumMonsterDrops.monster.name}</h3>
+                        <DialogTitle className="pr-5 text-lg font-bold">{compendiumMonsterDrops.monster.name}</DialogTitle>
                         <p className="text-muted-foreground text-sm">
                           Lv.{compendiumMonsterDrops.monster.level} ·{' '}
                           {getMonsterTypeName(compendiumMonsterDrops.monster.type)}
@@ -460,17 +467,17 @@ function ImageWithFallback({ src, fallback }: { src: string; fallback: string })
   const [useImg, setUseImg] = useState(true)
   return (
     <>
-      {useImg && (
+      {useImg && src && (
         <Image
           src={src}
           alt=""
           fill
-          sizes="160px"
+          sizes="128px"
           className="object-contain"
           onError={() => setUseImg(false)}
         />
       )}
-      {!useImg && (
+      {(!useImg || !src) && (
         <span className="absolute inset-0 flex items-center justify-center text-5xl">
           {fallback}
         </span>

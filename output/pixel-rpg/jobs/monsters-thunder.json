@@ -1,0 +1,173 @@
+{
+  "id": "monsters-thunder",
+  "kind": "monsters",
+  "cols": 6,
+  "rows": 3,
+  "tileSize": 96,
+  "tiles": [
+    {
+      "key": "pixel-monster-088",
+      "name": "电尾鼠",
+      "ordinal": 88,
+      "aliases": [
+        "map-30-boar",
+        "monster_88"
+      ]
+    },
+    {
+      "key": "pixel-monster-089",
+      "name": "雷纹狼",
+      "ordinal": 89,
+      "aliases": [
+        "map-30-deer",
+        "monster_89"
+      ]
+    },
+    {
+      "key": "pixel-monster-090",
+      "name": "闪角公羊",
+      "ordinal": 90,
+      "aliases": [
+        "map-30-rabbit",
+        "monster_90"
+      ]
+    },
+    {
+      "key": "pixel-monster-091",
+      "name": "电晶蝠",
+      "ordinal": 91,
+      "aliases": [
+        "map-31-boar",
+        "monster_91"
+      ]
+    },
+    {
+      "key": "pixel-monster-092",
+      "name": "磁石甲虫",
+      "ordinal": 92,
+      "aliases": [
+        "map-31-deer",
+        "monster_92"
+      ]
+    },
+    {
+      "key": "pixel-monster-093",
+      "name": "紫晶巨蝎",
+      "ordinal": 93,
+      "aliases": [
+        "map-31-rabbit",
+        "monster_93"
+      ]
+    },
+    {
+      "key": "pixel-monster-094",
+      "name": "电弧史莱姆",
+      "ordinal": 94,
+      "aliases": [
+        "map-32-boar",
+        "monster_94"
+      ]
+    },
+    {
+      "key": "pixel-monster-095",
+      "name": "悬磁傀儡",
+      "ordinal": 95,
+      "aliases": [
+        "map-32-deer",
+        "monster_95"
+      ]
+    },
+    {
+      "key": "pixel-monster-096",
+      "name": "铁羽雷鹫",
+      "ordinal": 96,
+      "aliases": [
+        "map-32-rabbit",
+        "monster_96"
+      ]
+    },
+    {
+      "key": "pixel-monster-097",
+      "name": "雷符纸偶",
+      "ordinal": 97,
+      "aliases": [
+        "map-33-boar",
+        "monster_97"
+      ]
+    },
+    {
+      "key": "pixel-monster-098",
+      "name": "电刃卫士",
+      "ordinal": 98,
+      "aliases": [
+        "map-33-deer",
+        "monster_98"
+      ]
+    },
+    {
+      "key": "pixel-monster-099",
+      "name": "惊雷术士",
+      "ordinal": 99,
+      "aliases": [
+        "map-33-rabbit",
+        "monster_99"
+      ]
+    },
+    {
+      "key": "pixel-monster-100",
+      "name": "雷霆元素",
+      "ordinal": 100,
+      "aliases": [
+        "map-34-boar",
+        "monster_100"
+      ]
+    },
+    {
+      "key": "pixel-monster-101",
+      "name": "紫电脉蛇",
+      "ordinal": 101,
+      "aliases": [
+        "map-34-deer",
+        "monster_101"
+      ]
+    },
+    {
+      "key": "pixel-monster-102",
+      "name": "雷鼓力士",
+      "ordinal": 102,
+      "aliases": [
+        "map-34-rabbit",
+        "monster_102"
+      ]
+    },
+    {
+      "key": "pixel-monster-103",
+      "name": "天罚哨卫",
+      "ordinal": 103,
+      "aliases": [
+        "map-35-boar",
+        "monster_103"
+      ]
+    },
+    {
+      "key": "pixel-monster-104",
+      "name": "雷羽狮鹫",
+      "ordinal": 104,
+      "aliases": [
+        "map-35-deer",
+        "monster_104"
+      ]
+    },
+    {
+      "key": "pixel-monster-105",
+      "name": "九霄雷龙",
+      "ordinal": 105,
+      "aliases": [
+        "map-35-rabbit",
+        "monster_105"
+      ]
+    }
+  ],
+  "prompt": "复古奇幻RPG怪物精灵图，雷霆天域主题，紫罗兰、银黑、电蓝配色。严格6列3行等大网格，按从左到右、从上到下依次画：电尾鼠、雷纹狼、闪角公羊、电晶蝠、磁石甲虫、紫晶巨蝎、电弧史莱姆、悬磁傀儡、铁羽雷鹫、雷符纸偶、电刃卫士、惊雷术士、雷霆元素、紫电脉蛇、雷鼓力士、天罚哨卫、雷羽狮鹫、九霄雷龙。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。 Transparent alpha PNG. 每个主体只占格子的七成面积，四周留足透明空白，不画任何背景或背景光晕。",
+  "source": "output/pixel-rpg/sources/monsters-thunder.png"
+}

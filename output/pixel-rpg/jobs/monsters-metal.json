@@ -1,0 +1,146 @@
+{
+  "id": "monsters-metal",
+  "kind": "monsters",
+  "cols": 5,
+  "rows": 3,
+  "tileSize": 96,
+  "tiles": [
+    {
+      "key": "pixel-monster-055",
+      "name": "铜羽雀",
+      "ordinal": 55,
+      "aliases": [
+        "map-19-boar",
+        "monster_55"
+      ]
+    },
+    {
+      "key": "pixel-monster-056",
+      "name": "齿轮蜘蛛",
+      "ordinal": 56,
+      "aliases": [
+        "map-19-deer",
+        "monster_56"
+      ]
+    },
+    {
+      "key": "pixel-monster-057",
+      "name": "铁甲犰狳",
+      "ordinal": 57,
+      "aliases": [
+        "map-19-rabbit",
+        "monster_57"
+      ]
+    },
+    {
+      "key": "pixel-monster-058",
+      "name": "发条鼠",
+      "ordinal": 58,
+      "aliases": [
+        "map-20-boar",
+        "monster_58"
+      ]
+    },
+    {
+      "key": "pixel-monster-059",
+      "name": "扳手傀儡",
+      "ordinal": 59,
+      "aliases": [
+        "map-20-deer",
+        "monster_59"
+      ]
+    },
+    {
+      "key": "pixel-monster-060",
+      "name": "重锤机兵",
+      "ordinal": 60,
+      "aliases": [
+        "map-20-rabbit",
+        "monster_60"
+      ]
+    },
+    {
+      "key": "pixel-monster-061",
+      "name": "镜面史莱姆",
+      "ordinal": 61,
+      "aliases": [
+        "map-21-boar",
+        "monster_61"
+      ]
+    },
+    {
+      "key": "pixel-monster-062",
+      "name": "银翼蛾",
+      "ordinal": 62,
+      "aliases": [
+        "map-21-deer",
+        "monster_62"
+      ]
+    },
+    {
+      "key": "pixel-monster-063",
+      "name": "镜刃哨卫",
+      "ordinal": 63,
+      "aliases": [
+        "map-21-rabbit",
+        "monster_63"
+      ]
+    },
+    {
+      "key": "pixel-monster-064",
+      "name": "宝箱怪",
+      "ordinal": 64,
+      "aliases": [
+        "map-22-boar",
+        "monster_64"
+      ]
+    },
+    {
+      "key": "pixel-monster-065",
+      "name": "金币精",
+      "ordinal": 65,
+      "aliases": [
+        "map-22-deer",
+        "monster_65"
+      ]
+    },
+    {
+      "key": "pixel-monster-066",
+      "name": "金甲狮鹫",
+      "ordinal": 66,
+      "aliases": [
+        "map-22-rabbit",
+        "monster_66"
+      ]
+    },
+    {
+      "key": "pixel-monster-067",
+      "name": "铂金卫士",
+      "ordinal": 67,
+      "aliases": [
+        "map-23-boar",
+        "monster_67"
+      ]
+    },
+    {
+      "key": "pixel-monster-068",
+      "name": "鎏金飞蛇",
+      "ordinal": 68,
+      "aliases": [
+        "map-23-deer",
+        "monster_68"
+      ]
+    },
+    {
+      "key": "pixel-monster-069",
+      "name": "铸星巨兵",
+      "ordinal": 69,
+      "aliases": [
+        "map-23-rabbit",
+        "monster_69"
+      ]
+    }
+  ],
+  "prompt": "复古奇幻RPG怪物精灵图，鎏金古国主题，黄金、黄铜、银白配色。严格5列3行等大网格，按从左到右、从上到下依次画：铜羽雀、齿轮蜘蛛、铁甲犰狳、发条鼠、扳手傀儡、重锤机兵、镜面史莱姆、银翼蛾、镜刃哨卫、宝箱怪、金币精、金甲狮鹫、铂金卫士、鎏金飞蛇、铸星巨兵。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。 每个怪物只占格子的七成面积，四周留足透明空白。",
+  "source": "output/pixel-rpg/sources/monsters-metal.png"
+}

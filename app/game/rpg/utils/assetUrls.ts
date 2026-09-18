@@ -1,4 +1,5 @@
 import { gameAsset } from '@/lib/helpers/assets'
+import { getPixelAssetUrl } from './pixelAssets'
 
 function addOriginSuffix(fileName: string): string {
   return fileName.replace(/\.([^.]+)$/, '_origin.$1')
@@ -21,11 +22,11 @@ export function getRpgItemImageUrl(
   definitionId?: number | null,
   useOrigin = false
 ): string {
-  return resolveRpgAssetUrl('/game/rpg/items', icon, useOrigin)
+  return getPixelAssetUrl('items', icon) ?? resolveRpgAssetUrl('/game/rpg/items', icon, useOrigin)
 }
 
 export function getRpgMonsterImageUrl(icon?: string | null, useOrigin = false): string {
-  return resolveRpgAssetUrl('/game/rpg/monsters', icon, useOrigin)
+  return getPixelAssetUrl('monsters', icon) ?? resolveRpgAssetUrl('/game/rpg/monsters', icon, useOrigin)
 }
 
 export function getRpgSkillImageUrl(icon?: string | null, useOrigin = false): string {

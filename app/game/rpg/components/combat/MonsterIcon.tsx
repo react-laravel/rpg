@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import Image from '@/components/game/GameImage'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { getRpgMonsterImageUrl } from '../../utils/assetUrls'
 
@@ -27,6 +27,7 @@ export const MonsterIcon = memo(function MonsterIcon({
 }) {
   const fallback = name && name[0] ? name[0] : '?'
   const src = useMemo(() => getRpgMonsterImageUrl(icon), [icon])
+  const pixel = src.includes('/game/rpg/pixel-v1/')
   const [failed, setFailed] = useState(false)
   const handleError = useCallback(() => setFailed(true), [])
   const sizeClass =
@@ -49,13 +50,13 @@ export const MonsterIcon = memo(function MonsterIcon({
 
   return (
     <span
-      className={`bg-destructive/20 relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border-2 ${borderColorClass} ${sizeClass}`}
+      className={`relative flex shrink-0 items-center justify-center overflow-hidden border-2 ${pixel ? 'rounded-md bg-black/10' : 'rounded-full bg-destructive/20'} ${borderColorClass} ${sizeClass}`}
     >
       <Image
         src={src}
         alt={name}
         fill
-        className="object-cover"
+        className={pixel ? 'object-contain p-1' : 'object-cover'}
         sizes={size === 'sm' ? '48px' : size === 'lg' ? '96px' : '64px'}
         onError={handleError}
       />

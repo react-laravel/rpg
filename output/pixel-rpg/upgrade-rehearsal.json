@@ -1,0 +1,16 @@
+{
+    "passed": true,
+    "database": "SQLite :memory:",
+    "backup": "pixel-v1-20260918-200631.json.gz",
+    "backup_bytes": 10130,
+    "checks": {
+        "backup_contains_original_gear": true,
+        "legacy_sword_removed": true,
+        "mage_staff_preserved": true,
+        "character_location_preserved": true,
+        "character_discoveries_preserved": true,
+        "world_complete": true,
+        "sets_complete": true,
+        "old_slot_cleared": true
+    }
+}

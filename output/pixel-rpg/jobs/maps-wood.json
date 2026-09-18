@@ -1,0 +1,47 @@
+{
+  "id": "maps-wood",
+  "kind": "maps",
+  "cols": 3,
+  "rows": 2,
+  "tileSize": 256,
+  "tiles": [
+    {
+      "key": "pixel-map-06",
+      "name": "青藤林缘",
+      "ordinal": 6,
+      "aliases": [
+        "dark-cave-entrance",
+        "map_6"
+      ]
+    },
+    {
+      "key": "pixel-map-07",
+      "name": "巨蕈湿地",
+      "ordinal": 7,
+      "aliases": [
+        "spider-cave",
+        "map_7"
+      ]
+    },
+    {
+      "key": "pixel-map-08",
+      "name": "古木回廊",
+      "ordinal": 8,
+      "aliases": [
+        "skeleton-graveyard",
+        "map_8"
+      ]
+    },
+    {
+      "key": "pixel-map-09",
+      "name": "翠叶圣林",
+      "ordinal": 9,
+      "aliases": [
+        "bone-hall",
+        "map_9"
+      ]
+    }
+  ],
+  "prompt": "复古像素RPG战斗地图背景合集，青藤秘境主题，翠绿、棕褐、萤光配色。严格3列2行，每格是一张独立正方形场景，边缘准确对齐，不互相延伸，不画分隔线。按阅读顺序：1.明亮树林边缘，藤蔓拱门、野花和蜿蜒土路；2.巨型蘑菇与浅水沼泽，发光孢子、木栈道；3.古树树根构成回廊，苔藓石台和林间光束；4.参天古榕围绕的绿色圣林，中央树根祭坛。剩余格子留纯黑空白。经典16位游戏像素画，清晰像素块、有限配色；每张中央留出清晰战斗空地，景物在周围和远处。不要人物、怪物、文字、UI。整张画布3:2横向。",
+  "source": "output/pixel-rpg/sources/maps-wood.png"
+}

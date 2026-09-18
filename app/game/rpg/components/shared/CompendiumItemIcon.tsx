@@ -1,7 +1,7 @@
 'use client'
 
 import { memo, useCallback, useMemo, useState } from 'react'
-import Image from 'next/image'
+import Image from '@/components/game/GameImage'
 import type { CompendiumItem } from '../../types/compendium'
 import { getItemIconFallback } from '../../utils/itemUtils'
 import { getRpgItemImageUrl } from '../../utils/assetUrls'

@@ -1,0 +1,173 @@
+{
+  "id": "monsters-wind",
+  "kind": "monsters",
+  "cols": 6,
+  "rows": 3,
+  "tileSize": 96,
+  "tiles": [
+    {
+      "key": "pixel-monster-070",
+      "name": "旋风精",
+      "ordinal": 70,
+      "aliases": [
+        "map-24-boar",
+        "monster_70"
+      ]
+    },
+    {
+      "key": "pixel-monster-071",
+      "name": "疾风兔",
+      "ordinal": 71,
+      "aliases": [
+        "map-24-deer",
+        "monster_71"
+      ]
+    },
+    {
+      "key": "pixel-monster-072",
+      "name": "长翼隼",
+      "ordinal": 72,
+      "aliases": [
+        "map-24-rabbit",
+        "monster_72"
+      ]
+    },
+    {
+      "key": "pixel-monster-073",
+      "name": "石羽鸟",
+      "ordinal": 73,
+      "aliases": [
+        "map-25-boar",
+        "monster_73"
+      ]
+    },
+    {
+      "key": "pixel-monster-074",
+      "name": "风铃妖",
+      "ordinal": 74,
+      "aliases": [
+        "map-25-deer",
+        "monster_74"
+      ]
+    },
+    {
+      "key": "pixel-monster-075",
+      "name": "云鬃山羊",
+      "ordinal": 75,
+      "aliases": [
+        "map-25-rabbit",
+        "monster_75"
+      ]
+    },
+    {
+      "key": "pixel-monster-076",
+      "name": "浮空水母",
+      "ordinal": 76,
+      "aliases": [
+        "map-26-boar",
+        "monster_76"
+      ]
+    },
+    {
+      "key": "pixel-monster-077",
+      "name": "羽尾蜥",
+      "ordinal": 77,
+      "aliases": [
+        "map-26-deer",
+        "monster_77"
+      ]
+    },
+    {
+      "key": "pixel-monster-078",
+      "name": "苍羽狮鹫",
+      "ordinal": 78,
+      "aliases": [
+        "map-26-rabbit",
+        "monster_78"
+      ]
+    },
+    {
+      "key": "pixel-monster-079",
+      "name": "气旋狼",
+      "ordinal": 79,
+      "aliases": [
+        "map-27-boar",
+        "monster_79"
+      ]
+    },
+    {
+      "key": "pixel-monster-080",
+      "name": "薄翼蝶",
+      "ordinal": 80,
+      "aliases": [
+        "map-27-deer",
+        "monster_80"
+      ]
+    },
+    {
+      "key": "pixel-monster-081",
+      "name": "旋风武僧",
+      "ordinal": 81,
+      "aliases": [
+        "map-27-rabbit",
+        "monster_81"
+      ]
+    },
+    {
+      "key": "pixel-monster-082",
+      "name": "云纹哨卫",
+      "ordinal": 82,
+      "aliases": [
+        "map-28-boar",
+        "monster_82"
+      ]
+    },
+    {
+      "key": "pixel-monster-083",
+      "name": "星羽鸮",
+      "ordinal": 83,
+      "aliases": [
+        "map-28-deer",
+        "monster_83"
+      ]
+    },
+    {
+      "key": "pixel-monster-084",
+      "name": "风语贤者",
+      "ordinal": 84,
+      "aliases": [
+        "map-28-rabbit",
+        "monster_84"
+      ]
+    },
+    {
+      "key": "pixel-monster-085",
+      "name": "风环守卫",
+      "ordinal": 85,
+      "aliases": [
+        "map-29-boar",
+        "monster_85"
+      ]
+    },
+    {
+      "key": "pixel-monster-086",
+      "name": "流云元素",
+      "ordinal": 86,
+      "aliases": [
+        "map-29-deer",
+        "monster_86"
+      ]
+    },
+    {
+      "key": "pixel-monster-087",
+      "name": "天穹巨鹏",
+      "ordinal": 87,
+      "aliases": [
+        "map-29-rabbit",
+        "monster_87"
+      ]
+    }
+  ],
+  "prompt": "复古奇幻RPG怪物精灵图，天空群岛主题，天青、象牙白、薄荷绿配色。严格6列3行等大网格，按从左到右、从上到下依次画：旋风精、疾风兔、长翼隼、石羽鸟、风铃妖、云鬃山羊、浮空水母、羽尾蜥、苍羽狮鹫、气旋狼、薄翼蝶、旋风武僧、云纹哨卫、星羽鸮、风语贤者、风环守卫、流云元素、天穹巨鹏。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。 每个怪物只占格子的七成面积，四周留足透明空白。",
+  "source": "output/pixel-rpg/sources/monsters-wind.png"
+}
