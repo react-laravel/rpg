@@ -11,15 +11,19 @@ function formatRate(value: number): string {
   return value.toLocaleString('zh-CN', {
     notation: value >= 10_000 ? 'compact' : 'standard',
     maximumFractionDigits: 1,
+    useGrouping: false,
   })
 }
 
 function RateValue({ value, copper = false }: { value: number | null; copper?: boolean }) {
   if (value == null) return <>统计中</>
   return (
-    <span title={`${value.toLocaleString('zh-CN')}${copper ? ' 铜币' : ''}/分钟`}>
+    <span
+      title={`${value.toLocaleString('zh-CN')}${copper ? ' 铜币' : ''}/分钟`}
+      aria-label={`${value.toLocaleString('zh-CN')}${copper ? ' 铜币' : ''}/分钟`}
+    >
       {formatRate(value)}
-      <span className={interfaceStyles.farmStatUnit}>{copper ? '铜/分钟' : '/分钟'}</span>
+      <span className={interfaceStyles.farmStatUnit}>{copper ? '铜/分' : '/分'}</span>
     </span>
   )
 }
@@ -64,7 +68,7 @@ export function MapFarmStats() {
       </div>
       <div>
         <dt>升级</dt>
-        <dd>{eta ?? '统计中'}</dd>
+        <dd title={eta ?? '统计中'}>{eta ?? '统计中'}</dd>
       </div>
       <div>
         <dt>伤害</dt>

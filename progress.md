@@ -91,3 +91,10 @@ Original prompt: 战斗界面，地图会挡住顶部的信息条
 - No backend or gameplay changes. The existing 274 asset checksums are unchanged; the 10 skill PNGs total 10,296 bytes. All 284 images pass checksum, dimensions and alpha/padding checks.
 - Validation: 335 frontend tests passed; TypeScript, ESLint and production build passed. Actual skill API fixtures from isolated SQLite cover all 37 nodes and the 9 active battle-bar icons at 320/768/1440 widths, including toggling skills, pixel rendering, image loading and no overflow/console errors. Bundled web-game client run and screenshots were inspected. Evidence: `output/pixel-rpg/validation/skills/`.
 - Delivery follows the existing user authorization to push completed pixel work. Publish verification is tracked in ignored `output/pixel-rpg/delivery.local.json`; the previous completion automation remains closed.
+
+## 2026-09-19 — Compact battle statistics
+
+- User requested reducing the tall statistics area below the battle map. All six metrics now place the label and value on the same line, use shorter per-minute units, and share a compact borderless layout. The arena's own width controls the layout: two rows in narrow panels, one row from 44rem. Full numerical values remain available in accessible labels and hover text.
+- Browser measurements at 320/390/639px: 112px to 51px (54% shorter); at 640px: 78px to 51px (35%); at 768/1024/1440px: 78px to 33px (58%). Existing statistics calculations and update timing are unchanged.
+- Validation: 10 existing farm-statistics/combat tests passed; TypeScript, ESLint and production build passed. Production-mode Playwright checked seven viewport widths, loading/zero/large values, label/value alignment, all six cells, and horizontal overflow. No browser console errors. The bundled web-game client also passed; narrow/wide screenshots and state output were inspected. Evidence: `output/farm-stats-compact/`. API fixtures are isolated and no live account data was changed.
+- Frontend delivery continues under the user's existing push authorization. No API changes are needed; the previous completion automation remains closed.
