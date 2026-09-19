@@ -377,8 +377,7 @@ export function MonsterGroup({
                 </span>
               </div>
               <div className="w-full min-w-0 rounded bg-black/45 px-1 py-1 backdrop-blur-sm">
-                <div className="flex min-w-0 items-center justify-between gap-0.5 text-[9px] leading-none text-white/80 sm:text-[10px]">
-                  <span className="shrink-0">HP</span>
+                <div className="flex min-w-0 items-center justify-center text-[9px] leading-none text-white/80 sm:text-[10px]">
                   <span className="truncate tabular-nums" title={`${m.hp ?? 0}/${m.max_hp ?? 0}`}>
                     {formatMonsterHp(m.hp, m.max_hp)}
                   </span>

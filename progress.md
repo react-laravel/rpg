@@ -98,3 +98,10 @@ Original prompt: 战斗界面，地图会挡住顶部的信息条
 - Browser measurements at 320/390/639px: 112px to 51px (54% shorter); at 640px: 78px to 51px (35%); at 768/1024/1440px: 78px to 33px (58%). Existing statistics calculations and update timing are unchanged.
 - Validation: 10 existing farm-statistics/combat tests passed; TypeScript, ESLint and production build passed. Production-mode Playwright checked seven viewport widths, loading/zero/large values, label/value alignment, all six cells, and horizontal overflow. No browser console errors. The bundled web-game client also passed; narrow/wide screenshots and state output were inspected. Evidence: `output/farm-stats-compact/`. API fixtures are isolated and no live account data was changed.
 - Frontend delivery continues under the user's existing push authorization. No API changes are needed; the previous completion automation remains closed.
+
+## 2026-09-19 — Level-first compendium and numeric battle resources
+
+- User requested level-first item ordering and removal of the visible HP/生命/魔法 labels in the battle arena. The API now orders active items by required level, then type, then ID for stable ties. Category filters preserve that order. Discovered and undiscovered items share the same ordering.
+- Monster HP and player HP/MP values are centered above their existing resource bars. Accessible names and player hover text retain resource meanings; visible labels are removed.
+- Validation: 8 existing battle component tests and 5 mage catalogue API tests (504 assertions) pass; TypeScript, ESLint, Pint and production build pass. Actual controller responses exported from an isolated in-memory database verify all 110 item sort keys. Browser checks at 320/390/768/1440px confirm sorted all/category views, numeric-only arena displays, unclipped sample HP/MP, no horizontal overflow or console errors. Screenshots and the bundled web-game client's screenshot/text state were inspected. Evidence: `/tmp/rpg-order-labels/`.
+- Both repositories will be committed and pushed under existing authorization; delivery is recorded in ignored `output/pixel-rpg/delivery.local.json`.

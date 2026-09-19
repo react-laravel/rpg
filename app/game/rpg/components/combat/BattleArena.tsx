@@ -469,11 +469,11 @@ export function BattleArena({
               {combatStats && (
                 <div className="space-y-1">
                   <div>
-                    <div className="flex min-w-0 items-center justify-between gap-0.5 text-[9px] leading-none text-white/80 sm:text-[10px]">
-                      <span className="shrink-0">生命</span>
+                    <div className="flex min-w-0 items-center justify-center text-[9px] leading-none text-white/80 sm:text-[10px]">
                       <span
                         className="truncate tabular-nums"
-                        title={`${effectiveCharacterHp}/${combatStats.max_hp}`}
+                        title={`生命 ${effectiveCharacterHp}/${combatStats.max_hp}`}
+                        aria-label={`生命 ${effectiveCharacterHp}/${combatStats.max_hp}`}
                       >
                         {effectiveCharacterHp}/{combatStats.max_hp}
                       </span>
@@ -486,11 +486,11 @@ export function BattleArena({
                     </div>
                   </div>
                   <div>
-                    <div className="flex min-w-0 items-center justify-between gap-0.5 text-[9px] leading-none text-white/80 sm:text-[10px]">
-                      <span className="shrink-0">魔法</span>
+                    <div className="flex min-w-0 items-center justify-center text-[9px] leading-none text-white/80 sm:text-[10px]">
                       <span
                         className="truncate tabular-nums"
-                        title={`${effectiveCharacterMana}/${combatStats.max_mana}`}
+                        title={`魔法 ${effectiveCharacterMana}/${combatStats.max_mana}`}
+                        aria-label={`魔法 ${effectiveCharacterMana}/${combatStats.max_mana}`}
                       >
                         {effectiveCharacterMana}/{combatStats.max_mana}
                       </span>
