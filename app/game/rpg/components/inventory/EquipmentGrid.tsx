@@ -1,14 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import Image from '@/components/game/GameImage'
 import { useShallow } from 'zustand/react/shallow'
 import { useGameStore } from '../../stores/gameStore'
 import { EquipmentSlot, GameItem } from '../../types'
 import { EquipmentDetailOverlay } from './EquipmentDetailOverlay'
 import { GemSelectorDialog } from './GemSelectorDialog'
 import { EquipmentSlotButton } from './EquipmentSlotButton'
-import { CHARACTER_PORTRAIT, PAPER_DOLL_SLOTS } from './equipmentLayout'
+import { PAPER_DOLL_SLOTS } from './equipmentLayout'
+import { CharacterPortrait } from '../character/CharacterPortrait'
 import { useGemManagement } from './useGemManagement'
 
 interface EquipmentGridProps {
@@ -16,6 +16,7 @@ interface EquipmentGridProps {
   onUnequip: (slot: EquipmentSlot) => void
   characterSummary?: {
     name: string
+    gender?: 'male' | 'female'
     level: number
     experience: number
     expToNext: number
@@ -57,12 +58,12 @@ export function EquipmentGrid({ equipment, onUnequip, characterSummary }: Equipm
     setSelectedSlot(null)
   }
 
-  const portrait = CHARACTER_PORTRAIT
-
   return (
     <>
-      <div className="border-border relative aspect-[3/4] w-full overflow-hidden border-y bg-black">
-        <Image src={portrait} alt="" fill sizes="100vw" className="object-cover" priority={false} />
+      <div className="border-border relative aspect-[3/4] w-full overflow-hidden border-y bg-[radial-gradient(ellipse_at_50%_45%,#344137_0%,#17231d_50%,#0c120e_100%)]">
+        <div className="absolute inset-x-[13%] top-1/2 -translate-y-1/2">
+          <CharacterPortrait gender={characterSummary?.gender} armor={equipment.armor} weapon={equipment.weapon} />
+        </div>
         {characterSummary && (
           <>
             <div className="absolute inset-x-0 top-0 z-10 bg-gradient-to-b from-black/80 via-black/45 to-transparent px-4 pt-3 pb-14 sm:pt-4 sm:pb-16">
@@ -82,7 +83,7 @@ export function EquipmentGrid({ equipment, onUnequip, characterSummary }: Equipm
           const item = equipment[cell.slot]
 
           return (
-            <div key={cell.slot} className={`absolute ${cell.className}`}>
+            <div key={cell.slot} className={`absolute z-20 ${cell.className}`}>
               <EquipmentSlotButton
                 slot={cell.slot}
                 item={item}

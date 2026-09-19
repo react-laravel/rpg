@@ -56,12 +56,13 @@ export function CharacterPanel() {
   return (
     <div className="space-y-3 sm:space-y-4">
       {/* 装备栏：立绘背景 + 顶部角色信息 + 左右装备槽 */}
-      <div className="bg-card overflow-hidden">
+      <div className="bg-card mx-auto w-full max-w-lg overflow-hidden">
         <EquipmentGrid
           equipment={equipment}
           onUnequip={unequipItem}
           characterSummary={{
             name: character.name,
+            gender: character.gender,
             level: character.level,
             experience: character.experience,
             expToNext,

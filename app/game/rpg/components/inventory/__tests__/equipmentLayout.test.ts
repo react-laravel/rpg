@@ -1,14 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { CHARACTER_PORTRAIT, PAPER_DOLL_SLOTS } from '../equipmentLayout'
+import { PAPER_DOLL_SLOTS } from '../equipmentLayout'
 import type { EquipmentSlot } from '../../types'
 
 describe('equipmentLayout', () => {
-  describe('CHARACTER_PORTRAIT', () => {
-    it('should use the character portrait', () => {
-      expect(CHARACTER_PORTRAIT).toBe('/game/rpg/characters/mage.jpg')
-    })
-  })
-
   describe('PAPER_DOLL_SLOTS', () => {
     it('should have 8 equipment slots', () => {
       expect(PAPER_DOLL_SLOTS).toHaveLength(8)

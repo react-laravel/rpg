@@ -1,7 +1,7 @@
 'use client'
 
 import Image from '@/components/game/GameImage'
-import { gameAsset } from '@/lib/helpers/assets'
+import { getCharacterAppearance } from '../../utils/characterAppearance'
 import { useEffect, useState, useMemo, useCallback } from 'react'
 import { useGameStore } from '../../stores/gameStore'
 import { CreateCharacter } from './CreateCharacter'
@@ -33,11 +33,6 @@ interface CharacterSelectProps {
   onBack: () => void
   onCreateCharacter: () => void
 }
-
-const AVATARS = {
-  male: 'wizard-man',
-  female: 'wizard-female',
-} as const
 
 export { DIFFICULTY_COLORS, DIFFICULTY_OPTIONS } from '../../utils/difficulty'
 
@@ -118,7 +113,7 @@ export function CharacterSelect({ onBack, onCreateCharacter }: CharacterSelectPr
     (character: Character) => {
       const difficultyTier = character.difficulty_tier ?? 0
       const gender = character.gender === 'female' ? 'female' : 'male'
-      const avatarUrl = gameAsset(`/game/rpg/avatar/${AVATARS[gender]}.png`)
+      const avatarUrl = getCharacterAppearance(gender).avatarSrc
 
       const handleDeleteClick = (e: React.MouseEvent) => {
         e.stopPropagation()

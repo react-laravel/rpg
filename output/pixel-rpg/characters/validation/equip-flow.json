@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "steps": [
+    "replace armor",
+    "replace weapon",
+    "unequip weapon",
+    "unequip armor",
+    "reload"
+  ],
+  "errors": []
+}

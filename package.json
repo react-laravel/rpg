@@ -15,7 +15,8 @@
     "type-check": "tsc --noEmit",
     "test": "vitest --run",
     "test:watch": "vitest --watch",
-    "assets:pixel": "node scripts/build-pixel-rpg.mjs --verify"
+    "assets:pixel": "node scripts/build-pixel-rpg.mjs --verify",
+    "assets:characters": "node scripts/build-character-sprites.mjs"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.15",

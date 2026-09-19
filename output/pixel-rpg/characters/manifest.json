@@ -1,0 +1,506 @@
+{
+  "width": 192,
+  "height": 224,
+  "portraits": {
+    "male-base": {
+      "hand": [
+        59,
+        118
+      ],
+      "frame": {
+        "left": 163,
+        "top": 10,
+        "width": 176,
+        "height": 406
+      }
+    },
+    "male-cloth": {
+      "hand": [
+        56,
+        123
+      ],
+      "frame": {
+        "left": 499,
+        "top": 10,
+        "width": 235,
+        "height": 406
+      }
+    },
+    "male-earth": {
+      "hand": [
+        49,
+        120
+      ],
+      "frame": {
+        "left": 868,
+        "top": 11,
+        "width": 239,
+        "height": 405
+      }
+    },
+    "male-wood": {
+      "hand": [
+        50,
+        125
+      ],
+      "frame": {
+        "left": 146,
+        "top": 434,
+        "width": 234,
+        "height": 406
+      }
+    },
+    "male-water": {
+      "hand": [
+        49,
+        126
+      ],
+      "frame": {
+        "left": 488,
+        "top": 434,
+        "width": 266,
+        "height": 406
+      }
+    },
+    "male-fire": {
+      "hand": [
+        50,
+        127
+      ],
+      "frame": {
+        "left": 860,
+        "top": 434,
+        "width": 254,
+        "height": 406
+      }
+    },
+    "male-metal": {
+      "hand": [
+        56,
+        122
+      ],
+      "frame": {
+        "left": 122,
+        "top": 856,
+        "width": 261,
+        "height": 408
+      }
+    },
+    "male-wind": {
+      "hand": [
+        50,
+        123
+      ],
+      "frame": {
+        "left": 458,
+        "top": 856,
+        "width": 342,
+        "height": 408
+      }
+    },
+    "male-thunder": {
+      "hand": [
+        50,
+        125
+      ],
+      "frame": {
+        "left": 846,
+        "top": 856,
+        "width": 281,
+        "height": 408
+      }
+    },
+    "female-base": {
+      "hand": [
+        54,
+        121
+      ],
+      "frame": {
+        "left": 103,
+        "top": 12,
+        "width": 182,
+        "height": 394
+      }
+    },
+    "female-cloth": {
+      "hand": [
+        51,
+        125
+      ],
+      "frame": {
+        "left": 488,
+        "top": 12,
+        "width": 218,
+        "height": 394
+      }
+    },
+    "female-earth": {
+      "hand": [
+        49,
+        126
+      ],
+      "frame": {
+        "left": 888,
+        "top": 12,
+        "width": 230,
+        "height": 394
+      }
+    },
+    "female-wood": {
+      "hand": [
+        50,
+        122
+      ],
+      "frame": {
+        "left": 84,
+        "top": 424,
+        "width": 222,
+        "height": 406
+      }
+    },
+    "female-water": {
+      "hand": [
+        45,
+        123
+      ],
+      "frame": {
+        "left": 469,
+        "top": 424,
+        "width": 278,
+        "height": 406
+      }
+    },
+    "female-fire": {
+      "hand": [
+        42,
+        123
+      ],
+      "frame": {
+        "left": 868,
+        "top": 423,
+        "width": 301,
+        "height": 408
+      }
+    },
+    "female-metal": {
+      "hand": [
+        50,
+        119
+      ],
+      "frame": {
+        "left": 69,
+        "top": 841,
+        "width": 255,
+        "height": 420
+      }
+    },
+    "female-wind": {
+      "hand": [
+        48,
+        120
+      ],
+      "frame": {
+        "left": 437,
+        "top": 842,
+        "width": 339,
+        "height": 420
+      }
+    },
+    "female-thunder": {
+      "hand": [
+        44,
+        121
+      ],
+      "frame": {
+        "left": 861,
+        "top": 842,
+        "width": 311,
+        "height": 419
+      }
+    }
+  },
+  "weapons": {
+    "/game/rpg/pixel-v1/items/beginner-staff.png": {
+      "grip": [
+        0.359375,
+        0.65625
+      ],
+      "angle": -30
+    },
+    "/game/rpg/pixel-v1/items/oak-staff.png": {
+      "grip": [
+        0.390625,
+        0.65625
+      ],
+      "angle": -30
+    },
+    "/game/rpg/pixel-v1/items/crystal-staff.png": {
+      "grip": [
+        0.359375,
+        0.65625
+      ],
+      "angle": -30
+    },
+    "/game/rpg/pixel-v1/items/moon-staff.png": {
+      "grip": [
+        0.375,
+        0.65625
+      ],
+      "angle": -30
+    },
+    "/game/rpg/pixel-v1/items/star-staff.png": {
+      "grip": [
+        0.375,
+        0.65625
+      ],
+      "angle": -30
+    },
+    "/game/rpg/pixel-v1/items/void-staff.png": {
+      "grip": [
+        0.375,
+        0.65625
+      ],
+      "angle": -30
+    },
+    "/game/rpg/pixel-v1/items/arcane-staff.png": {
+      "grip": [
+        0.34375,
+        0.65625
+      ],
+      "angle": -30
+    },
+    "/game/rpg/pixel-v1/items/phoenix-staff.png": {
+      "grip": [
+        0.453125,
+        0.65625
+      ],
+      "angle": -30
+    },
+    "/game/rpg/pixel-v1/items/angel-staff.png": {
+      "grip": [
+        0.375,
+        0.65625
+      ],
+      "angle": -30
+    },
+    "/game/rpg/pixel-v1/items/archmage-staff.png": {
+      "grip": [
+        0.390625,
+        0.65625
+      ],
+      "angle": -30
+    },
+    "/game/rpg/pixel-v1/items/divine-revelation-staff.png": {
+      "grip": [
+        0.359375,
+        0.65625
+      ],
+      "angle": -30
+    },
+    "/game/rpg/pixel-v1/items/eternal-mana-source-staff.png": {
+      "grip": [
+        0.390625,
+        0.65625
+      ],
+      "angle": -30
+    },
+    "/game/rpg/pixel-v1/items/chaos-wand.png": {
+      "grip": [
+        0.375,
+        0.65625
+      ],
+      "angle": -30
+    },
+    "/game/rpg/pixel-v1/items/earth-weapon.png": {
+      "grip": [
+        0.515625,
+        0.65625
+      ],
+      "angle": 0
+    },
+    "/game/rpg/pixel-v1/items/wood-weapon.png": {
+      "grip": [
+        0.515625,
+        0.65625
+      ],
+      "angle": 0
+    },
+    "/game/rpg/pixel-v1/items/water-weapon.png": {
+      "grip": [
+        0.5,
+        0.65625
+      ],
+      "angle": 0
+    },
+    "/game/rpg/pixel-v1/items/fire-weapon.png": {
+      "grip": [
+        0.484375,
+        0.65625
+      ],
+      "angle": 0
+    },
+    "/game/rpg/pixel-v1/items/metal-weapon.png": {
+      "grip": [
+        0.46875,
+        0.65625
+      ],
+      "angle": 0
+    },
+    "/game/rpg/pixel-v1/items/wind-weapon.png": {
+      "grip": [
+        0.484375,
+        0.65625
+      ],
+      "angle": 0
+    },
+    "/game/rpg/pixel-v1/items/thunder-weapon.png": {
+      "grip": [
+        0.453125,
+        0.65625
+      ],
+      "angle": 0
+    }
+  },
+  "assets": [
+    {
+      "file": "male-base.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 4408,
+      "sha256": "c15475d86fc53be684cf3fd02eb54844aa139f31e3fef6d32a1074e3eae9b926"
+    },
+    {
+      "file": "male-avatar.png",
+      "width": 96,
+      "height": 96,
+      "bytes": 1822,
+      "sha256": "f9ee80008705a5f5c9bd277df3eefe4cd266bb43a04f010f26164b70b9fe4d6a"
+    },
+    {
+      "file": "male-cloth.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 5383,
+      "sha256": "c41fa640f178b904d9b7a8c81ffd46e4c3a7a0060aae047c9363bda46f7e0743"
+    },
+    {
+      "file": "male-earth.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 7355,
+      "sha256": "0cc2eed79154a45994bfe01309fff5e57b2c07090e89216f4b2967f1bcd3e918"
+    },
+    {
+      "file": "male-wood.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 6751,
+      "sha256": "32492b9257bd9776633ee1e04eaf8e5f0a17d14a021a3758a33ccaec9afb52fb"
+    },
+    {
+      "file": "male-water.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 6302,
+      "sha256": "9360146deaef7490af8eb127d0c298d6a5fd654319c8d1535b27aa8a90117349"
+    },
+    {
+      "file": "male-fire.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 7485,
+      "sha256": "976ff89d73e076f590d093fd91351c5a9cc611e91a22cac23025babc290ee190"
+    },
+    {
+      "file": "male-metal.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 6993,
+      "sha256": "d610c7118bb7bafaf6abdaad72c4f6d68fcbc077b28ab32a3590faf50fea16af"
+    },
+    {
+      "file": "male-wind.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 8081,
+      "sha256": "7c4612f1f4b0feed0303e918e7238c9bbcd485667095bb18645657b79547be47"
+    },
+    {
+      "file": "male-thunder.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 7602,
+      "sha256": "fdfe3d2733ee0a9c1d6d33751feca74805bc044d44b52999fab005217b1ee86b"
+    },
+    {
+      "file": "female-base.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 4904,
+      "sha256": "829ea94883f8406b212a30310103960e1fff248b542296f46ac555c5b71604a2"
+    },
+    {
+      "file": "female-avatar.png",
+      "width": 96,
+      "height": 96,
+      "bytes": 1990,
+      "sha256": "e7b200e913444375a987403eb613d9ece7cea60ed250d5affde6da4e8c605428"
+    },
+    {
+      "file": "female-cloth.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 5551,
+      "sha256": "bc1b8127609c8ac9977717d0dc59d72030703bf9884478bdabd6fa7a2aaa1ee9"
+    },
+    {
+      "file": "female-earth.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 7267,
+      "sha256": "ed87bc49630cc1379fe86a51e57cfdb1baf46daedee7705ede91ce76e0841068"
+    },
+    {
+      "file": "female-wood.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 6781,
+      "sha256": "2965d30ce14053e4172f5e74d03608aab4cf7d6b006c283aabcc3a5f43ee4f7d"
+    },
+    {
+      "file": "female-water.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 6708,
+      "sha256": "5e5272c1219e90fd2f67f548ebf4084a9407fea82b986837b8f6cad625a3af46"
+    },
+    {
+      "file": "female-fire.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 7661,
+      "sha256": "a8a97e3272ad174e6b993c4f185faacb870b98501125025757f1df64c07b8670"
+    },
+    {
+      "file": "female-metal.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 6448,
+      "sha256": "c1cc60a384eea266d100a06c1b98b7981cfb8501d48856e3dd27ca2751a94d17"
+    },
+    {
+      "file": "female-wind.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 7869,
+      "sha256": "0964a799aae74ca69861542cb8cb751cb08f1f65c95c72cd61ca687bea4c562f"
+    },
+    {
+      "file": "female-thunder.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 7433,
+      "sha256": "f0eb0ec89b28243999d2da2e26a7803bf6f00634f6c3d17abc0fbff7f31bb1d5"
+    }
+  ]
+}
