@@ -219,146 +219,504 @@
       }
     }
   },
+  "heldPortraits": {
+    "male-base": {
+      "hand": [
+        51,
+        89
+      ],
+      "frame": {
+        "left": 128,
+        "top": 6,
+        "width": 213,
+        "height": 412
+      }
+    },
+    "male-cloth": {
+      "hand": [
+        43,
+        89
+      ],
+      "frame": {
+        "left": 493,
+        "top": 7,
+        "width": 243,
+        "height": 412
+      }
+    },
+    "male-earth": {
+      "hand": [
+        42,
+        89
+      ],
+      "frame": {
+        "left": 855,
+        "top": 6,
+        "width": 253,
+        "height": 414
+      }
+    },
+    "male-wood": {
+      "hand": [
+        39,
+        93
+      ],
+      "frame": {
+        "left": 128,
+        "top": 431,
+        "width": 255,
+        "height": 411
+      }
+    },
+    "male-water": {
+      "hand": [
+        36,
+        92
+      ],
+      "frame": {
+        "left": 485,
+        "top": 432,
+        "width": 273,
+        "height": 410
+      }
+    },
+    "male-fire": {
+      "hand": [
+        36,
+        93
+      ],
+      "frame": {
+        "left": 847,
+        "top": 432,
+        "width": 271,
+        "height": 410
+      }
+    },
+    "male-metal": {
+      "hand": [
+        40,
+        90
+      ],
+      "frame": {
+        "left": 117,
+        "top": 854,
+        "width": 268,
+        "height": 412
+      }
+    },
+    "male-wind": {
+      "hand": [
+        32,
+        91
+      ],
+      "frame": {
+        "left": 454,
+        "top": 854,
+        "width": 346,
+        "height": 412
+      }
+    },
+    "male-thunder": {
+      "hand": [
+        35,
+        90
+      ],
+      "frame": {
+        "left": 841,
+        "top": 854,
+        "width": 288,
+        "height": 412
+      }
+    },
+    "female-base": {
+      "hand": [
+        46,
+        103
+      ],
+      "frame": {
+        "left": 74,
+        "top": 8,
+        "width": 216,
+        "height": 399
+      }
+    },
+    "female-cloth": {
+      "hand": [
+        40,
+        104
+      ],
+      "frame": {
+        "left": 470,
+        "top": 8,
+        "width": 243,
+        "height": 399
+      }
+    },
+    "female-earth": {
+      "hand": [
+        40,
+        103
+      ],
+      "frame": {
+        "left": 880,
+        "top": 8,
+        "width": 243,
+        "height": 399
+      }
+    },
+    "female-wood": {
+      "hand": [
+        43,
+        104
+      ],
+      "frame": {
+        "left": 71,
+        "top": 420,
+        "width": 238,
+        "height": 410
+      }
+    },
+    "female-water": {
+      "hand": [
+        35,
+        105
+      ],
+      "frame": {
+        "left": 462,
+        "top": 419,
+        "width": 289,
+        "height": 412
+      }
+    },
+    "female-fire": {
+      "hand": [
+        36,
+        104
+      ],
+      "frame": {
+        "left": 858,
+        "top": 419,
+        "width": 313,
+        "height": 412
+      }
+    },
+    "female-metal": {
+      "hand": [
+        41,
+        98
+      ],
+      "frame": {
+        "left": 64,
+        "top": 837,
+        "width": 262,
+        "height": 426
+      }
+    },
+    "female-wind": {
+      "hand": [
+        33,
+        100
+      ],
+      "frame": {
+        "left": 438,
+        "top": 837,
+        "width": 350,
+        "height": 426
+      }
+    },
+    "female-thunder": {
+      "hand": [
+        34,
+        98
+      ],
+      "frame": {
+        "left": 857,
+        "top": 837,
+        "width": 318,
+        "height": 426
+      }
+    }
+  },
   "weapons": {
     "/game/rpg/pixel-v1/items/beginner-staff.png": {
       "grip": [
-        0.359375,
-        0.65625
+        0.34375,
+        0.671875
       ],
-      "angle": -30
+      "angle": -60.9052429229879,
+      "sourceAngle": 32.9052429229879,
+      "bounds": {
+        "left": -0.4048625640472207,
+        "top": -0.6770646184858643,
+        "right": 0.20777224819183335,
+        "bottom": 0.2672375551765842
+      }
     },
     "/game/rpg/pixel-v1/items/oak-staff.png": {
       "grip": [
         0.390625,
-        0.65625
+        0.671875
       ],
-      "angle": -30
+      "angle": -57.197486046064476,
+      "sourceAngle": 29.197486046064476,
+      "bounds": {
+        "left": -0.38990299864593514,
+        "top": -0.6254765537669503,
+        "right": 0.17335325048875094,
+        "bottom": 0.33156583713653753
+      }
     },
     "/game/rpg/pixel-v1/items/crystal-staff.png": {
       "grip": [
-        0.359375,
-        0.65625
+        0.3515625,
+        0.671875
       ],
-      "angle": -30
+      "angle": -59.70142966950572,
+      "sourceAngle": 31.70142966950572,
+      "bounds": {
+        "left": -0.4141122391306645,
+        "top": -0.6672133879878025,
+        "right": 0.18931957769623126,
+        "bottom": 0.29142814034236664
+      }
     },
     "/game/rpg/pixel-v1/items/moon-staff.png": {
       "grip": [
-        0.375,
-        0.65625
+        0.34375,
+        0.671875
       ],
-      "angle": -30
+      "angle": -64.32682595212023,
+      "sourceAngle": 36.32682595212024,
+      "bounds": {
+        "left": -0.48883734095146086,
+        "top": -0.6520883807473197,
+        "right": 0.206099675911548,
+        "bottom": 0.29760727234416445
+      }
     },
     "/game/rpg/pixel-v1/items/star-staff.png": {
       "grip": [
-        0.375,
-        0.65625
+        0.3515625,
+        0.671875
       ],
-      "angle": -30
+      "angle": -66.45370921670596,
+      "sourceAngle": 38.45370921670597,
+      "bounds": {
+        "left": -0.4655654692278762,
+        "top": -0.5998976509636367,
+        "right": 0.2066151750099825,
+        "bottom": 0.29764886643270766
+      }
     },
     "/game/rpg/pixel-v1/items/void-staff.png": {
       "grip": [
-        0.375,
-        0.65625
+        0.3671875,
+        0.671875
       ],
-      "angle": -30
+      "angle": -65.40535663140855,
+      "sourceAngle": 37.40535663140856,
+      "bounds": {
+        "left": -0.46509686506577164,
+        "top": -0.5935002490712408,
+        "right": 0.21346371593279762,
+        "bottom": 0.2946478426132687
+      }
     },
     "/game/rpg/pixel-v1/items/arcane-staff.png": {
       "grip": [
-        0.34375,
-        0.65625
+        0.3359375,
+        0.671875
       ],
-      "angle": -30
+      "angle": -54.56505117707799,
+      "sourceAngle": 26.56505117707799,
+      "bounds": {
+        "left": -0.43003473805895265,
+        "top": -0.6708363857126618,
+        "right": 0.18838961194831236,
+        "bottom": 0.28033388537695475
+      }
     },
     "/game/rpg/pixel-v1/items/phoenix-staff.png": {
       "grip": [
-        0.453125,
-        0.65625
+        0.3671875,
+        0.671875
       ],
-      "angle": -30
+      "angle": -65.40535663140855,
+      "sourceAngle": 37.40535663140856,
+      "bounds": {
+        "left": -0.569145811360804,
+        "top": -0.5959028569824998,
+        "right": 0.19515584245810855,
+        "bottom": 0.3153583239992168
+      }
     },
     "/game/rpg/pixel-v1/items/angel-staff.png": {
       "grip": [
-        0.375,
-        0.65625
+        0.3359375,
+        0.671875
       ],
-      "angle": -30
+      "angle": -65.40535663140855,
+      "sourceAngle": 37.40535663140856,
+      "bounds": {
+        "left": -0.5195239461245469,
+        "top": -0.6633360563281542,
+        "right": 0.21346371593279762,
+        "bottom": 0.28694347951419963
+      }
     },
     "/game/rpg/pixel-v1/items/archmage-staff.png": {
       "grip": [
-        0.390625,
-        0.65625
+        0.359375,
+        0.671875
       ],
-      "angle": -30
+      "angle": -62.07719528013074,
+      "sourceAngle": 34.07719528013074,
+      "bounds": {
+        "left": -0.456289515319128,
+        "top": -0.6020675037462981,
+        "right": 0.19646051905359058,
+        "bottom": 0.30469220133663844
+      }
     },
     "/game/rpg/pixel-v1/items/divine-revelation-staff.png": {
       "grip": [
-        0.359375,
-        0.65625
+        0.3515625,
+        0.671875
       ],
-      "angle": -30
+      "angle": -59.70142966950572,
+      "sourceAngle": 31.70142966950572,
+      "bounds": {
+        "left": -0.44670158817390926,
+        "top": -0.5771686236483615,
+        "right": 0.18931957769623126,
+        "bottom": 0.29142814034236664
+      }
     },
     "/game/rpg/pixel-v1/items/eternal-mana-source-staff.png": {
       "grip": [
         0.390625,
-        0.65625
+        0.671875
       ],
-      "angle": -30
+      "angle": -59.70142966950572,
+      "sourceAngle": 31.70142966950572,
+      "bounds": {
+        "left": -0.474291764414733,
+        "top": -0.606505003176868,
+        "right": 0.17749521645016395,
+        "bottom": 0.31727211329550764
+      }
     },
     "/game/rpg/pixel-v1/items/chaos-wand.png": {
       "grip": [
-        0.375,
-        0.65625
+        0.359375,
+        0.671875
       ],
-      "angle": -30
+      "angle": -55.89727103094763,
+      "sourceAngle": 27.89727103094763,
+      "bounds": {
+        "left": -0.4436645406399088,
+        "top": -0.6559477065709556,
+        "right": 0.1669770793387752,
+        "bottom": 0.3217077158626344
+      }
     },
     "/game/rpg/pixel-v1/items/earth-weapon.png": {
       "grip": [
-        0.515625,
-        0.65625
+        0.5078125,
+        0.671875
       ],
-      "angle": 0
+      "angle": -22.957548930829088,
+      "sourceAngle": -5.042451069170913,
+      "bounds": {
+        "left": -0.42072831433479874,
+        "top": -0.5868364609763808,
+        "right": 0.14397203999080968,
+        "bottom": 0.282502521417885
+      }
     },
     "/game/rpg/pixel-v1/items/wood-weapon.png": {
       "grip": [
-        0.515625,
-        0.65625
+        0.53125,
+        0.671875
       ],
-      "angle": 0
+      "angle": -31.3664606634298,
+      "sourceAngle": 3.3664606634298013,
+      "bounds": {
+        "left": -0.4760029449823049,
+        "top": -0.5674723464881228,
+        "right": 0.17015195740736294,
+        "bottom": 0.26975432606932814
+      }
     },
     "/game/rpg/pixel-v1/items/water-weapon.png": {
       "grip": [
         0.5,
-        0.65625
+        0.671875
       ],
-      "angle": 0
+      "angle": -28,
+      "sourceAngle": 0,
+      "bounds": {
+        "left": -0.495985917824301,
+        "top": -0.5928943623726689,
+        "right": 0.18284845059402297,
+        "bottom": 0.26212506662999396
+      }
     },
     "/game/rpg/pixel-v1/items/fire-weapon.png": {
       "grip": [
         0.484375,
-        0.65625
+        0.671875
       ],
-      "angle": 0
+      "angle": -14.759480084812795,
+      "sourceAngle": -13.240519915187205,
+      "bounds": {
+        "left": -0.3532093034015872,
+        "top": -0.6314287755477043,
+        "right": 0.16530530816462247,
+        "bottom": 0.2870792529977165
+      }
     },
     "/game/rpg/pixel-v1/items/metal-weapon.png": {
       "grip": [
-        0.46875,
-        0.65625
+        0.4921875,
+        0.671875
       ],
-      "angle": 0
+      "angle": -28,
+      "sourceAngle": 0,
+      "bounds": {
+        "left": -0.41835774866571024,
+        "top": -0.5628454852896236,
+        "right": 0.17245070173025917,
+        "bottom": 0.2593322502443675
+      }
     },
     "/game/rpg/pixel-v1/items/wind-weapon.png": {
       "grip": [
-        0.484375,
-        0.65625
+        0.515625,
+        0.671875
       ],
-      "angle": 0
+      "angle": -17.992020198558663,
+      "sourceAngle": -10.007979801441339,
+      "bounds": {
+        "left": -0.33798172045361713,
+        "top": -0.6382560711176594,
+        "right": 0.21402524988818356,
+        "bottom": 0.2823576774352027
+      }
     },
     "/game/rpg/pixel-v1/items/thunder-weapon.png": {
       "grip": [
-        0.453125,
-        0.65625
+        0.5,
+        0.671875
       ],
-      "angle": 0
+      "angle": -28,
+      "sourceAngle": 0,
+      "bounds": {
+        "left": -0.44726225624050925,
+        "top": -0.6204864746495103,
+        "right": 0.17255211525015562,
+        "bottom": 0.26212506662999396
+      }
     }
   },
   "assets": [
@@ -501,6 +859,258 @@
       "height": 224,
       "bytes": 7433,
       "sha256": "f0eb0ec89b28243999d2da2e26a7803bf6f00634f6c3d17abc0fbff7f31bb1d5"
+    },
+    {
+      "file": "male-base-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 4588,
+      "sha256": "e49514575dfeb2e2707f207ef72315c1b6c933a64cd61898e830632190938d84"
+    },
+    {
+      "file": "male-base-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 229,
+      "sha256": "04c3c9fcea4aebd663b3e2b0b3c8e0ab16127f5ac43a41faa5272b60b3fd9b5b"
+    },
+    {
+      "file": "male-cloth-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 5500,
+      "sha256": "df93047b964c7f0ba1c1dbd5485718272ae8a6ec9a8950ce11378dcaae10ac21"
+    },
+    {
+      "file": "male-cloth-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 236,
+      "sha256": "cfa5fc18554da2ae621143f8f97318543aea188156ba44b2a89860f97f502db8"
+    },
+    {
+      "file": "male-earth-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 7051,
+      "sha256": "fe80601cbef7c1cc5a1b5b42ef1c12fd3a131602e108064c9cb57332f0ceda15"
+    },
+    {
+      "file": "male-earth-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 246,
+      "sha256": "237b3702c30b84664c2685b9960163cce076a045781ebad588ab58fb63bef0d7"
+    },
+    {
+      "file": "male-wood-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 6828,
+      "sha256": "36c1886f7789a724968c9c347a9ac71b47f1acf64262bbb71bb21186eb0f4ca6"
+    },
+    {
+      "file": "male-wood-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 231,
+      "sha256": "8bd9835a08800b407c572ea36a1ab63b2a99bb41c75799b273221ae4c2c884ed"
+    },
+    {
+      "file": "male-water-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 6365,
+      "sha256": "7eea58ae267c7d40f57db9915941a7834481edeb024acb1f79fd59956af9ec95"
+    },
+    {
+      "file": "male-water-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 207,
+      "sha256": "87fb4dd9063347ff657e41b63f8aa7228ce173417888e0cd5326cbeebddb9a7f"
+    },
+    {
+      "file": "male-fire-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 7691,
+      "sha256": "46974e03aa6480242c7197eacaae0c0561c99109797fe81543851cbc2145962c"
+    },
+    {
+      "file": "male-fire-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 237,
+      "sha256": "c7af76fbfba1c842ec42f7dae95e853de177f5e4e9f7a55a75e3e9b89cc19589"
+    },
+    {
+      "file": "male-metal-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 7065,
+      "sha256": "5479672c18a917c10e5b555eb5bdfdfc04a1607b224063b69b34c00127b4d57d"
+    },
+    {
+      "file": "male-metal-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 242,
+      "sha256": "06625246e3822bebffbc163e9828a9501565633edfc651efe47f246f79d15c1f"
+    },
+    {
+      "file": "male-wind-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 8274,
+      "sha256": "1ad2a8d1d3bec1c0af4afdda036a1290800c8834900c7fca44c7ca54c613758f"
+    },
+    {
+      "file": "male-wind-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 225,
+      "sha256": "a915f342cb899eee0c83f8ba4956045e99a2270912ac0dc18de3a436502325bd"
+    },
+    {
+      "file": "male-thunder-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 7263,
+      "sha256": "28a1a5e1502fd03969dd6245868dc83ebc2035dddd546cb562c4bc477abb2970"
+    },
+    {
+      "file": "male-thunder-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 225,
+      "sha256": "6dce377f8418d84282b53ee02bb7e5f258136e2f1dea2cab01e1690b8da0abdb"
+    },
+    {
+      "file": "female-base-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 5172,
+      "sha256": "518ec537ebf4525de43c4c15fa2398e5f072c0815fddd73cc01ae89fcdf48ab9"
+    },
+    {
+      "file": "female-base-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 216,
+      "sha256": "4218cf32ff7ad3e2f305108d5500d7f53f3761cf57dcd190cb8c413ed25d7579"
+    },
+    {
+      "file": "female-cloth-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 5685,
+      "sha256": "b77c88d0675c41771e812c7248935da5fa295abd56c3f4ab6e03bfabe20fe16c"
+    },
+    {
+      "file": "female-cloth-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 199,
+      "sha256": "5478cf4c1578f33cc2692876143b82884fd3d4395ab022d2370f784010eed7c8"
+    },
+    {
+      "file": "female-earth-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 7373,
+      "sha256": "88f18f0f8660dfa498b983c429ef50544c438c1e749ac8518b177eb47289d963"
+    },
+    {
+      "file": "female-earth-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 221,
+      "sha256": "bea1945037fb0b8de9a03e8da2a26cfb0a4a601ef7360fbc00a3adfe3b191304"
+    },
+    {
+      "file": "female-wood-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 6947,
+      "sha256": "056bd8aa5bafbc8745a6ceb2de0f79e598ef1a836e45c0f9f492b445f127c2f8"
+    },
+    {
+      "file": "female-wood-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 215,
+      "sha256": "5e8d5e7064d08b667f0486bf6d96882af6b31734741c2882b41f73e0e5262a27"
+    },
+    {
+      "file": "female-water-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 6863,
+      "sha256": "bc20ae20ce9c3aecefa31358c90945a3a267880d3c5e6e80c6da841f023f8b6d"
+    },
+    {
+      "file": "female-water-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 204,
+      "sha256": "c35a8dd0f2dafc02706f824e66c3ecba00ed24c27019b90ad67276a43f98b165"
+    },
+    {
+      "file": "female-fire-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 7958,
+      "sha256": "6ec17a499fbda44db0f15a7696546e3b91e1fd740d1541b1a1668ed52f86cd6a"
+    },
+    {
+      "file": "female-fire-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 216,
+      "sha256": "89a8a5c3cbeb75f862a4b70400ec959218533c7494a24f9d4ec2e64321ec2c81"
+    },
+    {
+      "file": "female-metal-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 6819,
+      "sha256": "e9e30a7706ee974c0c1010245e394d2936cc025ecc13c98ab2a31ce5c95c352b"
+    },
+    {
+      "file": "female-metal-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 227,
+      "sha256": "a18a937659d18f4aee266edb3069d4155bf01b6b297bff1b064f1a63c34e1214"
+    },
+    {
+      "file": "female-wind-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 7927,
+      "sha256": "326983490f4186abb5944d462a9b6bb6e59f0fde4987f796a13324ecc87347bc"
+    },
+    {
+      "file": "female-wind-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 205,
+      "sha256": "3ce71131f94ed5831ed4c428d2b6fcc44887a893070c801fa9bef9426761e824"
+    },
+    {
+      "file": "female-thunder-held.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 7644,
+      "sha256": "5bc484b7b61905ce281695a0bba0ad27665751210a5f1630bb083ade2f96a878"
+    },
+    {
+      "file": "female-thunder-fingers.png",
+      "width": 192,
+      "height": 224,
+      "bytes": 206,
+      "sha256": "abcd0ccd4267f320fed1d208d328ce9ef573e2abdd4d2f4d45badd8a5833a047"
     }
   ]
 }

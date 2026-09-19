@@ -1,0 +1,380 @@
+{
+  "passed": true,
+  "assets": 56,
+  "portraits": 18,
+  "weapons": 20,
+  "cases": [
+    {
+      "gender": "male",
+      "armor": null,
+      "outfit": "base",
+      "weapon": "beginner-staff.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 527,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "male",
+      "armor": "cloth-robe-armor.png",
+      "outfit": "cloth",
+      "weapon": "mage-set-apprentice-weapon.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 799,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "male",
+      "armor": "mage-set-apprentice-armor.png",
+      "outfit": "earth",
+      "weapon": "oak-staff.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 631,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "male",
+      "armor": "mage-set-moonlight-armor.png",
+      "outfit": "wood",
+      "weapon": "crystal-staff.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 592,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "male",
+      "armor": "mage-set-starlight-armor.png",
+      "outfit": "water",
+      "weapon": "moon-staff.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 709,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "male",
+      "armor": "mage-set-arcane-armor.png",
+      "outfit": "fire",
+      "weapon": "mage-set-moonlight-weapon.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 684,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "male",
+      "armor": "mage-set-sky-armor.png",
+      "outfit": "metal",
+      "weapon": "star-staff.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 571,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "male",
+      "armor": "mage-set-forbidden-armor.png",
+      "outfit": "wind",
+      "weapon": "void-staff.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 615,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "male",
+      "armor": "mage-set-eternal-armor.png",
+      "outfit": "thunder",
+      "weapon": "mage-set-starlight-weapon.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 936,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "female",
+      "armor": null,
+      "outfit": "base",
+      "weapon": "arcane-staff.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 656,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "female",
+      "armor": "cloth-robe-armor.png",
+      "outfit": "cloth",
+      "weapon": "phoenix-staff.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 791,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "female",
+      "armor": "mage-set-apprentice-armor.png",
+      "outfit": "earth",
+      "weapon": "mage-set-arcane-weapon.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 735,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "female",
+      "armor": "mage-set-moonlight-armor.png",
+      "outfit": "wood",
+      "weapon": "angel-staff.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 694,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "female",
+      "armor": "mage-set-starlight-armor.png",
+      "outfit": "water",
+      "weapon": "archmage-staff.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 746,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "female",
+      "armor": "mage-set-arcane-armor.png",
+      "outfit": "fire",
+      "weapon": "mage-set-sky-weapon.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 885,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "female",
+      "armor": "mage-set-sky-armor.png",
+      "outfit": "metal",
+      "weapon": "divine-revelation-staff.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 583,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "female",
+      "armor": "mage-set-forbidden-armor.png",
+      "outfit": "wind",
+      "weapon": "eternal-mana-source-staff.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 619,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "female",
+      "armor": "mage-set-eternal-armor.png",
+      "outfit": "thunder",
+      "weapon": "mage-set-forbidden-weapon.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 855,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "female",
+      "armor": null,
+      "outfit": "base",
+      "weapon": "chaos-wand.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 798,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "female",
+      "armor": "cloth-robe-armor.png",
+      "outfit": "cloth",
+      "weapon": "mage-set-eternal-weapon.png",
+      "width": 390,
+      "projection": {
+        "outside": 0,
+        "opaque": 820,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "male",
+      "armor": "mage-set-forbidden-armor.png",
+      "outfit": "wind",
+      "weapon": "mage-set-eternal-weapon.png",
+      "width": 320,
+      "projection": {
+        "outside": 0,
+        "opaque": 820,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "male",
+      "armor": "mage-set-forbidden-armor.png",
+      "outfit": "wind",
+      "weapon": "mage-set-eternal-weapon.png",
+      "width": 768,
+      "projection": {
+        "outside": 0,
+        "opaque": 820,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    },
+    {
+      "gender": "male",
+      "armor": "mage-set-forbidden-armor.png",
+      "outfit": "wind",
+      "weapon": "mage-set-eternal-weapon.png",
+      "width": 1440,
+      "projection": {
+        "outside": 0,
+        "opaque": 820,
+        "bodyLayers": 1,
+        "bodyZ": 0,
+        "weaponZ": 10,
+        "fingerZ": 20
+      },
+      "errors": []
+    }
+  ],
+  "avatars": [
+    "http://localhost:3015/game/rpg/pixel-v1/characters/male-avatar.png",
+    "http://localhost:3015/game/rpg/pixel-v1/characters/female-avatar.png"
+  ]
+}

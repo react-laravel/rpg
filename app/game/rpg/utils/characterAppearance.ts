@@ -27,7 +27,9 @@ export function getCharacterAppearance(gender?: string, armor?: GameItem | null)
     gender: characterGender,
     outfit,
     src: `${base}-${outfit}.png`,
+    heldSrc: `${base}-${outfit}-held.png`,
     fallbackSrc: `${base}-base.png`,
+    heldFallbackSrc: `${base}-base-held.png`,
     avatarSrc: `${base}-avatar.png`,
   }
 }

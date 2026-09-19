@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import type { GameItem } from '../../../types'
 import { CharacterPortrait } from '../CharacterPortrait'
 import { getCharacterAppearance } from '../../../utils/characterAppearance'
+import manifest from '../../../data/character-appearance-manifest.json'
 
 function item(type: 'armor' | 'weapon', icon: string, name = icon): GameItem {
   return { definition: { type, icon, name } } as GameItem
@@ -35,23 +36,34 @@ describe('character appearance', () => {
     const thunder = item('weapon', 'mage-set-eternal-weapon.png', '雷霆法杖')
     const view = render(<CharacterPortrait gender="female" armor={wood} weapon={crystal} />)
     expect(view.getByRole('img', { name: '女法师，青藤法袍，手持水晶法杖' })).toHaveAttribute('data-outfit', 'wood')
+    expect(view.container.querySelector('[data-character-body]')).toHaveAttribute('src', expect.stringContaining('female-wood-held.png'))
+    expect(view.container.querySelector('[data-character-fingers]')).toHaveAttribute('src', expect.stringContaining('female-wood-fingers.png'))
     expect(view.container.querySelector('[data-character-weapon]')).toHaveAttribute('src', expect.stringContaining('/game/rpg/pixel-v1/items/crystal-staff.png'))
     view.rerender(<CharacterPortrait gender="male" armor={fire} weapon={thunder} />)
     expect(view.getByRole('img', { name: '男法师，烈阳法袍，手持雷霆法杖' })).toHaveAttribute('data-outfit', 'fire')
     expect(view.container.querySelector('[data-character-weapon]')).toHaveAttribute('src', expect.stringContaining('/game/rpg/pixel-v1/items/thunder-weapon.png'))
     view.rerender(<CharacterPortrait gender="male" />)
     expect(view.getByRole('img', { name: '男法师，基础便装，空手' })).toHaveAttribute('data-outfit', 'base')
+    expect(view.container.querySelector('[data-character-body]')).toHaveAttribute('src', expect.stringContaining('male-base.png'))
     expect(view.container.querySelector('[data-character-weapon]')).toBeNull()
+    expect(view.container.querySelector('[data-character-fingers]')).toBeNull()
   })
 
   it('recovers from failed images when a different outfit or weapon is equipped', () => {
     const view = render(<CharacterPortrait gender="male" armor={item('armor', 'wood-armor.png')} weapon={item('weapon', 'crystal-staff.png')} />)
-    fireEvent.error(view.container.querySelector('img')!)
-    expect(view.container.querySelector('img')).toHaveAttribute('src', expect.stringContaining('/game/rpg/pixel-v1/characters/male-base.png'))
+    fireEvent.error(view.container.querySelector('[data-character-body]')!)
+    expect(view.container.querySelector('[data-character-body]')).toHaveAttribute('src', expect.stringContaining('/game/rpg/pixel-v1/characters/male-base-held.png'))
     fireEvent.error(view.container.querySelector('[data-character-weapon]')!)
     expect(view.container.querySelector('[data-character-weapon]')).toBeNull()
     view.rerender(<CharacterPortrait gender="female" armor={item('armor', 'water-armor.png')} weapon={item('weapon', 'fire-weapon.png')} />)
-    expect(view.container.querySelector('img')).toHaveAttribute('src', expect.stringContaining('/game/rpg/pixel-v1/characters/female-water.png'))
+    expect(view.container.querySelector('[data-character-body]')).toHaveAttribute('src', expect.stringContaining('/game/rpg/pixel-v1/characters/female-water-held.png'))
     expect(view.container.querySelector('[data-character-weapon]')).toHaveAttribute('src', expect.stringContaining('/game/rpg/pixel-v1/items/fire-weapon.png'))
+  })
+
+  it('tilts every staff outward using its own shaft direction, including diagonal legacy icons', () => {
+    for (const pose of Object.values(manifest.weapons)) {
+      expect(pose.sourceAngle + pose.angle).toBeCloseTo(-28)
+    }
+    expect(manifest.weapons['/game/rpg/pixel-v1/items/moon-staff.png'].angle).toBeLessThan(-50)
   })
 })

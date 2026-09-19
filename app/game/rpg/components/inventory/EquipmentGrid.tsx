@@ -61,7 +61,7 @@ export function EquipmentGrid({ equipment, onUnequip, characterSummary }: Equipm
   return (
     <>
       <div className="border-border relative aspect-[3/4] w-full overflow-hidden border-y bg-[radial-gradient(ellipse_at_50%_45%,#344137_0%,#17231d_50%,#0c120e_100%)]">
-        <div className="absolute inset-x-[13%] top-1/2 -translate-y-1/2">
+        <div className="absolute inset-x-14 top-1/2 -translate-y-1/2">
           <CharacterPortrait gender={characterSummary?.gender} armor={equipment.armor} weapon={equipment.weapon} />
         </div>
         {characterSummary && (

@@ -1,0 +1,12 @@
+{
+  "generator": "built-in image_gen",
+  "prompt": "修改这张3×3透明背景游戏像素角色表，仅调整九个人物的持武器手势：人物的右手（画面左边）向身体外侧前伸，肘部略弯，前臂斜向左下，握拳在腰部外侧，像手握向左上倾斜的法杖，拳心握孔清楚，手与衣服之间留出空隙。不要画任何武器，后续程序会加。九人保持同一握姿。保留每格原来的性别、脸、发型、衣服、颜色、脚部站姿、像素画风及3×3位置，完整头脚，不要裁边。透明背景，无字。",
+  "references": {
+    "male": "../sources/male.png",
+    "female": "../sources/female.png"
+  },
+  "outputs": {
+    "male": "sources/male.png",
+    "female": "sources/female.png"
+  }
+}
