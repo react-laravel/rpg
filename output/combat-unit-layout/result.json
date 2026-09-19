@@ -1,0 +1,1093 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "width": 320,
+      "count": 5,
+      "arena": {
+        "x": 13,
+        "y": 69,
+        "width": 294,
+        "height": 294,
+        "bottom": 363,
+        "right": 307
+      },
+      "player": {
+        "x": 132,
+        "y": 295,
+        "width": 56,
+        "height": 56,
+        "bottom": 351,
+        "right": 188
+      },
+      "playerWidth": 56,
+      "playerHeight": 56,
+      "resources": {
+        "x": 132,
+        "y": 255,
+        "width": 56,
+        "height": 36,
+        "bottom": 291,
+        "right": 188
+      },
+      "monsters": [
+        {
+          "type": "normal",
+          "image": {
+            "x": 19.203125,
+            "y": 154.00921630859375,
+            "width": 56,
+            "height": 56,
+            "bottom": 210.00921630859375,
+            "right": 75.203125
+          },
+          "layoutWidth": 56,
+          "layoutHeight": 56,
+          "bars": {
+            "x": 19.203125,
+            "y": 133,
+            "width": 56,
+            "height": 19,
+            "bottom": 152,
+            "right": 75.203125
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "oklab(0.999994 0.0000455678 0.0000200868 / 0.9)"
+        },
+        {
+          "type": "elite",
+          "image": {
+            "x": 75.59375,
+            "y": 154.00921630859375,
+            "width": 56,
+            "height": 56,
+            "bottom": 210.00921630859375,
+            "right": 131.59375
+          },
+          "layoutWidth": 56,
+          "layoutHeight": 56,
+          "bars": {
+            "x": 75.59375,
+            "y": 133,
+            "width": 56,
+            "height": 19,
+            "bottom": 152,
+            "right": 131.59375
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(77.5052 -6.4629 -36.42)"
+        },
+        {
+          "type": "boss",
+          "image": {
+            "x": 132,
+            "y": 154.00921630859375,
+            "width": 56,
+            "height": 56,
+            "bottom": 210.00921630859375,
+            "right": 188
+          },
+          "layoutWidth": 56,
+          "layoutHeight": 56,
+          "bars": {
+            "x": 132,
+            "y": 133,
+            "width": 56,
+            "height": 19,
+            "bottom": 152,
+            "right": 188
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(86.4156 6.13147 78.3961)"
+        },
+        {
+          "type": "normal",
+          "image": {
+            "x": 188.390625,
+            "y": 154.00921630859375,
+            "width": 56,
+            "height": 56,
+            "bottom": 210.00921630859375,
+            "right": 244.390625
+          },
+          "layoutWidth": 56,
+          "layoutHeight": 56,
+          "bars": {
+            "x": 188.390625,
+            "y": 133,
+            "width": 56,
+            "height": 19,
+            "bottom": 152,
+            "right": 244.390625
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "oklab(0.999994 0.0000455678 0.0000200868 / 0.9)"
+        },
+        {
+          "type": "elite",
+          "image": {
+            "x": 244.796875,
+            "y": 154.00921630859375,
+            "width": 56,
+            "height": 56,
+            "bottom": 210.00921630859375,
+            "right": 300.796875
+          },
+          "layoutWidth": 56,
+          "layoutHeight": 56,
+          "bars": {
+            "x": 244.796875,
+            "y": 133,
+            "width": 56,
+            "height": 19,
+            "bottom": 152,
+            "right": 300.796875
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(77.5052 -6.4629 -36.42)"
+        }
+      ],
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "count": 5,
+      "arena": {
+        "x": 13,
+        "y": 69,
+        "width": 364,
+        "height": 364,
+        "bottom": 433,
+        "right": 377
+      },
+      "player": {
+        "x": 167,
+        "y": 365,
+        "width": 56,
+        "height": 56,
+        "bottom": 421,
+        "right": 223
+      },
+      "playerWidth": 56,
+      "playerHeight": 56,
+      "resources": {
+        "x": 167,
+        "y": 325,
+        "width": 56,
+        "height": 36,
+        "bottom": 361,
+        "right": 223
+      },
+      "monsters": [
+        {
+          "type": "normal",
+          "image": {
+            "x": 26.1875,
+            "y": 154.5357208251953,
+            "width": 56,
+            "height": 56,
+            "bottom": 210.5357208251953,
+            "right": 82.1875
+          },
+          "layoutWidth": 56,
+          "layoutHeight": 56,
+          "bars": {
+            "x": 26.1875,
+            "y": 133,
+            "width": 56,
+            "height": 19,
+            "bottom": 152,
+            "right": 82.1875
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "oklab(0.999994 0.0000455678 0.0000200868 / 0.9)"
+        },
+        {
+          "type": "elite",
+          "image": {
+            "x": 96.59375,
+            "y": 154.5357208251953,
+            "width": 56,
+            "height": 56,
+            "bottom": 210.5357208251953,
+            "right": 152.59375
+          },
+          "layoutWidth": 56,
+          "layoutHeight": 56,
+          "bars": {
+            "x": 96.59375,
+            "y": 133,
+            "width": 56,
+            "height": 19,
+            "bottom": 152,
+            "right": 152.59375
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(77.5052 -6.4629 -36.42)"
+        },
+        {
+          "type": "boss",
+          "image": {
+            "x": 166.984375,
+            "y": 154.5357208251953,
+            "width": 56,
+            "height": 56,
+            "bottom": 210.5357208251953,
+            "right": 222.984375
+          },
+          "layoutWidth": 56,
+          "layoutHeight": 56,
+          "bars": {
+            "x": 166.984375,
+            "y": 133,
+            "width": 56,
+            "height": 19,
+            "bottom": 152,
+            "right": 222.984375
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(86.4156 6.13147 78.3961)"
+        },
+        {
+          "type": "normal",
+          "image": {
+            "x": 237.390625,
+            "y": 154.5357208251953,
+            "width": 56,
+            "height": 56,
+            "bottom": 210.5357208251953,
+            "right": 293.390625
+          },
+          "layoutWidth": 56,
+          "layoutHeight": 56,
+          "bars": {
+            "x": 237.390625,
+            "y": 133,
+            "width": 56,
+            "height": 19,
+            "bottom": 152,
+            "right": 293.390625
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "oklab(0.999994 0.0000455678 0.0000200868 / 0.9)"
+        },
+        {
+          "type": "elite",
+          "image": {
+            "x": 307.796875,
+            "y": 154.5357208251953,
+            "width": 56,
+            "height": 56,
+            "bottom": 210.5357208251953,
+            "right": 363.796875
+          },
+          "layoutWidth": 56,
+          "layoutHeight": 56,
+          "bars": {
+            "x": 307.796875,
+            "y": 133,
+            "width": 56,
+            "height": 19,
+            "bottom": 152,
+            "right": 363.796875
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(77.5052 -6.4629 -36.42)"
+        }
+      ],
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 640,
+      "count": 5,
+      "arena": {
+        "x": 17,
+        "y": 69,
+        "width": 606,
+        "height": 606,
+        "bottom": 675,
+        "right": 623
+      },
+      "player": {
+        "x": 288,
+        "y": 591,
+        "width": 64,
+        "height": 64,
+        "bottom": 655,
+        "right": 352
+      },
+      "playerWidth": 64,
+      "playerHeight": 64,
+      "resources": {
+        "x": 288,
+        "y": 549,
+        "width": 64,
+        "height": 38,
+        "bottom": 587,
+        "right": 352
+      },
+      "monsters": [
+        {
+          "type": "normal",
+          "image": {
+            "x": 118.390625,
+            "y": 238.09017944335938,
+            "width": 64,
+            "height": 64,
+            "bottom": 302.0901794433594,
+            "right": 182.390625
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 118.390625,
+            "y": 215.515625,
+            "width": 64,
+            "height": 20,
+            "bottom": 235.515625,
+            "right": 182.390625
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "oklab(0.999994 0.0000455678 0.0000200868 / 0.9)"
+        },
+        {
+          "type": "elite",
+          "image": {
+            "x": 203.1875,
+            "y": 238.09017944335938,
+            "width": 64,
+            "height": 64,
+            "bottom": 302.0901794433594,
+            "right": 267.1875
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 203.1875,
+            "y": 215.515625,
+            "width": 64,
+            "height": 20,
+            "bottom": 235.515625,
+            "right": 267.1875
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(77.5052 -6.4629 -36.42)"
+        },
+        {
+          "type": "boss",
+          "image": {
+            "x": 287.984375,
+            "y": 238.09017944335938,
+            "width": 64,
+            "height": 64,
+            "bottom": 302.0901794433594,
+            "right": 351.984375
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 287.984375,
+            "y": 215.515625,
+            "width": 64,
+            "height": 20,
+            "bottom": 235.515625,
+            "right": 351.984375
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(86.4156 6.13147 78.3961)"
+        },
+        {
+          "type": "normal",
+          "image": {
+            "x": 372.78125,
+            "y": 238.09017944335938,
+            "width": 64,
+            "height": 64,
+            "bottom": 302.0901794433594,
+            "right": 436.78125
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 372.78125,
+            "y": 215.515625,
+            "width": 64,
+            "height": 20,
+            "bottom": 235.515625,
+            "right": 436.78125
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "oklab(0.999994 0.0000455678 0.0000200868 / 0.9)"
+        },
+        {
+          "type": "elite",
+          "image": {
+            "x": 457.59375,
+            "y": 238.09017944335938,
+            "width": 64,
+            "height": 64,
+            "bottom": 302.0901794433594,
+            "right": 521.59375
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 457.59375,
+            "y": 215.515625,
+            "width": 64,
+            "height": 20,
+            "bottom": 235.515625,
+            "right": 521.59375
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(77.5052 -6.4629 -36.42)"
+        }
+      ],
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "count": 5,
+      "arena": {
+        "x": 17,
+        "y": 69,
+        "width": 734,
+        "height": 734,
+        "bottom": 803,
+        "right": 751
+      },
+      "player": {
+        "x": 352,
+        "y": 719,
+        "width": 64,
+        "height": 64,
+        "bottom": 783,
+        "right": 416
+      },
+      "playerWidth": 64,
+      "playerHeight": 64,
+      "resources": {
+        "x": 352,
+        "y": 677,
+        "width": 64,
+        "height": 38,
+        "bottom": 715,
+        "right": 416
+      },
+      "monsters": [
+        {
+          "type": "normal",
+          "image": {
+            "x": 182.390625,
+            "y": 291.8055114746094,
+            "width": 64,
+            "height": 64,
+            "bottom": 355.8055114746094,
+            "right": 246.390625
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 182.390625,
+            "y": 269.265625,
+            "width": 64,
+            "height": 20,
+            "bottom": 289.265625,
+            "right": 246.390625
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "oklab(0.999994 0.0000455678 0.0000200868 / 0.9)"
+        },
+        {
+          "type": "elite",
+          "image": {
+            "x": 267.1875,
+            "y": 291.8055114746094,
+            "width": 64,
+            "height": 64,
+            "bottom": 355.8055114746094,
+            "right": 331.1875
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 267.1875,
+            "y": 269.265625,
+            "width": 64,
+            "height": 20,
+            "bottom": 289.265625,
+            "right": 331.1875
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(77.5052 -6.4629 -36.42)"
+        },
+        {
+          "type": "boss",
+          "image": {
+            "x": 351.984375,
+            "y": 291.8055114746094,
+            "width": 64,
+            "height": 64,
+            "bottom": 355.8055114746094,
+            "right": 415.984375
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 351.984375,
+            "y": 269.265625,
+            "width": 64,
+            "height": 20,
+            "bottom": 289.265625,
+            "right": 415.984375
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(86.4156 6.13147 78.3961)"
+        },
+        {
+          "type": "normal",
+          "image": {
+            "x": 436.78125,
+            "y": 291.8055114746094,
+            "width": 64,
+            "height": 64,
+            "bottom": 355.8055114746094,
+            "right": 500.78125
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 436.78125,
+            "y": 269.265625,
+            "width": 64,
+            "height": 20,
+            "bottom": 289.265625,
+            "right": 500.78125
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "oklab(0.999994 0.0000455678 0.0000200868 / 0.9)"
+        },
+        {
+          "type": "elite",
+          "image": {
+            "x": 521.59375,
+            "y": 291.8055114746094,
+            "width": 64,
+            "height": 64,
+            "bottom": 355.8055114746094,
+            "right": 585.59375
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 521.59375,
+            "y": 269.265625,
+            "width": 64,
+            "height": 20,
+            "bottom": 289.265625,
+            "right": 585.59375
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(77.5052 -6.4629 -36.42)"
+        }
+      ],
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "count": 5,
+      "arena": {
+        "x": 17,
+        "y": 143,
+        "width": 990,
+        "height": 990,
+        "bottom": 1133,
+        "right": 1007
+      },
+      "player": {
+        "x": 480,
+        "y": 1049,
+        "width": 64,
+        "height": 64,
+        "bottom": 1113,
+        "right": 544
+      },
+      "playerWidth": 64,
+      "playerHeight": 64,
+      "resources": {
+        "x": 480,
+        "y": 1007,
+        "width": 64,
+        "height": 38,
+        "bottom": 1045,
+        "right": 544
+      },
+      "monsters": [
+        {
+          "type": "normal",
+          "image": {
+            "x": 310.390625,
+            "y": 473.3709716796875,
+            "width": 64,
+            "height": 64,
+            "bottom": 537.3709716796875,
+            "right": 374.390625
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 310.390625,
+            "y": 450.796875,
+            "width": 64,
+            "height": 20,
+            "bottom": 470.796875,
+            "right": 374.390625
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "oklab(0.999994 0.0000455678 0.0000200868 / 0.9)"
+        },
+        {
+          "type": "elite",
+          "image": {
+            "x": 395.1875,
+            "y": 473.3709716796875,
+            "width": 64,
+            "height": 64,
+            "bottom": 537.3709716796875,
+            "right": 459.1875
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 395.1875,
+            "y": 450.796875,
+            "width": 64,
+            "height": 20,
+            "bottom": 470.796875,
+            "right": 459.1875
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(77.5052 -6.4629 -36.42)"
+        },
+        {
+          "type": "boss",
+          "image": {
+            "x": 479.984375,
+            "y": 473.3709716796875,
+            "width": 64,
+            "height": 64,
+            "bottom": 537.3709716796875,
+            "right": 543.984375
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 479.984375,
+            "y": 450.796875,
+            "width": 64,
+            "height": 20,
+            "bottom": 470.796875,
+            "right": 543.984375
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(86.4156 6.13147 78.3961)"
+        },
+        {
+          "type": "normal",
+          "image": {
+            "x": 564.78125,
+            "y": 473.3709716796875,
+            "width": 64,
+            "height": 64,
+            "bottom": 537.3709716796875,
+            "right": 628.78125
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 564.78125,
+            "y": 450.796875,
+            "width": 64,
+            "height": 20,
+            "bottom": 470.796875,
+            "right": 628.78125
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "oklab(0.999994 0.0000455678 0.0000200868 / 0.9)"
+        },
+        {
+          "type": "elite",
+          "image": {
+            "x": 649.59375,
+            "y": 473.3709716796875,
+            "width": 64,
+            "height": 64,
+            "bottom": 537.3709716796875,
+            "right": 713.59375
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 649.59375,
+            "y": 450.796875,
+            "width": 64,
+            "height": 20,
+            "bottom": 470.796875,
+            "right": 713.59375
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(77.5052 -6.4629 -36.42)"
+        }
+      ],
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "count": 5,
+      "arena": {
+        "x": 97,
+        "y": 143,
+        "width": 850.921875,
+        "height": 850.921875,
+        "bottom": 993.921875,
+        "right": 947.921875
+      },
+      "player": {
+        "x": 490.453125,
+        "y": 909.921875,
+        "width": 64,
+        "height": 64,
+        "bottom": 973.921875,
+        "right": 554.453125
+      },
+      "playerWidth": 64,
+      "playerHeight": 64,
+      "resources": {
+        "x": 490.453125,
+        "y": 867.921875,
+        "width": 64,
+        "height": 38,
+        "bottom": 905.921875,
+        "right": 554.453125
+      },
+      "monsters": [
+        {
+          "type": "normal",
+          "image": {
+            "x": 320.84375,
+            "y": 414.9839172363281,
+            "width": 64,
+            "height": 64,
+            "bottom": 478.9839172363281,
+            "right": 384.84375
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 320.84375,
+            "y": 392.375,
+            "width": 64,
+            "height": 20,
+            "bottom": 412.375,
+            "right": 384.84375
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "oklab(0.999994 0.0000455678 0.0000200868 / 0.9)"
+        },
+        {
+          "type": "elite",
+          "image": {
+            "x": 405.640625,
+            "y": 414.9839172363281,
+            "width": 64,
+            "height": 64,
+            "bottom": 478.9839172363281,
+            "right": 469.640625
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 405.640625,
+            "y": 392.375,
+            "width": 64,
+            "height": 20,
+            "bottom": 412.375,
+            "right": 469.640625
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(77.5052 -6.4629 -36.42)"
+        },
+        {
+          "type": "boss",
+          "image": {
+            "x": 490.4375,
+            "y": 414.9839172363281,
+            "width": 64,
+            "height": 64,
+            "bottom": 478.9839172363281,
+            "right": 554.4375
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 490.4375,
+            "y": 392.375,
+            "width": 64,
+            "height": 20,
+            "bottom": 412.375,
+            "right": 554.4375
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(86.4156 6.13147 78.3961)"
+        },
+        {
+          "type": "normal",
+          "image": {
+            "x": 575.234375,
+            "y": 414.9839172363281,
+            "width": 64,
+            "height": 64,
+            "bottom": 478.9839172363281,
+            "right": 639.234375
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 575.234375,
+            "y": 392.375,
+            "width": 64,
+            "height": 20,
+            "bottom": 412.375,
+            "right": 639.234375
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "oklab(0.999994 0.0000455678 0.0000200868 / 0.9)"
+        },
+        {
+          "type": "elite",
+          "image": {
+            "x": 660.046875,
+            "y": 414.9839172363281,
+            "width": 64,
+            "height": 64,
+            "bottom": 478.9839172363281,
+            "right": 724.046875
+          },
+          "layoutWidth": 64,
+          "layoutHeight": 64,
+          "bars": {
+            "x": 660.046875,
+            "y": 392.375,
+            "width": 64,
+            "height": 20,
+            "bottom": 412.375,
+            "right": 724.046875
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(77.5052 -6.4629 -36.42)"
+        }
+      ],
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 320,
+      "count": 1,
+      "arena": {
+        "x": 13,
+        "y": 69,
+        "width": 294,
+        "height": 294,
+        "bottom": 363,
+        "right": 307
+      },
+      "player": {
+        "x": 132,
+        "y": 295,
+        "width": 56,
+        "height": 56,
+        "bottom": 351,
+        "right": 188
+      },
+      "playerWidth": 56,
+      "playerHeight": 56,
+      "resources": {
+        "x": 132,
+        "y": 255,
+        "width": 56,
+        "height": 36,
+        "bottom": 291,
+        "right": 188
+      },
+      "monsters": [
+        {
+          "type": "normal",
+          "image": {
+            "x": 19.203125,
+            "y": 154.57366943359375,
+            "width": 56,
+            "height": 56,
+            "bottom": 210.57366943359375,
+            "right": 75.203125
+          },
+          "layoutWidth": 56,
+          "layoutHeight": 56,
+          "bars": {
+            "x": 19.203125,
+            "y": 133,
+            "width": 56,
+            "height": 19,
+            "bottom": 152,
+            "right": 75.203125
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "oklab(0.999994 0.0000455678 0.0000200868 / 0.9)"
+        }
+      ],
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "count": 3,
+      "arena": {
+        "x": 13,
+        "y": 69,
+        "width": 364,
+        "height": 364,
+        "bottom": 433,
+        "right": 377
+      },
+      "player": {
+        "x": 167,
+        "y": 365,
+        "width": 56,
+        "height": 56,
+        "bottom": 421,
+        "right": 223
+      },
+      "playerWidth": 56,
+      "playerHeight": 56,
+      "resources": {
+        "x": 167,
+        "y": 325,
+        "width": 56,
+        "height": 36,
+        "bottom": 361,
+        "right": 223
+      },
+      "monsters": [
+        {
+          "type": "normal",
+          "image": {
+            "x": 26.1875,
+            "y": 154.50198364257812,
+            "width": 56,
+            "height": 56,
+            "bottom": 210.50198364257812,
+            "right": 82.1875
+          },
+          "layoutWidth": 56,
+          "layoutHeight": 56,
+          "bars": {
+            "x": 26.1875,
+            "y": 133,
+            "width": 56,
+            "height": 19,
+            "bottom": 152,
+            "right": 82.1875
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "oklab(0.999994 0.0000455678 0.0000200868 / 0.9)"
+        },
+        {
+          "type": "elite",
+          "image": {
+            "x": 96.59375,
+            "y": 154.50198364257812,
+            "width": 56,
+            "height": 56,
+            "bottom": 210.50198364257812,
+            "right": 152.59375
+          },
+          "layoutWidth": 56,
+          "layoutHeight": 56,
+          "bars": {
+            "x": 96.59375,
+            "y": 133,
+            "width": 56,
+            "height": 19,
+            "bottom": 152,
+            "right": 152.59375
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(77.5052 -6.4629 -36.42)"
+        },
+        {
+          "type": "boss",
+          "image": {
+            "x": 166.984375,
+            "y": 154.50198364257812,
+            "width": 56,
+            "height": 56,
+            "bottom": 210.50198364257812,
+            "right": 222.984375
+          },
+          "layoutWidth": 56,
+          "layoutHeight": 56,
+          "bars": {
+            "x": 166.984375,
+            "y": 133,
+            "width": 56,
+            "height": 19,
+            "bottom": 152,
+            "right": 222.984375
+          },
+          "border": "0px",
+          "shadow": "none",
+          "color": "lab(86.4156 6.13147 78.3961)"
+        }
+      ],
+      "overflow": false,
+      "errors": []
+    }
+  ]
+}

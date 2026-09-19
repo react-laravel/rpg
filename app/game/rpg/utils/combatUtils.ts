@@ -1,13 +1,17 @@
 import type { CombatMonster } from '../types'
 
 export const COMBAT_MONSTER_COLS = 5
-export const COMBAT_MONSTER_MAX_ROWS = 3
-
 /**
- * 单只怪物状态卡宽度（与 MonsterGroup 五列网格单列一致）。
- * 角色状态卡复用同一尺寸，避免底部横幅过宽。
+ * 角色和怪物共用固定宽度，怪物数量变化时不再缩小图标。
  */
-export const COMBAT_UNIT_PANEL_WIDTH_CLASS = 'w-[4.1rem] sm:w-[4.7rem]'
+export const COMBAT_UNIT_PANEL_WIDTH_CLASS = 'w-14 sm:w-16'
+export const COMBAT_UNIT_IMAGE_SIZE_CLASS = 'h-14 w-14 sm:h-16 sm:w-16'
+
+export function getCombatMonsterNameClass(type?: string): string {
+  if (type === 'boss') return 'text-amber-300'
+  if (type === 'elite') return 'text-blue-300'
+  return 'text-white/90'
+}
 
 /** 怪物区整体最大宽度 */
 export const COMBAT_MONSTER_GRID_MAX_WIDTH_CLASS =

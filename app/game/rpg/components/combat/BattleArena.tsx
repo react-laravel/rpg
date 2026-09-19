@@ -4,13 +4,14 @@ import { type CombatMonster, type CombatShield, type SkillUsedEntry } from '../.
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { MonsterIcon } from './MonsterIcon'
 import { MonsterGroup } from './MonsterGroup'
+import { CombatResourceBars } from './CombatResourceBars'
 import { SkillEffect } from './effects'
 import { EFFECT_PROFILES, resolveSkillEffect } from './effects/effectRegistry'
 import { getEffectTiming } from './effects/effectTimeline'
 import { readBattleEffectAnchors } from './effects/effectAnchors'
 import { soundManager } from '../../utils/soundManager'
 import { getSkillSoundUrl } from '../../utils/skillSoundRegistry'
-import { COMBAT_UNIT_PANEL_WIDTH_CLASS } from '../../utils/combatUtils'
+import { COMBAT_UNIT_PANEL_WIDTH_CLASS, COMBAT_UNIT_IMAGE_SIZE_CLASS, getCombatMonsterNameClass } from '../../utils/combatUtils'
 import styles from '../../rpg.module.css'
 
 const CHARACTER_DAMAGE_TEXT_MS = 2200
@@ -146,12 +147,6 @@ export function BattleArena({
       : deferDamageDisplay
         ? manaBeforeRegen
         : (displayCharacterMana ?? finalCharacterMana)
-  const hpPercent = combatStats?.max_hp
-    ? Math.min(100, Math.max(0, (effectiveCharacterHp / combatStats.max_hp) * 100))
-    : 0
-  const manaPercent = combatStats?.max_mana
-    ? Math.min(100, Math.max(0, (effectiveCharacterMana / combatStats.max_mana) * 100))
-    : 0
 
   const handleAppearActiveChange = useCallback((active: boolean) => {
     setMonsterAppearBlocking(active)
@@ -364,23 +359,7 @@ export function BattleArena({
 
       {/* 内容层：怪物、VS、玩家叠在特效之上，形成立体场景 */}
       <div className="relative z-10 flex min-h-0 flex-1 flex-col">
-        {activeSkillEffect && skillUsed && (
-          <div
-            key={skillRoundKey}
-            data-skill-cast-banner
-            style={{ '--cast-color': EFFECT_PROFILES[activeSkillEffect].color, '--cast-duration': `${EFFECT_PROFILES[activeSkillEffect].durationMs}ms` } as React.CSSProperties}
-            className={`${styles['skill-cast-banner']} pointer-events-none absolute top-[56%] left-1/2 z-30 sm:top-[49%]`}
-          >
-            <span className="hidden text-[10px] font-semibold tracking-normal text-white/70 sm:block">
-              释放技能
-            </span>
-            <strong className="block text-xs tracking-normal text-white sm:text-base">
-              {skillUsed.name}
-            </strong>
-          </div>
-        )}
-
-        {/* 上侧：怪物区限高最多三排，给下方角色留出空间 */}
+        {/* 上侧：五个固定怪物槽位，给下方角色与施法提示留出空间 */}
         <div className="flex max-h-[min(60%,16rem)] min-h-[42%] flex-none flex-col items-center justify-end gap-1 overflow-hidden px-2 pt-16 sm:px-4">
           {!isLoading && isFighting && hasValidMonsters ? (
             <MonsterGroup
@@ -392,8 +371,12 @@ export function BattleArena({
               onAppearActiveChange={handleAppearActiveChange}
             />
           ) : !isLoading && isFighting && monster ? (
-            <div data-effect-target={0} className={isMonsterDead && showDamageAndHp ? styles['monster-death'] : ''}>
-              <MonsterIcon key={monsterId} icon={monster.icon} name={monster.name} size="lg" />
+            <div className={`${COMBAT_UNIT_PANEL_WIDTH_CLASS} flex flex-col items-center gap-1 ${isMonsterDead && showDamageAndHp ? styles['monster-death'] : ''}`}>
+              {monster.max_hp != null && <CombatResourceBars hp={monster.hp ?? 0} maxHp={monster.max_hp} />}
+              <div data-effect-target={0}>
+                <MonsterIcon key={monsterId} icon={monster.icon} name={monster.name} />
+              </div>
+              <p data-monster-name className={`${getCombatMonsterNameClass(monster.type)} w-full truncate text-center text-[9px] leading-3 font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,1)] sm:text-[11px] sm:leading-4`}>{monster.name}</p>
             </div>
           ) : isFighting ? (
             <div className="flex items-center gap-2 rounded-full border border-white/15 bg-black/45 px-3 py-1.5 text-xs text-white/80 backdrop-blur-sm sm:text-sm">
@@ -407,16 +390,43 @@ export function BattleArena({
           )}
         </div>
 
+        <div data-cast-space className="relative flex min-h-6 flex-1 items-center justify-center">
+          {activeSkillEffect && skillUsed && (
+            <div
+              key={skillRoundKey}
+              data-skill-cast-banner
+              style={{ '--cast-color': EFFECT_PROFILES[activeSkillEffect].color, '--cast-duration': `${EFFECT_PROFILES[activeSkillEffect].durationMs}ms` } as React.CSSProperties}
+              className={`${styles['skill-cast-banner']} pointer-events-none relative z-30`}
+            >
+              <span className="hidden text-[10px] font-semibold tracking-normal text-white/70 sm:block">
+                释放技能
+              </span>
+              <strong className="block text-xs tracking-normal text-white sm:text-base">
+                {skillUsed.name}
+              </strong>
+            </div>
+          )}
+
+        </div>
+
         {/* 下侧：角色（尺寸与单只怪物状态卡对齐） */}
-        <div className="mt-auto flex shrink-0 items-end justify-center p-3 sm:p-5">
+        <div className="flex shrink-0 items-end justify-center px-3 pb-3 sm:px-5 sm:pb-5">
           <div
-            className={`${COMBAT_UNIT_PANEL_WIDTH_CLASS} relative flex flex-col items-center gap-1 rounded-md px-0.5 pb-1`}
+            className={`${COMBAT_UNIT_PANEL_WIDTH_CLASS} relative flex flex-col items-center gap-1 rounded-md`}
           >
+            {combatStats && (
+              <CombatResourceBars
+                hp={effectiveCharacterHp}
+                maxHp={combatStats.max_hp}
+                mana={effectiveCharacterMana}
+                maxMana={combatStats.max_mana}
+              />
+            )}
             <div className="relative flex flex-col items-center">
               {(characterDamageText != null ||
                 characterRegenHpText != null ||
                 characterRegenMpText != null) && (
-                <div className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-0.5 flex -translate-x-1/2 flex-col items-center gap-0.5 whitespace-nowrap">
+                <div className="pointer-events-none absolute bottom-0 left-full z-20 ml-1 flex flex-col items-start gap-0.5 whitespace-nowrap">
                   {characterDamageText != null && (
                     <span className={styles['damage-number']}>-{characterDamageText}</span>
                   )}
@@ -443,7 +453,8 @@ export function BattleArena({
                 </div>
               )}
               <div
-                className={`relative h-14 w-14 shrink-0 sm:h-16 sm:w-16 ${characterHit ? styles['character-hit'] : ''}`}
+                data-combat-unit-image="character"
+                className={`relative ${COMBAT_UNIT_IMAGE_SIZE_CLASS} shrink-0 ${characterHit ? styles['character-hit'] : ''}`}
               >
                 {(shieldActive || shieldBreaking || shieldCasting) && (
                   <span
@@ -464,47 +475,6 @@ export function BattleArena({
                   </span>
                 )}
               </div>
-            </div>
-
-            <div className="w-full min-w-0 rounded bg-black/45 px-1 py-1 backdrop-blur-sm">
-              {combatStats && (
-                <div className="space-y-1">
-                  <div>
-                    <div className="flex min-w-0 items-center justify-center text-[9px] leading-none text-white/80 sm:text-[10px]">
-                      <span
-                        className="truncate tabular-nums"
-                        title={`生命 ${effectiveCharacterHp}/${combatStats.max_hp}`}
-                        aria-label={`生命 ${effectiveCharacterHp}/${combatStats.max_hp}`}
-                      >
-                        {effectiveCharacterHp}/{combatStats.max_hp}
-                      </span>
-                    </div>
-                    <div className="mt-1 h-1.5 overflow-hidden rounded-sm bg-black/60 ring-1 ring-white/10">
-                      <div
-                        className={`${styles['health-bar-fill']} h-full bg-gradient-to-r from-red-700 to-rose-400 transition-[width] duration-300`}
-                        style={{ width: `${hpPercent}%` }}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex min-w-0 items-center justify-center text-[9px] leading-none text-white/80 sm:text-[10px]">
-                      <span
-                        className="truncate tabular-nums"
-                        title={`魔法 ${effectiveCharacterMana}/${combatStats.max_mana}`}
-                        aria-label={`魔法 ${effectiveCharacterMana}/${combatStats.max_mana}`}
-                      >
-                        {effectiveCharacterMana}/{combatStats.max_mana}
-                      </span>
-                    </div>
-                    <div className="mt-1 h-1.5 overflow-hidden rounded-sm bg-black/60 ring-1 ring-white/10">
-                      <div
-                        className={`${styles['mana-bar-fill']} h-full bg-gradient-to-r from-blue-700 to-cyan-300 transition-[width] duration-300`}
-                        style={{ width: `${manaPercent}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>

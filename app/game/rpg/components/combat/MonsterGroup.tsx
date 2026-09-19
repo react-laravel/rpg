@@ -4,11 +4,13 @@ import { type CombatMonster, type SkillUsedEntry } from '../../types'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { MonsterIcon } from './MonsterIcon'
 import { MonsterInfoDialog } from './MonsterInfoDialog'
+import { CombatResourceBars } from './CombatResourceBars'
 import {
   isRenderableCombatMonster,
   COMBAT_MONSTER_COLS,
-  COMBAT_MONSTER_MAX_ROWS,
   COMBAT_MONSTER_GRID_MAX_WIDTH_CLASS,
+  COMBAT_UNIT_PANEL_WIDTH_CLASS,
+  getCombatMonsterNameClass,
 } from '../../utils/combatUtils'
 import styles from '../../rpg.module.css'
 
@@ -28,16 +30,6 @@ function getAppearedMonsters(): Set<string> {
   } catch {
     return new Set()
   }
-}
-
-/** 战斗栏 HP 紧凑显示，避免大数值撑宽导致换行 */
-function formatMonsterHp(hp: number | undefined, maxHp: number | undefined): string {
-  const format = (value: number) => {
-    if (value >= 100_000) return `${Math.round(value / 1000)}k`
-    if (value >= 10_000) return `${(value / 1000).toFixed(1)}k`
-    return String(value)
-  }
-  return `${format(hp ?? 0)}/${format(maxHp ?? 0)}`
 }
 
 /** 保存已显示过动画的怪物 ID */
@@ -317,14 +309,12 @@ export function MonsterGroup({
   // 如果没有有效怪物则不渲染
   if (!hasValidMonsters && Object.keys(deadMonsterSnapshots).length === 0) return null
 
-  const iconSize = validMonsters.length >= 4 ? 'sm' : 'md'
   const slotPositions = Array.from({ length: COMBAT_MONSTER_COLS }, (_, i) => i)
 
   return (
     <>
       <div
-        className={`${COMBAT_MONSTER_GRID_MAX_WIDTH_CLASS} grid grid-cols-5 items-end justify-items-center gap-x-1 gap-y-1.5 overflow-visible px-1 sm:gap-x-2`}
-        style={{ gridTemplateRows: `repeat(${COMBAT_MONSTER_MAX_ROWS}, minmax(0, auto))` }}
+        className={`${COMBAT_MONSTER_GRID_MAX_WIDTH_CLASS} grid grid-cols-5 items-end justify-items-center gap-x-1 overflow-visible sm:gap-x-2`}
       >
         {slotPositions.map(pos => {
           const liveMonster = monsters[pos]
@@ -351,21 +341,24 @@ export function MonsterGroup({
           const isNew = m.instance_id ? appearingMonsters.has(m.instance_id) : false
           const damage = showDamageAndHp ? damageTexts[displayMonsterKey] : undefined
           const isHit = showDamageAndHp && m.position != null && hitMonsters.has(m.position)
+          const typeLabel = m.type === 'boss' ? 'Boss' : m.type === 'elite' ? '精英' : '普通'
 
           // 使用 instance_id 作为 key，这样新怪物出现时会重新创建元素触发动画
           return (
             <button
               key={m.instance_id ?? monsterKey}
+              data-monster-type={m.type}
               type="button"
               onClick={() => handleMonsterClick(m)}
-              className={`focus-visible:ring-primary relative flex w-full min-w-0 cursor-pointer flex-col items-center gap-1 rounded-md px-0.5 pb-1 transition-[background-color,opacity] hover:bg-black/20 focus:outline-none focus-visible:ring-2 ${isNew ? styles['monster-appear'] : ''} ${isDead ? styles['monster-death'] : ''} ${isHit ? styles['monster-hit'] : ''}`}
-              title={`点击查看 ${m.name} 详情`}
-              aria-label={`${m.name}，生命 ${m.hp ?? 0}/${m.max_hp ?? 0}`}
+              className={`${COMBAT_UNIT_PANEL_WIDTH_CLASS} focus-visible:ring-primary relative flex min-w-0 cursor-pointer flex-col items-center gap-1 rounded-md transition-[background-color,opacity] hover:bg-black/20 focus:outline-none focus-visible:ring-2 ${isNew ? styles['monster-appear'] : ''} ${isDead ? styles['monster-death'] : ''} ${isHit ? styles['monster-hit'] : ''}`}
+              title={`点击查看 ${m.name} 详情 · ${typeLabel}`}
+              aria-label={`${m.name}，${typeLabel}，生命 ${m.hp ?? 0}/${m.max_hp ?? 0}`}
             >
+              <CombatResourceBars hp={m.hp ?? 0} maxHp={m.max_hp ?? 0} />
               <div data-effect-target={pos} className="relative flex flex-col items-center">
                 {damage !== undefined && damage > 0 && (
                   <span
-                    className={`${styles['damage-number']} ${isCrit ? styles['damage-number-crit'] : ''} pointer-events-none absolute bottom-full left-1/2 z-20 mb-0.5 -translate-x-1/2 whitespace-nowrap`}
+                    className={`${styles['damage-number']} ${isCrit ? styles['damage-number-crit'] : ''} pointer-events-none absolute top-1/2 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap`}
                     data-crit={isCrit ? 'true' : undefined}
                   >
                     {isCrit && <span className={styles['crit-label']}>暴击</span>}
@@ -373,29 +366,10 @@ export function MonsterGroup({
                   </span>
                 )}
                 <span className={!isDead && !isHit && !isNew ? styles['monster-idle'] : undefined}>
-                  <MonsterIcon icon={m.icon} name={m.name} size={iconSize} monsterType={m.type} />
+                  <MonsterIcon icon={m.icon} name={m.name} />
                 </span>
               </div>
-              <div className="w-full min-w-0 rounded bg-black/45 px-1 py-1 backdrop-blur-sm">
-                <div className="flex min-w-0 items-center justify-center text-[9px] leading-none text-white/80 sm:text-[10px]">
-                  <span className="truncate tabular-nums" title={`${m.hp ?? 0}/${m.max_hp ?? 0}`}>
-                    {formatMonsterHp(m.hp, m.max_hp)}
-                  </span>
-                </div>
-                <div className="mt-1 h-1.5 overflow-hidden rounded-sm bg-black/60 ring-1 ring-white/10">
-                  <div
-                    className={`${styles['health-bar-fill']} h-full bg-gradient-to-r from-red-700 to-rose-400 transition-[width] duration-300`}
-                    style={{
-                      width: `${
-                        m.max_hp && m.max_hp > 0
-                          ? Math.min(100, Math.max(0, ((m.hp ?? 0) / m.max_hp) * 100))
-                          : 100
-                      }%`,
-                    }}
-                  />
-                </div>
-              </div>
-              <p className="w-full truncate px-0.5 text-center text-[9px] font-medium text-white/90 drop-shadow sm:text-[11px]">
+              <p data-monster-name className={`${getCombatMonsterNameClass(m.type)} w-full truncate text-center text-[9px] leading-3 font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,1)] sm:text-[11px] sm:leading-4`}>
                 {m.name}
               </p>
             </button>
