@@ -1,11 +1,12 @@
 {
-  "assets": 274,
+  "assets": 284,
   "counts": {
     "items": 110,
     "monsters": 123,
-    "maps": 41
+    "maps": 41,
+    "skills": 10
   },
-  "pngBytes": 1343066,
+  "pngBytes": 1353362,
   "validated": [
     "dimensions",
     "checksums",

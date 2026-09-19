@@ -50,7 +50,7 @@ function components(data, width, height, cols, rows) {
   return { groups, componentIds }
 }
 
-const manifest = { version: 'pixel-v1', ready: false, items: {}, monsters: {}, maps: {}, assets: [], sheets: [] }
+const manifest = { version: 'pixel-v1', ready: false, items: {}, monsters: {}, maps: {}, skills: {}, assets: [], sheets: [] }
 const warnings = []
 for (const job of jobs) {
   if (!job.source) continue
@@ -111,29 +111,29 @@ for (const job of jobs) {
 }
 
 manifest.assets.sort((a, b) => {
-  const order = { items: 0, monsters: 1, maps: 2 }
+  const order = { items: 0, monsters: 1, maps: 2, skills: 3 }
   return order[a.kind] - order[b.kind] || (a.kind === 'items' ? 0 : (a.ordinal ?? 0) - (b.ordinal ?? 0))
 })
-const expected = { items: 110, monsters: 123, maps: 41 }
+const expected = { items: 110, monsters: 123, maps: 41, skills: 10 }
 const counts = Object.fromEntries(Object.keys(expected).map(kind => [kind, manifest.assets.filter(a => a.kind === kind).length]))
 manifest.ready = Object.keys(expected).every(kind => counts[kind] === expected[kind])
 manifest.counts = counts
 manifest.warnings = warnings
 await fs.writeFile(path.join(work, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n')
-const runtime = Object.fromEntries(['version', 'ready', 'items', 'monsters', 'maps'].map(key => [key, manifest[key]]))
+const runtime = Object.fromEntries(['version', 'ready', 'items', 'monsters', 'maps', 'skills'].map(key => [key, manifest[key]]))
 await fs.writeFile(path.join(root, 'app/game/rpg/data/pixel-asset-manifest.json'), JSON.stringify(runtime, null, 2) + '\n')
 
 // 固定格子总图保留原生分辨率；浏览器用 nearest-neighbor 展示。
-for (const kind of ['items', 'monsters', 'maps']) {
+for (const kind of ['items', 'monsters', 'maps', 'skills']) {
   const list = manifest.assets.filter(a => a.kind === kind)
   if (!list.length) continue
-  const size = kind === 'items' ? 64 : kind === 'monsters' ? 96 : 256
-  const cols = kind === 'items' ? 8 : kind === 'monsters' ? 12 : 7
+  const size = kind === 'maps' ? 256 : kind === 'monsters' ? 96 : 64
+  const cols = kind === 'items' ? 8 : kind === 'monsters' ? 12 : kind === 'skills' ? 5 : 7
   const layers = await Promise.all(list.map(async (a, i) => ({ input: await fs.readFile(path.join(output, a.file)), left: i % cols * size, top: Math.floor(i / cols) * size })))
   await sharp({ create: { width: cols * size, height: Math.ceil(list.length / cols) * size, channels: 4, background: '#00000000' } }).composite(layers).png().toFile(path.join(output, `${kind}-atlas.png`))
 }
 const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
-const html = `<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RPG 像素资源</title><style>body{margin:0;background:#151a24;color:#e4e9f3;font:14px system-ui}header,main{max-width:1400px;margin:auto;padding:20px}nav{display:flex;gap:8px;flex-wrap:wrap}button{background:#2d374a;color:inherit;border:1px solid #556278;padding:10px 20px;border-radius:8px;cursor:pointer}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}.card{border:1px solid #354154;border-radius:8px;background:#202734;text-align:center;padding:12px}.card img{width:112px;height:112px;object-fit:contain;image-rendering:pixelated}.card[data-kind=maps] img{width:100%;height:auto;aspect-ratio:1}.card small{display:block;color:#a1adc0}h1{font-size:24px}.light .card{background:#e8e7e0;color:#1e2630}</style><header><h1>RPG 像素资源</h1><p>装备 ${counts.items}/110 · 怪物 ${counts.monsters}/123 · 地图 ${counts.maps}/41</p><nav><button onclick="filter('items')">装备</button><button onclick="filter('monsters')">怪物</button><button onclick="filter('maps')">地图</button><button onclick="document.body.classList.toggle('light')">切换明暗背景</button></nav></header><main><div class="grid">${manifest.assets.map(a => `<article class="card" data-kind="${a.kind}"><img src="${a.file}" alt="${escape(a.name)}"><p>${escape(a.name)}</p><small>${a.size} × ${a.size}</small></article>`).join('')}</div></main><script>function filter(kind){document.querySelectorAll('.card').forEach(c=>c.hidden=c.dataset.kind!==kind)}filter('items')</script></html>`
+const html = `<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RPG 像素资源</title><style>body{margin:0;background:#151a24;color:#e4e9f3;font:14px system-ui}header,main{max-width:1400px;margin:auto;padding:20px}nav{display:flex;gap:8px;flex-wrap:wrap}button{background:#2d374a;color:inherit;border:1px solid #556278;padding:10px 20px;border-radius:8px;cursor:pointer}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}.card{border:1px solid #354154;border-radius:8px;background:#202734;text-align:center;padding:12px}.card img{width:112px;height:112px;object-fit:contain;image-rendering:pixelated}.card[data-kind=maps] img{width:100%;height:auto;aspect-ratio:1}.card small{display:block;color:#a1adc0}h1{font-size:24px}.light .card{background:#e8e7e0;color:#1e2630}</style><header><h1>RPG 像素资源</h1><p>装备 ${counts.items}/110 · 怪物 ${counts.monsters}/123 · 地图 ${counts.maps}/41 · 技能 ${counts.skills}/10</p><nav><button onclick="filter('items')">装备</button><button onclick="filter('monsters')">怪物</button><button onclick="filter('maps')">地图</button><button onclick="filter('skills')">技能</button><button onclick="document.body.classList.toggle('light')">切换明暗背景</button></nav></header><main><div class="grid">${manifest.assets.map(a => `<article class="card" data-kind="${a.kind}"><img src="${a.file}" alt="${escape(a.name)}"><p>${escape(a.name)}</p><small>${a.size} × ${a.size}</small></article>`).join('')}</div></main><script>function filter(kind){document.querySelectorAll('.card').forEach(c=>c.hidden=c.dataset.kind!==kind)}const initial=new URLSearchParams(location.search).get('kind');filter(['items','monsters','maps','skills'].includes(initial)?initial:'items')</script></html>`
 await fs.writeFile(path.join(output, 'preview.html'), html)
 const task = await read(path.join(work, 'task.json'))
 task.generated = manifest.sheets.map(s => ({ id: s.id, count: s.count }))

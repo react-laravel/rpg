@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "width": 320,
+      "treeNodes": 37,
+      "uniqueIcons": 10,
+      "activeBarIcons": 9,
+      "skillToggle": true,
+      "pixelated": true,
+      "errors": []
+    },
+    {
+      "width": 768,
+      "treeNodes": 37,
+      "uniqueIcons": 10,
+      "activeBarIcons": 9,
+      "skillToggle": true,
+      "pixelated": true,
+      "errors": []
+    },
+    {
+      "width": 1440,
+      "treeNodes": 37,
+      "uniqueIcons": 10,
+      "activeBarIcons": 9,
+      "skillToggle": true,
+      "pixelated": true,
+      "errors": []
+    }
+  ],
+  "galleryIcons": 10
+}

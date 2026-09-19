@@ -8,13 +8,14 @@
 | 通用装备与宝石 | 54 | 64×64，透明 |
 | 怪物 | 123 | 96×96，透明 |
 | 地图 | 41 | 256×256 |
+| 技能主图标 | 10 | 64×64，透明，覆盖 37 个技能树节点 |
 
 套装顺序与等级：磐石（土，1）、青藤（木，15）、沧澜（水，25）、烈阳（火，45）、鎏金（金，65）、流风（风，85）、雷霆（雷，100）。每套均有法杖、兜帽、法袍、护手、长靴、腰带、指环和护符，不设置套装奖励。
 
 ## 文件与重建
 
-- `public/game/rpg/pixel-v1/`：正式使用的独立图片、三张总精灵图和资源预览页。
-- `output/pixel-rpg/sources/`：27 张生成源稿。
+- `public/game/rpg/pixel-v1/`：正式使用的独立图片、四张总精灵图和资源预览页。
+- `output/pixel-rpg/sources/`：28 张生成源稿。
 - `output/pixel-rpg/manifest.json`：来源、切分范围、文件大小与 SHA-256。
 - `output/pixel-rpg/jobs/`、`equipment-sources.json`：实际生图提示词与格位顺序。
 - `app/game/rpg/data/pixel-asset-manifest.json`：前端资源映射，兼容旧 CDN 链接、编号文件名和新版资源键。
@@ -22,6 +23,8 @@
 运行 `npm run assets:pixel` 重建并检查。透明素材按连通像素分组，手套与鞋子按同一格保留为一对；最近邻缩放后统一透明硬边与调色板，避免出现模糊光边。地图按严格网格切分。源图可以保留较大尺寸，游戏加载的图片保持低分辨率。
 
 本地预览：启动开发服务后打开 `/game/rpg/pixel-v1/preview.html`，可切换装备、怪物、地图和明暗背景。资源未齐全时映射保持关闭；齐全后统一启用。像素图片跳过 Next.js 的再压缩，按 `image-rendering: pixelated` 显示。
+
+技能图标可直接在 `/game/rpg/pixel-v1/preview.html?kind=skills` 查看。清单及同系列节点名称记录在 `output/pixel-rpg/skill-catalogue.json`；实际生图提示词和五列两行的格位顺序记录在 `output/pixel-rpg/jobs/skills-mage.json`。九个主动技能与一个关键被动分别使用独立图形；同技能线的强化、专精沿用该系列图标。原技能效果键和数值保持不变，前端兼容已有 CDN 地址。
 
 ## 地图与升级
 

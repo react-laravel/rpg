@@ -10,7 +10,9 @@
     "renameAndReassign": true,
     "pushBothRepositories": true,
     "setItems": 56,
-    "commonItems": 54
+    "commonItems": 54,
+    "skillIcons": 10,
+    "skillTreeNodes": 37
   },
   "generated": [
     {
@@ -120,6 +122,10 @@
     {
       "id": "monsters-wood",
       "count": 12
+    },
+    {
+      "id": "skills-mage",
+      "count": 10
     }
   ],
   "completed": [],
@@ -132,11 +138,12 @@
   "processed": {
     "items": 110,
     "monsters": 123,
-    "maps": 41
+    "maps": 41,
+    "skills": 10
   },
   "assetReady": true,
   "warnings": [],
-  "updatedAt": "2026-09-18T20:27:28.126Z",
+  "updatedAt": "2026-09-19T03:15:11.414Z",
   "integrated": true,
   "verified": {
     "assetIntegrity": true,
@@ -151,5 +158,15 @@
     "postgresUpgrade": true,
     "backendAssertions": 1504
   },
-  "deliveryStatusFile": "output/pixel-rpg/delivery.local.json"
+  "deliveryStatusFile": "output/pixel-rpg/delivery.local.json",
+  "followUps": {
+    "skills": {
+      "state": "implementation_complete",
+      "icons": 10,
+      "nodes": 37,
+      "pngBytes": 10296,
+      "frontendTests": 335,
+      "backendChanges": false
+    }
+  }
 }

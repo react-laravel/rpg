@@ -30,5 +30,5 @@ export function getRpgMonsterImageUrl(icon?: string | null, useOrigin = false): 
 }
 
 export function getRpgSkillImageUrl(icon?: string | null, useOrigin = false): string {
-  return resolveRpgAssetUrl('/game/rpg/skills', icon, useOrigin)
+  return getPixelAssetUrl('skills', icon) ?? resolveRpgAssetUrl('/game/rpg/skills', icon, useOrigin)
 }

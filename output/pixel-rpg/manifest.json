@@ -2855,6 +2855,48 @@
     "map_9.jpeg": "/game/rpg/pixel-v1/maps/pixel-map-09.png",
     "map_9.webp": "/game/rpg/pixel-v1/maps/pixel-map-09.png"
   },
+  "skills": {
+    "fireball.png": "/game/rpg/pixel-v1/skills/fireball.png",
+    "fireball.jpg": "/game/rpg/pixel-v1/skills/fireball.png",
+    "fireball.jpeg": "/game/rpg/pixel-v1/skills/fireball.png",
+    "fireball.webp": "/game/rpg/pixel-v1/skills/fireball.png",
+    "ice-arrow.png": "/game/rpg/pixel-v1/skills/ice-arrow.png",
+    "ice-arrow.jpg": "/game/rpg/pixel-v1/skills/ice-arrow.png",
+    "ice-arrow.jpeg": "/game/rpg/pixel-v1/skills/ice-arrow.png",
+    "ice-arrow.webp": "/game/rpg/pixel-v1/skills/ice-arrow.png",
+    "frost-nova.png": "/game/rpg/pixel-v1/skills/frost-nova.png",
+    "frost-nova.jpg": "/game/rpg/pixel-v1/skills/frost-nova.png",
+    "frost-nova.jpeg": "/game/rpg/pixel-v1/skills/frost-nova.png",
+    "frost-nova.webp": "/game/rpg/pixel-v1/skills/frost-nova.png",
+    "lightning.png": "/game/rpg/pixel-v1/skills/lightning.png",
+    "lightning.jpg": "/game/rpg/pixel-v1/skills/lightning.png",
+    "lightning.jpeg": "/game/rpg/pixel-v1/skills/lightning.png",
+    "lightning.webp": "/game/rpg/pixel-v1/skills/lightning.png",
+    "chain-lightning.png": "/game/rpg/pixel-v1/skills/chain-lightning.png",
+    "chain-lightning.jpg": "/game/rpg/pixel-v1/skills/chain-lightning.png",
+    "chain-lightning.jpeg": "/game/rpg/pixel-v1/skills/chain-lightning.png",
+    "chain-lightning.webp": "/game/rpg/pixel-v1/skills/chain-lightning.png",
+    "shield.png": "/game/rpg/pixel-v1/skills/shield.png",
+    "shield.jpg": "/game/rpg/pixel-v1/skills/shield.png",
+    "shield.jpeg": "/game/rpg/pixel-v1/skills/shield.png",
+    "shield.webp": "/game/rpg/pixel-v1/skills/shield.png",
+    "meteor.png": "/game/rpg/pixel-v1/skills/meteor.png",
+    "meteor.jpg": "/game/rpg/pixel-v1/skills/meteor.png",
+    "meteor.jpeg": "/game/rpg/pixel-v1/skills/meteor.png",
+    "meteor.webp": "/game/rpg/pixel-v1/skills/meteor.png",
+    "arcane-missile.png": "/game/rpg/pixel-v1/skills/arcane-missile.png",
+    "arcane-missile.jpg": "/game/rpg/pixel-v1/skills/arcane-missile.png",
+    "arcane-missile.jpeg": "/game/rpg/pixel-v1/skills/arcane-missile.png",
+    "arcane-missile.webp": "/game/rpg/pixel-v1/skills/arcane-missile.png",
+    "element-cataclysm.png": "/game/rpg/pixel-v1/skills/element-cataclysm.png",
+    "element-cataclysm.jpg": "/game/rpg/pixel-v1/skills/element-cataclysm.png",
+    "element-cataclysm.jpeg": "/game/rpg/pixel-v1/skills/element-cataclysm.png",
+    "element-cataclysm.webp": "/game/rpg/pixel-v1/skills/element-cataclysm.png",
+    "mage-key.png": "/game/rpg/pixel-v1/skills/mage-key.png",
+    "mage-key.jpg": "/game/rpg/pixel-v1/skills/mage-key.png",
+    "mage-key.jpeg": "/game/rpg/pixel-v1/skills/mage-key.png",
+    "mage-key.webp": "/game/rpg/pixel-v1/skills/mage-key.png"
+  },
   "assets": [
     {
       "key": "metal-weapon",
@@ -8829,6 +8871,243 @@
       },
       "sha256": "2f9f1218e0f03ac80bd70cd0db9694417783ef6ab7a578b4fb0f078156521c9a",
       "bytes": 24109
+    },
+    {
+      "key": "fireball",
+      "name": "小火球",
+      "skill_line": "mage_fireball",
+      "nodes": [
+        "小火球",
+        "强化火球术",
+        "灼烧火球",
+        "炽热聚焦"
+      ],
+      "kind": "skills",
+      "file": "skills/fireball.png",
+      "url": "/game/rpg/pixel-v1/skills/fireball.png",
+      "size": 64,
+      "source": "output/pixel-rpg/sources/skills-mage.png",
+      "frame": {
+        "left": 29,
+        "top": 63,
+        "width": 305,
+        "height": 266
+      },
+      "sha256": "1f1f3f9c765a62a1a3668f1b19b7556c261ea80a347f009e6481bda06e7553d5",
+      "bytes": 942
+    },
+    {
+      "key": "ice-arrow",
+      "name": "冰箭",
+      "skill_line": "mage_ice_arrow",
+      "nodes": [
+        "冰箭",
+        "强化冰箭",
+        "碎冰箭",
+        "穿透冰箭"
+      ],
+      "kind": "skills",
+      "file": "skills/ice-arrow.png",
+      "url": "/game/rpg/pixel-v1/skills/ice-arrow.png",
+      "size": 64,
+      "source": "output/pixel-rpg/sources/skills-mage.png",
+      "frame": {
+        "left": 411,
+        "top": 110,
+        "width": 337,
+        "height": 195
+      },
+      "sha256": "ff00a736a8bd616627a466ddc2a18da3b974db3da155c370381b35e572288c25",
+      "bytes": 688
+    },
+    {
+      "key": "frost-nova",
+      "name": "冰霜新星",
+      "skill_line": "mage_frost_nova",
+      "nodes": [
+        "冰霜新星",
+        "强化冰霜新星",
+        "寒冰领域",
+        "冰霜尖刺"
+      ],
+      "kind": "skills",
+      "file": "skills/frost-nova.png",
+      "url": "/game/rpg/pixel-v1/skills/frost-nova.png",
+      "size": 64,
+      "source": "output/pixel-rpg/sources/skills-mage.png",
+      "frame": {
+        "left": 814,
+        "top": 43,
+        "width": 355,
+        "height": 322
+      },
+      "sha256": "3eca5acf5de1788e1eb58e6434a6ce2017723dcc477f986e3ff120255b4ca34d",
+      "bytes": 1061
+    },
+    {
+      "key": "lightning",
+      "name": "雷击",
+      "skill_line": "mage_lightning",
+      "nodes": [
+        "雷击",
+        "强化雷击",
+        "过载雷击",
+        "精准雷击"
+      ],
+      "kind": "skills",
+      "file": "skills/lightning.png",
+      "url": "/game/rpg/pixel-v1/skills/lightning.png",
+      "size": 64,
+      "source": "output/pixel-rpg/sources/skills-mage.png",
+      "frame": {
+        "left": 1275,
+        "top": 23,
+        "width": 259,
+        "height": 349
+      },
+      "sha256": "0a45984ce5fa7158430017995aca69fbc85d05c4475ef39f4b1fd9c57d08bc55",
+      "bytes": 995
+    },
+    {
+      "key": "chain-lightning",
+      "name": "连锁闪电",
+      "skill_line": "mage_chain_lightning",
+      "nodes": [
+        "连锁闪电",
+        "强化连锁闪电",
+        "雷暴扩散",
+        "集中导能"
+      ],
+      "kind": "skills",
+      "file": "skills/chain-lightning.png",
+      "url": "/game/rpg/pixel-v1/skills/chain-lightning.png",
+      "size": 64,
+      "source": "output/pixel-rpg/sources/skills-mage.png",
+      "frame": {
+        "left": 1642,
+        "top": 49,
+        "width": 324,
+        "height": 291
+      },
+      "sha256": "e48ebff1f96ab1a7b81468b4f73c394b134fe015ba57e9f2a4871dce1bfb12df",
+      "bytes": 989
+    },
+    {
+      "key": "shield",
+      "name": "魔法护盾",
+      "skill_line": "mage_shield",
+      "nodes": [
+        "魔法护盾",
+        "强化护盾",
+        "奥术护壳",
+        "能量转换"
+      ],
+      "kind": "skills",
+      "file": "skills/shield.png",
+      "url": "/game/rpg/pixel-v1/skills/shield.png",
+      "size": 64,
+      "source": "output/pixel-rpg/sources/skills-mage.png",
+      "frame": {
+        "left": 16,
+        "top": 415,
+        "width": 332,
+        "height": 330
+      },
+      "sha256": "799ad4ac9ab317e5bd0aa134e56841b1ccfd2320d8072ab28b981432d29aad22",
+      "bytes": 1017
+    },
+    {
+      "key": "meteor",
+      "name": "陨石术",
+      "skill_line": "mage_meteor",
+      "nodes": [
+        "陨石术",
+        "强化陨石",
+        "陨星雨",
+        "精准陨石"
+      ],
+      "kind": "skills",
+      "file": "skills/meteor.png",
+      "url": "/game/rpg/pixel-v1/skills/meteor.png",
+      "size": 64,
+      "source": "output/pixel-rpg/sources/skills-mage.png",
+      "frame": {
+        "left": 428,
+        "top": 410,
+        "width": 321,
+        "height": 328
+      },
+      "sha256": "38bfe46b197d5733ea3930e891c2705b6e5a1647528e81d6e32d8a0c4c532471",
+      "bytes": 1133
+    },
+    {
+      "key": "arcane-missile",
+      "name": "奥术飞弹",
+      "skill_line": "mage_arcane_missile",
+      "nodes": [
+        "奥术飞弹",
+        "强化奥术飞弹",
+        "奥术分裂",
+        "奥术穿透"
+      ],
+      "kind": "skills",
+      "file": "skills/arcane-missile.png",
+      "url": "/game/rpg/pixel-v1/skills/arcane-missile.png",
+      "size": 64,
+      "source": "output/pixel-rpg/sources/skills-mage.png",
+      "frame": {
+        "left": 846,
+        "top": 437,
+        "width": 290,
+        "height": 292
+      },
+      "sha256": "d0215134764a1d93f7f16631650594f5c398d9f8ba4974c1d8e415b0eaea75b1",
+      "bytes": 927
+    },
+    {
+      "key": "element-cataclysm",
+      "name": "元素灾变",
+      "skill_line": "mage_cataclysm",
+      "nodes": [
+        "元素灾变",
+        "强化元素灾变",
+        "灾变延宕",
+        "灾变聚焦"
+      ],
+      "kind": "skills",
+      "file": "skills/element-cataclysm.png",
+      "url": "/game/rpg/pixel-v1/skills/element-cataclysm.png",
+      "size": 64,
+      "source": "output/pixel-rpg/sources/skills-mage.png",
+      "frame": {
+        "left": 1226,
+        "top": 421,
+        "width": 342,
+        "height": 330
+      },
+      "sha256": "4363e4cefd519d51977f8567639497bff1171e1ab9c1f4d84b2ea279b085c0de",
+      "bytes": 1332
+    },
+    {
+      "key": "mage-key",
+      "name": "奥术共鸣",
+      "skill_line": "mage_key",
+      "nodes": [
+        "奥术共鸣"
+      ],
+      "kind": "skills",
+      "file": "skills/mage-key.png",
+      "url": "/game/rpg/pixel-v1/skills/mage-key.png",
+      "size": 64,
+      "source": "output/pixel-rpg/sources/skills-mage.png",
+      "frame": {
+        "left": 1632,
+        "top": 411,
+        "width": 343,
+        "height": 334
+      },
+      "sha256": "f6a03eefd7565055fef2a046ea80d426010c232510355e0b103beecfb3eaacb1",
+      "bytes": 1212
     }
   ],
   "sheets": [
@@ -8993,12 +9272,19 @@
       "count": 12,
       "source": "output/pixel-rpg/sources/monsters-wood.png",
       "prompt": "复古奇幻RPG怪物精灵图，青藤秘境主题，翠绿、棕褐、萤光配色。严格4列3行等大网格，按从左到右、从上到下依次画：苔叶蜥、树冠蜂、藤鞭花妖、伞帽蘑菇怪、沼泽蛙、毒孢树精、橡果精、荆棘螳螂、森卫鹿灵、树皮守卫、翡翠蝶、古榕之心。每格只画对应的一只完整怪物，身体、脚、翅膀尾巴完整，居中留空，互不接触。经典低分辨率像素画，清晰硬边和有限配色，适合96像素小图标。真实透明背景，无文字无边框无场景。"
+    },
+    {
+      "id": "skills-mage",
+      "count": 10,
+      "source": "output/pixel-rpg/sources/skills-mage.png",
+      "prompt": "复古RPG像素技能图标精灵图，5列2行，10个图标。上排依次：橙红火球、蓝色冰箭、向外爆开的冰霜圆环、一道金色雷击、连接三个节点的紫色连锁闪电。下排依次：青蓝魔法护盾、带火尾的岩石陨星、紫色奥术飞弹、火冰雷交织的元素灾变、紫金符文环的奥术共鸣。造型简洁、轮廓清晰，小尺寸也能辨认。每格完整居中留空，互不接触，清晰像素块、有限配色。真实透明PNG背景，无文字无边框，不画背景光晕。"
     }
   ],
   "counts": {
     "items": 110,
     "monsters": 123,
-    "maps": 41
+    "maps": 41,
+    "skills": 10
   },
   "warnings": []
 }

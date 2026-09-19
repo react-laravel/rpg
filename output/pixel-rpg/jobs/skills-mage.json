@@ -1,0 +1,118 @@
+{
+  "id": "skills-mage",
+  "kind": "skills",
+  "cols": 5,
+  "rows": 2,
+  "tileSize": 64,
+  "tiles": [
+    {
+      "key": "fireball",
+      "name": "小火球",
+      "skill_line": "mage_fireball",
+      "nodes": [
+        "小火球",
+        "强化火球术",
+        "灼烧火球",
+        "炽热聚焦"
+      ]
+    },
+    {
+      "key": "ice-arrow",
+      "name": "冰箭",
+      "skill_line": "mage_ice_arrow",
+      "nodes": [
+        "冰箭",
+        "强化冰箭",
+        "碎冰箭",
+        "穿透冰箭"
+      ]
+    },
+    {
+      "key": "frost-nova",
+      "name": "冰霜新星",
+      "skill_line": "mage_frost_nova",
+      "nodes": [
+        "冰霜新星",
+        "强化冰霜新星",
+        "寒冰领域",
+        "冰霜尖刺"
+      ]
+    },
+    {
+      "key": "lightning",
+      "name": "雷击",
+      "skill_line": "mage_lightning",
+      "nodes": [
+        "雷击",
+        "强化雷击",
+        "过载雷击",
+        "精准雷击"
+      ]
+    },
+    {
+      "key": "chain-lightning",
+      "name": "连锁闪电",
+      "skill_line": "mage_chain_lightning",
+      "nodes": [
+        "连锁闪电",
+        "强化连锁闪电",
+        "雷暴扩散",
+        "集中导能"
+      ]
+    },
+    {
+      "key": "shield",
+      "name": "魔法护盾",
+      "skill_line": "mage_shield",
+      "nodes": [
+        "魔法护盾",
+        "强化护盾",
+        "奥术护壳",
+        "能量转换"
+      ]
+    },
+    {
+      "key": "meteor",
+      "name": "陨石术",
+      "skill_line": "mage_meteor",
+      "nodes": [
+        "陨石术",
+        "强化陨石",
+        "陨星雨",
+        "精准陨石"
+      ]
+    },
+    {
+      "key": "arcane-missile",
+      "name": "奥术飞弹",
+      "skill_line": "mage_arcane_missile",
+      "nodes": [
+        "奥术飞弹",
+        "强化奥术飞弹",
+        "奥术分裂",
+        "奥术穿透"
+      ]
+    },
+    {
+      "key": "element-cataclysm",
+      "name": "元素灾变",
+      "skill_line": "mage_cataclysm",
+      "nodes": [
+        "元素灾变",
+        "强化元素灾变",
+        "灾变延宕",
+        "灾变聚焦"
+      ]
+    },
+    {
+      "key": "mage-key",
+      "name": "奥术共鸣",
+      "skill_line": "mage_key",
+      "nodes": [
+        "奥术共鸣"
+      ]
+    }
+  ],
+  "prompt": "复古RPG像素技能图标精灵图，5列2行，10个图标。上排依次：橙红火球、蓝色冰箭、向外爆开的冰霜圆环、一道金色雷击、连接三个节点的紫色连锁闪电。下排依次：青蓝魔法护盾、带火尾的岩石陨星、紫色奥术飞弹、火冰雷交织的元素灾变、紫金符文环的奥术共鸣。造型简洁、轮廓清晰，小尺寸也能辨认。每格完整居中留空，互不接触，清晰像素块、有限配色。真实透明PNG背景，无文字无边框，不画背景光晕。",
+  "source": "output/pixel-rpg/sources/skills-mage.png"
+}
