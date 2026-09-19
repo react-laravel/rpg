@@ -197,11 +197,11 @@ export function CombatPanel() {
         {/* 战场 */}
         <section className={`${interfaceStyles.panel} ${interfaceStyles.arenaPanel} relative overflow-hidden`}>
           {currentMap ? (
-            <div
-              className="relative mx-auto w-full overflow-hidden"
-              style={getMapBackgroundStyle(currentMap, { useOrigin: true, fill: true })}
-            >
-              <div className="relative aspect-[4/5] w-full overflow-hidden sm:aspect-[4/3] lg:aspect-[16/10]">
+            <div className="relative mx-auto w-full overflow-hidden">
+              <div
+                className="relative aspect-square w-full overflow-hidden"
+                style={getMapBackgroundStyle(currentMap, { useOrigin: true, fill: true })}
+              >
                 <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-2 px-2 py-2 sm:px-3">
                   <div className="pointer-events-auto min-w-0 flex-1">
                     <CombatMapPicker overlay />

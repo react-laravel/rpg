@@ -367,20 +367,21 @@ export function BattleArena({
         {activeSkillEffect && skillUsed && (
           <div
             key={skillRoundKey}
+            data-skill-cast-banner
             style={{ '--cast-color': EFFECT_PROFILES[activeSkillEffect].color, '--cast-duration': `${EFFECT_PROFILES[activeSkillEffect].durationMs}ms` } as React.CSSProperties}
-            className={`${styles['skill-cast-banner']} pointer-events-none absolute top-[49%] left-1/2 z-30 -translate-x-1/2`}
+            className={`${styles['skill-cast-banner']} pointer-events-none absolute top-[56%] left-1/2 z-30 sm:top-[49%]`}
           >
-            <span className="text-[10px] font-semibold tracking-normal text-white/70">
+            <span className="hidden text-[10px] font-semibold tracking-normal text-white/70 sm:block">
               释放技能
             </span>
-            <strong className="block text-sm tracking-normal text-white sm:text-base">
+            <strong className="block text-xs tracking-normal text-white sm:text-base">
               {skillUsed.name}
             </strong>
           </div>
         )}
 
         {/* 上侧：怪物区限高最多三排，给下方角色留出空间 */}
-        <div className="flex max-h-[min(52%,16rem)] min-h-[42%] flex-none flex-col items-center justify-end gap-1 overflow-hidden px-2 pt-5 sm:px-4 sm:pt-7">
+        <div className="flex max-h-[min(60%,16rem)] min-h-[42%] flex-none flex-col items-center justify-end gap-1 overflow-hidden px-2 pt-16 sm:px-4">
           {!isLoading && isFighting && hasValidMonsters ? (
             <MonsterGroup
               monsters={displayMonsters}
