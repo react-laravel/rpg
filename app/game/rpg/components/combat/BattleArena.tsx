@@ -1,6 +1,6 @@
 'use client'
 
-import { type CombatMonster, type CombatShield, type SkillUsedEntry } from '../../types'
+import { type CombatMonster, type CombatShield, type GameCharacter, type SkillUsedEntry } from '../../types'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { MonsterIcon } from './MonsterIcon'
 import { MonsterGroup } from './MonsterGroup'
@@ -20,6 +20,7 @@ const CHARACTER_REGEN_STAGGER_MS = 350
 /** 战斗对阵：上侧怪物（支持多只），下侧用户，中间 VS 可点击开始/停止挂机 */
 export function BattleArena({
   character,
+  pet = null,
   combatStats,
   currentHp,
   currentMana,
@@ -40,6 +41,7 @@ export function BattleArena({
   onRoundVisualSettled,
 }: {
   character: { name: string; level: number } | null
+  pet?: GameCharacter['pet']
   combatStats: { max_hp: number; max_mana: number } | null
   currentHp: number | null
   currentMana: number | null
@@ -409,8 +411,25 @@ export function BattleArena({
 
         </div>
 
-        {/* 下侧：角色（尺寸与单只怪物状态卡对齐） */}
-        <div className="flex shrink-0 items-end justify-center px-3 pb-3 sm:px-5 sm:pb-5">
+        {/* 下侧：宝宝站在角色旁边。怪物反击随机打其中一边 */}
+        <div className="flex shrink-0 items-end justify-center gap-2 px-3 pb-3 sm:gap-3 sm:px-5 sm:pb-5">
+          {pet && (
+            <div className="flex w-16 shrink-0 flex-col items-center gap-1" data-pet={pet.hp > 0 ? 'alive' : 'down'}>
+              <CombatResourceBars hp={pet.hp} maxHp={pet.max_hp} />
+              <div
+                className={`relative flex h-12 w-12 items-center justify-center rounded-full border-2 text-sm font-bold sm:h-14 sm:w-14 ${
+                  pet.hp > 0
+                    ? 'border-teal-300/80 bg-teal-950/50 text-teal-100'
+                    : 'border-white/20 bg-black/40 text-white/40'
+                }`}
+              >
+                {pet.name.slice(0, 1)}
+              </div>
+              <p className="w-full truncate text-center text-[9px] leading-3 font-semibold text-white drop-shadow sm:text-[11px]">
+                {pet.name} {pet.level}级
+              </p>
+            </div>
+          )}
           <div
             className={`${COMBAT_UNIT_PANEL_WIDTH_CLASS} relative flex flex-col items-center gap-1 rounded-md`}
           >

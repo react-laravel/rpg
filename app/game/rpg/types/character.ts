@@ -23,6 +23,15 @@ export interface GameCharacter {
   current_mana?: number
   /** 自动回收单价上限（铜），null/0 表示关闭 */
   auto_recycle_max_value?: number | null
+  pet?: {
+    name: string
+    form: string
+    level: number
+    experience: number
+    hp: number
+    max_hp: number
+    attack: number
+  } | null
   created_at: string
   updated_at: string
 }
