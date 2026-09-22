@@ -6,6 +6,7 @@ import type { GameItem, ItemQuality } from '@/app/game/rpg/types'
 import { QUALITY_COLORS } from '@/app/game/rpg/types'
 import { getItemIconFallback } from '@/app/game/rpg/utils/itemUtils'
 import { getRpgItemImageUrl } from '@/app/game/rpg/utils/assetUrls'
+import { ItemImagePreview } from './ItemImagePreview'
 
 /** 物品详情中的大图标 */
 export const ItemTipIcon = memo(function ItemTipIcon({
@@ -21,15 +22,16 @@ export const ItemTipIcon = memo(function ItemTipIcon({
     () => getRpgItemImageUrl(item.definition?.icon, definitionId),
     [item.definition?.icon, definitionId]
   )
-  const [failed, setFailed] = useState(false)
-  const handleError = useCallback(() => setFailed(true), [])
+  const [failedSource, setFailedSource] = useState<string | null>(null)
+  const handleError = useCallback(() => setFailedSource(src), [src])
 
   return (
-    <span
+    <ItemImagePreview
+      item={item}
       className={`relative inline-flex h-[100px] w-[100px] shrink-0 items-center justify-center rounded-lg border-2 shadow-sm ${className ?? ''}`}
       style={{ borderColor: QUALITY_COLORS[item.quality as ItemQuality] }}
     >
-      {src && !failed ? (
+      {src && failedSource !== src ? (
         <Image
           src={src}
           alt=""
@@ -41,6 +43,6 @@ export const ItemTipIcon = memo(function ItemTipIcon({
       ) : (
         <span className="text-5xl drop-shadow-sm">{fallback}</span>
       )}
-    </span>
+    </ItemImagePreview>
   )
 })

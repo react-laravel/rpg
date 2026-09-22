@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import type { GameItem, ItemQuality } from '@/app/game/rpg/types'
 import { QUALITY_COLORS, STAT_NAMES } from '@/app/game/rpg/types'
 import { ItemIcon } from './ItemIcon'
+import { ItemImagePreview } from './ItemImagePreview'
 import { ItemActions, type ItemActionType } from './ItemActions'
 import {
   formatItemStatValue,
@@ -28,7 +29,7 @@ export {
 
 function CompareItemIconSlot({
   item,
-  sizeClass = 'h-10 w-10',
+  sizeClass = 'h-14 w-14 sm:h-16 sm:w-16',
   showUpgradeIndicator = false,
 }: {
   item: GameItem
@@ -36,14 +37,15 @@ function CompareItemIconSlot({
   showUpgradeIndicator?: boolean
 }) {
   return (
-    <div
+    <ItemImagePreview
+      item={item}
       className={`relative flex shrink-0 ${sizeClass} items-center justify-center rounded border-2`}
       style={{ borderColor: QUALITY_COLORS[item.quality as ItemQuality] }}
     >
       <ItemIcon item={item} className="drop-shadow-sm" />
       {showUpgradeIndicator && <ItemUpgradeIndicator />}
       <ItemSocketIndicators item={item} className="absolute -top-1 -right-1 z-10" />
-    </div>
+    </ItemImagePreview>
   )
 }
 
@@ -51,7 +53,7 @@ function CompareItemHeader({
   item,
   name,
   nameColor,
-  sizeClass = 'h-10 w-10',
+  sizeClass = 'h-14 w-14 sm:h-16 sm:w-16',
   showUpgradeIndicator = false,
 }: {
   item?: GameItem
