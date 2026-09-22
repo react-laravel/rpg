@@ -7,6 +7,8 @@ export function CombatRegenSettings() {
 
   const vitality = character?.vitality ?? 0
   const energy = character?.energy ?? 0
+  const hpPerTick = Math.max(0, Math.round(vitality * 0.25))
+  const mpPerTick = Math.max(0, Math.round(energy * 0.5))
 
   return (
     <div className="bg-card border-border rounded-lg border p-3 sm:p-4">
@@ -22,20 +24,24 @@ export function CombatRegenSettings() {
           <div className="mb-1 flex items-center justify-between">
             <span className="text-foreground text-sm font-medium">生命恢复</span>
             <span className="text-sm font-semibold text-green-600 dark:text-green-400">
-              +{vitality} HP
+              +{hpPerTick} HP
             </span>
           </div>
-          <p className="text-muted-foreground text-xs">恢复量 = 当前体力值（{vitality}）</p>
+          <p className="text-muted-foreground text-xs">
+            当前体力 {vitality}。每 4 点体力，每拍大约多恢复 1 点生命。
+          </p>
         </div>
 
         <div className="bg-muted/50 border-border rounded-lg border p-3">
           <div className="mb-1 flex items-center justify-between">
             <span className="text-foreground text-sm font-medium">法力恢复</span>
             <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
-              +{energy} MP
+              +{mpPerTick} MP
             </span>
           </div>
-          <p className="text-muted-foreground text-xs">恢复量 = 当前能量值（{energy}）</p>
+          <p className="text-muted-foreground text-xs">
+            当前能量 {energy}。每 2 点能量，每拍多恢复 1 点法力。
+          </p>
         </div>
       </div>
     </div>

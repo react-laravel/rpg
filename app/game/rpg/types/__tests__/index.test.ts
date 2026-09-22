@@ -165,6 +165,7 @@ describe('RPG Types', () => {
     it('should describe energy correctly for mana', () => {
       expect(STAT_DESCRIPTIONS.energy).toContain('最大法力')
       expect(STAT_DESCRIPTIONS.energy).toContain('能量需求')
+      expect(STAT_DESCRIPTIONS.energy).toContain('恢复')
     })
   })
 })

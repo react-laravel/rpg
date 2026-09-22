@@ -15,6 +15,9 @@ export const DIFFICULTY_COMBAT_MULTIPLIERS: Record<number, { monsterHp: number; 
 
 const PLAYER_DEFENSE_REDUCTION = 0.5
 const MONSTER_DEFENSE_REDUCTION = 0.3
+const MINIMUM_MONSTER_DAMAGE_RATIO = 0.05
+const HP_REGEN_PER_VITALITY = 0.25
+const MP_REGEN_PER_ENERGY = 0.5
 const AOE_DAMAGE_MULTIPLIER = 0.7
 const MAX_PULSES = 80
 const PACK_SIZE_WEIGHTS = [0.2, 0.2, 0.2, 0.2, 0.2] as const
@@ -135,20 +138,28 @@ export function simulatePack(player: MapWinRatePlayer, pack: SimMonster[]): bool
 
     const incoming = monsters
       .filter(monster => monster.hp > 0)
-      .reduce((sum, monster) => {
-        return sum + Math.max(0, monster.attack - player.defense * MONSTER_DEFENSE_REDUCTION)
-      }, 0)
+      .reduce((sum, monster) => sum + monsterCounterDamage(monster.attack, player.defense), 0)
     hp.value -= incoming
     if (hp.value <= 0) return false
 
-    hp.value = Math.min(player.maxHp, hp.value + player.vitality)
-    mana.value = Math.min(player.maxMana, mana.value + player.energy)
+    hp.value = Math.min(player.maxHp, hp.value + Math.max(0, Math.round(player.vitality * HP_REGEN_PER_VITALITY)))
+    mana.value = Math.min(player.maxMana, mana.value + Math.max(0, Math.round(player.energy * MP_REGEN_PER_ENERGY)))
     for (let i = 0; i < cooldowns.length; i++) {
       if (cooldowns[i] > 0) cooldowns[i] -= 1
     }
   }
 
   return monsters.every(monster => monster.hp <= 0)
+}
+
+function monsterCounterDamage(attack: number, defense: number): number {
+  if (attack <= 0) return 0
+  const raw = Math.max(
+    attack * MINIMUM_MONSTER_DAMAGE_RATIO,
+    attack - defense * MONSTER_DEFENSE_REDUCTION
+  )
+  if (raw <= 0) return 0
+  return Math.max(1, Math.round(raw))
 }
 
 function packOf(template: SimMonster, count: number): SimMonster[] {
