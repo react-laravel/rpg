@@ -6,7 +6,6 @@ type EquippedItems = Record<string, GameItem | null | undefined>
 
 interface InventoryCompareActionHandlers {
   onEquip: (item: GameItem) => void | Promise<unknown>
-  onMoveToStorage: (item: GameItem) => void | Promise<unknown>
   onSell: (item: GameItem) => void | Promise<unknown>
   onSocket: (item: GameItem) => void
   onUnsocket: (item: GameItem) => void | Promise<unknown>
@@ -46,7 +45,7 @@ export const getInventoryCompareActions = (
     canUnsocket: (item: GameItem) => boolean
   }
 ): ItemActionType[] => {
-  const actions: ItemActionType[] = ['equip', 'store', 'sell']
+  const actions: ItemActionType[] = ['equip', 'sell']
 
   if (options.canSocket(item)) actions.push('socket')
   if (options.canUnsocket(item)) actions.push('unsocket')
@@ -62,9 +61,6 @@ export const handleInventoryCompareAction = (
   switch (action) {
     case 'equip':
       void handlers.onEquip(item)
-      break
-    case 'store':
-      void handlers.onMoveToStorage(item)
       break
     case 'sell':
       void handlers.onSell(item)

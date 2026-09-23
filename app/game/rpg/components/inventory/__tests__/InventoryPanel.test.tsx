@@ -39,7 +39,7 @@ describe('InventoryPanel', () => {
     vi.clearAllMocks()
   })
 
-  it('wires toolbar controls to sorting, recycling, filtering, and storage switching', async () => {
+  it('wires toolbar controls to sorting, recycling, and filtering', async () => {
     const user = userEvent.setup()
     const sword = createItem({
       id: 1,
@@ -54,17 +54,9 @@ describe('InventoryPanel', () => {
       quality: 'magic',
       definition: { id: 2, name: 'Ring', type: 'ring', base_stats: {}, required_level: 1 },
     })
-    const storedRing = createItem({
-      id: 3,
-      slot_index: 0,
-      is_in_storage: true,
-      definition: { id: 3, name: 'Stored Ring', type: 'ring', base_stats: {}, required_level: 1 },
-    })
     const store = createInventoryPanelStoreState({
       inventory: [sword, ring],
       inventorySize: 4,
-      storage: [storedRing],
-      storageSize: 2,
     })
     mockUseGameStore.mockReturnValue(store)
 
@@ -72,13 +64,16 @@ describe('InventoryPanel', () => {
 
     expect(view.getByRole('button', { name: 'Sword' })).toBeInTheDocument()
     expect(view.getByRole('button', { name: 'Ring' })).toBeInTheDocument()
-    expect(view.queryByRole('button', { name: 'Stored Ring' })).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: /仓库/ })).not.toBeInTheDocument()
+    expect(view.queryByRole('button', { name: /背包/ })).not.toBeInTheDocument()
 
     await user.click(view.getByRole('button', { name: '价格' }))
     expect(store.sortInventory).toHaveBeenCalledWith('price', false)
 
     await user.click(view.getByRole('button', { name: '时间' }))
     expect(store.sortInventory).toHaveBeenCalledWith('default', false)
+
+    expect(view.queryByText(/自动回收/)).not.toBeInTheDocument()
 
     await user.click(view.getByRole('button', { name: /全部回收/ }))
     await waitFor(() => {
@@ -95,13 +90,8 @@ describe('InventoryPanel', () => {
     expect(view.queryByRole('button', { name: 'Ring' })).not.toBeInTheDocument()
 
     await user.click(view.getByRole('button', { name: '全部' }))
-    await user.click(view.getByRole('button', { name: /仓库/ }))
-
-    expect(view.getByRole('button', { name: 'Stored Ring' })).toBeInTheDocument()
-    expect(view.queryByRole('button', { name: 'Sword' })).not.toBeInTheDocument()
-
     await user.click(view.getByRole('button', { name: '品质' }))
-    expect(store.sortInventory).toHaveBeenCalledWith('quality', true)
+    expect(store.sortInventory).toHaveBeenCalledWith('quality', false)
   })
 
   it('runs sell confirmation and gem socket flows through the composed panel', async () => {
@@ -255,7 +245,7 @@ describe('InventoryPanel', () => {
     })
   })
 
-  it('routes compare equip and store actions through inventory panel handlers', async () => {
+  it('routes compare equip actions through inventory panel handlers', async () => {
     const user = userEvent.setup()
     const equippedSword = createItem({
       id: 40,
@@ -288,17 +278,11 @@ describe('InventoryPanel', () => {
     const view = render(<InventoryPanel />)
 
     await user.click(view.getByRole('button', { name: 'Upgrade Sword' }))
+    expect(view.queryByRole('button', { name: 'compare-store' })).not.toBeInTheDocument()
     await user.click(view.getByRole('button', { name: 'compare-equip' }))
 
     await waitFor(() => {
       expect(store.equipItem).toHaveBeenCalledWith(newSword.id)
-    })
-
-    await user.click(view.getByRole('button', { name: 'Upgrade Sword' }))
-    await user.click(view.getByRole('button', { name: 'compare-store' }))
-
-    await waitFor(() => {
-      expect(store.moveItem).toHaveBeenCalledWith(newSword.id, true)
     })
   })
 })

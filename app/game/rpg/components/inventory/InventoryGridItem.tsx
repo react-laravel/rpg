@@ -30,7 +30,6 @@ interface InventoryGridItemProps {
   hasEquippedItem: (item: GameItem) => boolean
   isLoading: boolean
   onEquip: () => void
-  onMove: (toStorage: boolean) => void
   onOpenGemSelector: (item: GameItem) => void
   onSelectedItemChange: (item: GameItem | null) => void
   onSell: () => void
@@ -50,7 +49,6 @@ export const InventoryGridItem = memo(function InventoryGridItem({
   hasEquippedItem,
   isLoading,
   onEquip,
-  onMove,
   onOpenGemSelector,
   onSelectedItemChange,
   onSell,
@@ -102,7 +100,6 @@ export const InventoryGridItem = memo(function InventoryGridItem({
       item={item}
       onClose={handleClose}
       onEquip={onEquip}
-      onMove={onMove}
       onOpenGemSelector={onOpenGemSelector}
       onSell={onSell}
       onUnsocketGem={onUnsocketGem}

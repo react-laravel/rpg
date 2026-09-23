@@ -10,7 +10,6 @@ import { canUnsocketItem } from './inventoryUtils'
 interface UseInventoryPanelActionsParams {
   equipItem: (itemId: number) => Promise<unknown>
   inventory: GameItem[]
-  moveItem: (itemId: number, toStorage: boolean) => Promise<unknown>
   sellItem: (itemId: number, quantity?: number) => Promise<unknown>
   socketGem: (itemId: number, gemItemId: number, socketIndex: number) => Promise<unknown>
   unsocketGem: (itemId: number, socketIndex: number) => Promise<unknown>
@@ -19,7 +18,6 @@ interface UseInventoryPanelActionsParams {
 export function useInventoryPanelActions({
   equipItem,
   inventory,
-  moveItem,
   sellItem,
   socketGem,
   unsocketGem,
@@ -84,16 +82,6 @@ export function useInventoryPanelActions({
     setShowSellConfirm(false)
   }, [])
 
-  const handleMove = useCallback(
-    async (toStorage: boolean, item: GameItem | null = selectedItem) => {
-      if (!item) return
-
-      await moveItem(item.id, toStorage)
-      setSelectedItem(null)
-    },
-    [moveItem, selectedItem]
-  )
-
   const handleUnsocketGem = useCallback(
     async (socketIndex: number, item: GameItem | null = selectedItem) => {
       await handleInventoryUnsocketGem(item, socketIndex)
@@ -114,13 +102,12 @@ export function useInventoryPanelActions({
     (action: ItemActionType, item: GameItem) => {
       handleInventoryCompareAction(action, item, {
         onEquip: handleEquip,
-        onMoveToStorage: currentItem => handleMove(true, currentItem),
         onSell: handleSell,
         onSocket: openGemSelector,
         onUnsocket: currentItem => handleUnsocketGem(0, currentItem),
       })
     },
-    [handleEquip, handleMove, handleSell, handleUnsocketGem, openGemSelector]
+    [handleEquip, handleSell, handleUnsocketGem, openGemSelector]
   )
 
   return {
@@ -132,7 +119,6 @@ export function useInventoryPanelActions({
     getCompareActions,
     handleCompareAction,
     handleEquip,
-    handleMove,
     handleSell,
     handleSellConfirm,
     handleSocketGem,

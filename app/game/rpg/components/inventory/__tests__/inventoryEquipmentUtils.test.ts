@@ -118,34 +118,31 @@ describe('inventoryEquipmentUtils', () => {
         canSocket: () => false,
         canUnsocket: () => false,
       })
-    ).toEqual(['equip', 'store', 'sell'])
+    ).toEqual(['equip', 'sell'])
 
     expect(
       getInventoryCompareActions(item, {
         canSocket: () => true,
         canUnsocket: () => true,
       })
-    ).toEqual(['equip', 'store', 'sell', 'socket', 'unsocket'])
+    ).toEqual(['equip', 'sell', 'socket', 'unsocket'])
   })
 
   it('dispatches compare actions to the matching handler', () => {
     const item = createItem({ id: 61 })
     const handlers = {
       onEquip: vi.fn(),
-      onMoveToStorage: vi.fn(),
       onSell: vi.fn(),
       onSocket: vi.fn(),
       onUnsocket: vi.fn(),
     }
 
     handleInventoryCompareAction('equip', item, handlers)
-    handleInventoryCompareAction('store', item, handlers)
     handleInventoryCompareAction('sell', item, handlers)
     handleInventoryCompareAction('socket', item, handlers)
     handleInventoryCompareAction('unsocket', item, handlers)
 
     expect(handlers.onEquip).toHaveBeenCalledWith(item)
-    expect(handlers.onMoveToStorage).toHaveBeenCalledWith(item)
     expect(handlers.onSell).toHaveBeenCalledWith(item)
     expect(handlers.onSocket).toHaveBeenCalledWith(item)
     expect(handlers.onUnsocket).toHaveBeenCalledWith(item)

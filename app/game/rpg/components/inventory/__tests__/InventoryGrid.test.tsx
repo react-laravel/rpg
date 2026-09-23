@@ -43,7 +43,6 @@ const createBaseProps = (overrides: Partial<InventoryGridProps> = {}): Inventory
   hasEquippedItem: vi.fn<InventoryGridProps['hasEquippedItem']>(() => false),
   isLoading: false,
   onEquip: vi.fn<InventoryGridProps['onEquip']>(),
-  onMove: vi.fn<InventoryGridProps['onMove']>(),
   onOpenGemSelector: vi.fn<InventoryGridProps['onOpenGemSelector']>(),
   onSelectedItemChange: vi.fn<InventoryGridProps['onSelectedItemChange']>(),
   onSell: vi.fn<InventoryGridProps['onSell']>(),
@@ -88,36 +87,15 @@ describe('InventoryGrid', () => {
     await user.click(view.getByRole('button', { name: '装备' }))
     await user.click(view.getByRole('button', { name: '镶嵌' }))
     await user.click(view.getByRole('button', { name: '取下' }))
-    await user.click(view.getByRole('button', { name: '存入' }))
     await user.click(view.getByRole('button', { name: '出售' }))
     await user.click(view.getByRole('button', { name: /icon-11/i }))
 
     expect(props.onEquip).toHaveBeenCalledTimes(1)
     expect(props.onOpenGemSelector).toHaveBeenCalledWith(item)
     expect(props.onUnsocketGem).toHaveBeenCalledWith(0)
-    expect(props.onMove).toHaveBeenCalledWith(true)
+    expect(view.queryByRole('button', { name: '存入' })).not.toBeInTheDocument()
     expect(props.onSell).toHaveBeenCalledTimes(1)
     expect(props.onSelectedItemChange).toHaveBeenCalledWith(null)
-  })
-
-  it('renders storage actions without inventory-only buttons', async () => {
-    const user = userEvent.setup()
-    const item = createItem({ id: 13 })
-    const props = createBaseProps({
-      displaySlots: [{ item, source: 'storage' }],
-      selectedItemId: item.id,
-    })
-
-    const view = render(<InventoryGrid {...props} />)
-
-    expect(view.getByRole('button', { name: '取回' })).toBeInTheDocument()
-    expect(view.queryByRole('button', { name: '出售' })).not.toBeInTheDocument()
-    expect(view.queryByRole('button', { name: '装备' })).not.toBeInTheDocument()
-    expect(view.queryByRole('button', { name: '使用' })).not.toBeInTheDocument()
-
-    await user.click(view.getByRole('button', { name: '取回' }))
-
-    expect(props.onMove).toHaveBeenCalledWith(false)
   })
 
   it('renders compare panel and forwards compare actions', async () => {

@@ -11,7 +11,6 @@ interface InventoryDetailActionsProps {
   isLoading: boolean
   item: GameItem
   onEquip: () => void
-  onMove: (toStorage: boolean) => void
   onOpenGemSelector: (item: GameItem) => void
   onSell: () => void
   onUnsocketGem: (socketIndex: number) => void
@@ -25,7 +24,6 @@ export function InventoryDetailActions({
   isLoading,
   item,
   onEquip,
-  onMove,
   onOpenGemSelector,
   onSell,
   onUnsocketGem,
@@ -55,9 +53,6 @@ export function InventoryDetailActions({
           取下
         </ItemActionButton>
       )}
-      <ItemActionButton onClick={() => onMove(isInventoryItem)} disabled={isLoading} variant="move">
-        {source === 'storage' ? '取回' : '存入'}
-      </ItemActionButton>
       {isInventoryItem && (
         <ItemActionButton onClick={onSell} disabled={isLoading} variant="sell">
           出售

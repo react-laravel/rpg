@@ -16,7 +16,6 @@ describe('useInventoryPanelActions', () => {
       useInventoryPanelActions({
         equipItem: vi.fn(async () => undefined),
         inventory: [],
-        moveItem: vi.fn(async () => undefined),
         sellItem,
         socketGem: vi.fn(async () => undefined),
         unsocketGem: vi.fn(async () => undefined),
@@ -40,7 +39,6 @@ describe('useInventoryPanelActions', () => {
       useInventoryPanelActions({
         equipItem: vi.fn(async () => undefined),
         inventory: [item],
-        moveItem: vi.fn(async () => undefined),
         sellItem,
         socketGem: vi.fn(async () => undefined),
         unsocketGem: vi.fn(async () => undefined),
@@ -75,7 +73,6 @@ describe('useInventoryPanelActions', () => {
       useInventoryPanelActions({
         equipItem: vi.fn(async () => undefined),
         inventory: [item],
-        moveItem: vi.fn(async () => undefined),
         sellItem: vi.fn(async () => undefined),
         socketGem: vi.fn(async () => undefined),
         unsocketGem: vi.fn(async () => undefined),
@@ -109,7 +106,6 @@ describe('useInventoryPanelActions', () => {
       useInventoryPanelActions({
         equipItem: vi.fn(async () => undefined),
         inventory: [socketableItem, socketedItem],
-        moveItem: vi.fn(async () => undefined),
         sellItem: vi.fn(async () => undefined),
         socketGem: vi.fn(async () => undefined),
         unsocketGem,

@@ -21,7 +21,6 @@ interface InventoryItemDetailContentProps {
   item: GameItem
   onClose: () => void
   onEquip: () => void
-  onMove: (toStorage: boolean) => void
   onOpenGemSelector: (item: GameItem) => void
   onSell: () => void
   onUnsocketGem: (socketIndex: number) => void
@@ -51,7 +50,6 @@ export function InventoryItemDetailContent({
   item,
   onClose,
   onEquip,
-  onMove,
   onOpenGemSelector,
   onSell,
   onUnsocketGem,
@@ -103,7 +101,6 @@ export function InventoryItemDetailContent({
               isLoading={isLoading}
               item={item}
               onEquip={onEquip}
-              onMove={onMove}
               onOpenGemSelector={onOpenGemSelector}
               onSell={onSell}
               onUnsocketGem={onUnsocketGem}

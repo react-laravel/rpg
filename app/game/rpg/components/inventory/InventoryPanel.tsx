@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import type { GameItem } from '../../types'
 import { useGameStore } from '../../stores/gameStore'
@@ -19,16 +19,11 @@ import { useInventoryPanelView } from './useInventoryPanelView'
 export function InventoryPanel() {
   const {
     inventory,
-    storage,
     inventorySize,
-    storageSize,
     equipment,
     equipItem,
     sellItem,
     sellItemsByQuality,
-    updateAutoRecycleSettings,
-    character,
-    moveItem,
     sortInventory,
     socketGem,
     unsocketGem,
@@ -36,24 +31,17 @@ export function InventoryPanel() {
   } = useGameStore(
     useShallow(s => ({
       inventory: s.inventory,
-      storage: s.storage,
       inventorySize: s.inventorySize,
-      storageSize: s.storageSize,
       equipment: s.equipment,
-      character: s.character,
       equipItem: s.equipItem,
       sellItem: s.sellItem,
       sellItemsByQuality: s.sellItemsByQuality,
-      updateAutoRecycleSettings: s.updateAutoRecycleSettings,
-      moveItem: s.moveItem,
       sortInventory: s.sortInventory,
       socketGem: s.socketGem,
       unsocketGem: s.unsocketGem,
       isLoading: s.isLoading,
     }))
   )
-
-  const [isSavingAutoRecycle, setIsSavingAutoRecycle] = useState(false)
 
   const {
     canSocket,
@@ -64,7 +52,6 @@ export function InventoryPanel() {
     getCompareActions,
     handleCompareAction,
     handleEquip,
-    handleMove,
     handleSell,
     handleSellConfirm,
     handleSocketGem,
@@ -81,7 +68,6 @@ export function InventoryPanel() {
   } = useInventoryPanelActions({
     equipItem,
     inventory,
-    moveItem,
     sellItem,
     socketGem,
     unsocketGem,
@@ -94,14 +80,10 @@ export function InventoryPanel() {
     qualityStats,
     recyclingQuality,
     setCategoryId,
-    setShowStorage,
-    showStorage,
   } = useInventoryPanelView({
     inventory,
     inventorySize,
     sellItemsByQuality,
-    storage,
-    storageSize,
   })
 
   const getEquippedItem = useCallback(
@@ -115,21 +97,9 @@ export function InventoryPanel() {
   )
   const onEquip = useCallback(() => void handleEquip(), [handleEquip])
   const onSell = useCallback(() => void handleSell(), [handleSell])
-  const onMove = useCallback((toStorage: boolean) => void handleMove(toStorage), [handleMove])
   const onUnsocketGem = useCallback(
     (socketIndex: number) => void handleUnsocketGem(socketIndex),
     [handleUnsocketGem]
-  )
-  const handleAutoRecycleMaxValueChange = useCallback(
-    async (maxValue: number | null) => {
-      setIsSavingAutoRecycle(true)
-      try {
-        await updateAutoRecycleSettings(maxValue)
-      } finally {
-        setIsSavingAutoRecycle(false)
-      }
-    },
-    [updateAutoRecycleSettings]
   )
 
   return (
@@ -151,25 +121,15 @@ export function InventoryPanel() {
         onConfirm={handleSellConfirm}
       />
       <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row">
-        {/* 背包/仓库 - 装备栏已移至角色面板 */}
         <div className="bg-card border-border flex min-w-0 flex-1 flex-col rounded-lg border p-3 sm:p-4">
           <InventoryToolbar
-            autoRecycleMaxValue={character?.auto_recycle_max_value ?? null}
             categoryId={categoryId}
-            inventoryCount={inventory.length}
-            inventorySize={inventorySize}
             isLoading={isLoading}
-            isSavingAutoRecycle={isSavingAutoRecycle}
-            onAutoRecycleMaxValueChange={handleAutoRecycleMaxValueChange}
             onCategoryChange={setCategoryId}
             onRecycleQuality={handleRecycleQuality}
-            onShowStorageChange={setShowStorage}
             onSort={sortInventory}
             qualityStats={qualityStats}
             recyclingQuality={recyclingQuality}
-            showStorage={showStorage}
-            storageCount={storage.length}
-            storageSize={storageSize}
           />
 
           <InventoryGrid
@@ -184,7 +144,6 @@ export function InventoryPanel() {
             hasEquippedItem={hasEquippedItem}
             isLoading={isLoading}
             onEquip={onEquip}
-            onMove={onMove}
             onOpenGemSelector={openGemSelector}
             onSelectedItemChange={setSelectedItem}
             onSell={onSell}

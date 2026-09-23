@@ -36,8 +36,6 @@ describe('useInventoryPanelView', () => {
         inventory,
         inventorySize: 3,
         sellItemsByQuality: vi.fn(async () => undefined),
-        storage: [],
-        storageSize: 2,
       })
     )
 
@@ -50,40 +48,6 @@ describe('useInventoryPanelView', () => {
 
     expect(result.current.displaySlots).toHaveLength(1)
     expect(result.current.displaySlots[0]?.item?.id).toBe(1)
-  })
-
-  it('switches to storage slots when storage view is enabled', () => {
-    const storage = [
-      createItem({
-        id: 11,
-        slot_index: 0,
-        definition: {
-          id: 11,
-          name: 'Stored Ring',
-          type: 'ring',
-          base_stats: {},
-          required_level: 1,
-        },
-      }),
-    ]
-
-    const { result } = renderHook(() =>
-      useInventoryPanelView({
-        inventory: [],
-        inventorySize: 2,
-        sellItemsByQuality: vi.fn(async () => undefined),
-        storage,
-        storageSize: 2,
-      })
-    )
-
-    act(() => {
-      result.current.setShowStorage(true)
-    })
-
-    expect(result.current.showStorage).toBe(true)
-    expect(result.current.displaySlots[0]?.source).toBe('storage')
-    expect(result.current.displaySlots[0]?.item?.id).toBe(11)
   })
 
   it('computes quality stats while excluding gem items', () => {
@@ -108,8 +72,6 @@ describe('useInventoryPanelView', () => {
         inventory,
         inventorySize: 3,
         sellItemsByQuality: vi.fn(async () => undefined),
-        storage: [],
-        storageSize: 1,
       })
     )
 
@@ -128,8 +90,6 @@ describe('useInventoryPanelView', () => {
         inventory: [],
         inventorySize: 1,
         sellItemsByQuality,
-        storage: [],
-        storageSize: 1,
       })
     )
 
@@ -166,8 +126,6 @@ describe('useInventoryPanelView', () => {
         inventory,
         inventorySize: 4,
         sellItemsByQuality,
-        storage: [],
-        storageSize: 1,
       })
     )
 

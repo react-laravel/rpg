@@ -11,50 +11,27 @@ interface QualityStat {
   totalPrice: number
 }
 
-const AUTO_RECYCLE_INCREMENTS = [10, 50, 100] as const
-const AUTO_RECYCLE_MAX = 99999
-const AUTO_RECYCLE_BTN_CLASS =
-  'bg-muted text-muted-foreground hover:bg-muted/80 rounded px-1 py-1.5 text-xs transition-colors disabled:opacity-50'
-
 const TOOLBAR_ACTION_BTN_CLASS =
   'flex shrink-0 items-center justify-center whitespace-nowrap rounded px-3 py-1.5 text-sm transition-colors'
 
 interface InventoryToolbarProps {
-  autoRecycleMaxValue: number | null
   categoryId: string
-  inventoryCount: number
-  inventorySize: number
   isLoading: boolean
-  isSavingAutoRecycle: boolean
-  onAutoRecycleMaxValueChange: (maxValue: number | null) => void
   onCategoryChange: (categoryId: string) => void
   onRecycleQuality: (quality: string) => void
-  onShowStorageChange: (showStorage: boolean) => void
   onSort: (sortType: 'default' | 'quality' | 'price', inStorage: boolean) => void
   qualityStats: Record<string, QualityStat>
   recyclingQuality: string | null
-  showStorage: boolean
-  storageCount: number
-  storageSize: number
 }
 
 export function InventoryToolbar({
-  autoRecycleMaxValue,
   categoryId,
-  inventoryCount,
-  inventorySize,
   isLoading,
-  isSavingAutoRecycle,
-  onAutoRecycleMaxValueChange,
   onCategoryChange,
   onRecycleQuality,
-  onShowStorageChange,
   onSort,
   qualityStats,
   recyclingQuality,
-  showStorage,
-  storageCount,
-  storageSize,
 }: InventoryToolbarProps) {
   const [sortBy, setSortBy] = useState<'default' | 'quality' | 'price'>('default')
   const recycleAllStats = Object.values(qualityStats).reduce(
@@ -66,19 +43,9 @@ export function InventoryToolbar({
   )
   const isRecycling = recyclingQuality != null
 
-  const handleAdjustAutoRecycleValue = (delta: number) => {
-    const current = autoRecycleMaxValue ?? 0
-    const next = current + delta
-    if (next <= 0) {
-      onAutoRecycleMaxValueChange(null)
-      return
-    }
-    onAutoRecycleMaxValueChange(Math.min(AUTO_RECYCLE_MAX, next))
-  }
-
   const handleSort = (sortType: 'default' | 'quality' | 'price') => {
     setSortBy(sortType)
-    onSort(sortType, showStorage)
+    onSort(sortType, false)
   }
 
   const sortOptions = [
@@ -89,27 +56,6 @@ export function InventoryToolbar({
 
   return (
     <div className="mb-3 flex shrink-0 flex-col gap-2 sm:mb-4 sm:gap-3">
-      <div className="flex w-full min-w-0 gap-2 sm:gap-3">
-        <button
-          type="button"
-          onClick={() => onShowStorageChange(false)}
-          className={`flex min-w-0 flex-1 items-center justify-center truncate rounded px-2.5 py-2 text-xs whitespace-nowrap sm:px-3 sm:text-sm ${
-            !showStorage ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-          }`}
-        >
-          背包 {inventoryCount}/{inventorySize}
-        </button>
-        <button
-          type="button"
-          onClick={() => onShowStorageChange(true)}
-          className={`flex min-w-0 flex-1 items-center justify-center truncate rounded px-2.5 py-2 text-xs whitespace-nowrap sm:px-3 sm:text-sm ${
-            showStorage ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-          }`}
-        >
-          仓库 {storageCount}/{storageSize}
-        </button>
-      </div>
-
       <div className="flex w-full min-w-0 items-stretch gap-2 sm:gap-3">
         <Popover>
           <PopoverTrigger asChild>
@@ -156,17 +102,16 @@ export function InventoryToolbar({
           </PopoverContent>
         </Popover>
 
-        {!showStorage ? (
-          <Popover>
-            <PopoverTrigger asChild>
-              <button
-                type="button"
-                className={`${TOOLBAR_ACTION_BTN_CLASS} bg-muted text-muted-foreground hover:bg-muted/80`}
-                title="回收"
-              >
-                <span>回收</span>
-              </button>
-            </PopoverTrigger>
+        <Popover>
+          <PopoverTrigger asChild>
+            <button
+              type="button"
+              className={`${TOOLBAR_ACTION_BTN_CLASS} bg-muted text-muted-foreground hover:bg-muted/80`}
+              title="回收"
+            >
+              <span>回收</span>
+            </button>
+          </PopoverTrigger>
             <PopoverContent className="w-56 space-y-1 p-2" align="end">
               <button
                 type="button"
@@ -212,70 +157,8 @@ export function InventoryToolbar({
                   </button>
                 )
               })}
-              <div className="border-border mt-2 border-t pt-2">
-                <div className="mb-2 flex items-center justify-between gap-2">
-                  <span className="text-muted-foreground text-xs">自动回收（单价≤）</span>
-                  <span className="flex items-center gap-1">
-                    {autoRecycleMaxValue && autoRecycleMaxValue > 0 ? (
-                      <CopperDisplay copper={autoRecycleMaxValue} size="xs" />
-                    ) : (
-                      <span className="text-muted-foreground text-xs">关闭</span>
-                    )}
-                    {isSavingAutoRecycle && <span className="animate-spin text-xs">⏳</span>}
-                  </span>
-                </div>
-                <div className="grid grid-cols-3 gap-1">
-                  {AUTO_RECYCLE_INCREMENTS.map(amount => (
-                    <button
-                      key={`dec-${amount}`}
-                      type="button"
-                      onClick={() => handleAdjustAutoRecycleValue(-amount)}
-                      disabled={
-                        isLoading ||
-                        isSavingAutoRecycle ||
-                        !autoRecycleMaxValue ||
-                        autoRecycleMaxValue <= 0
-                      }
-                      className={AUTO_RECYCLE_BTN_CLASS}
-                    >
-                      -{amount}
-                    </button>
-                  ))}
-                </div>
-                <div className="mt-1 grid grid-cols-3 gap-1">
-                  {AUTO_RECYCLE_INCREMENTS.map(amount => (
-                    <button
-                      key={`inc-${amount}`}
-                      type="button"
-                      onClick={() => handleAdjustAutoRecycleValue(amount)}
-                      disabled={isLoading || isSavingAutoRecycle}
-                      className={AUTO_RECYCLE_BTN_CLASS}
-                    >
-                      +{amount}
-                    </button>
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  onClick={() => onAutoRecycleMaxValueChange(null)}
-                  disabled={
-                    isLoading ||
-                    isSavingAutoRecycle ||
-                    !autoRecycleMaxValue ||
-                    autoRecycleMaxValue <= 0
-                  }
-                  className={`${AUTO_RECYCLE_BTN_CLASS} mt-1.5 w-full`}
-                >
-                  关闭
-                </button>
-              </div>
             </PopoverContent>
           </Popover>
-        ) : (
-          <div className={`${TOOLBAR_ACTION_BTN_CLASS} invisible pointer-events-none`} aria-hidden>
-            回收
-          </div>
-        )}
 
         <div
           className="bg-muted flex min-w-0 flex-1 basis-0 overflow-hidden rounded"

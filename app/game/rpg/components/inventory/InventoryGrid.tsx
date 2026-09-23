@@ -17,7 +17,6 @@ interface InventoryGridProps {
   hasEquippedItem: (item: GameItem) => boolean
   isLoading: boolean
   onEquip: () => void
-  onMove: (toStorage: boolean) => void
   onOpenGemSelector: (item: GameItem) => void
   onSelectedItemChange: (item: GameItem | null) => void
   onSell: () => void
@@ -37,7 +36,6 @@ export function InventoryGrid({
   hasEquippedItem,
   isLoading,
   onEquip,
-  onMove,
   onOpenGemSelector,
   onSelectedItemChange,
   onSell,
@@ -66,7 +64,6 @@ export function InventoryGrid({
               hasEquippedItem={hasEquippedItem}
               isLoading={isLoading}
               onEquip={onEquip}
-              onMove={onMove}
               onOpenGemSelector={onOpenGemSelector}
               onSelectedItemChange={onSelectedItemChange}
               onSell={onSell}
