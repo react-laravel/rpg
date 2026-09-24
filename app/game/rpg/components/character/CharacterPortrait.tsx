@@ -37,7 +37,7 @@ export function CharacterPortrait({ gender, armor, weapon }: CharacterPortraitPr
   const { hand } = poses[`${appearance.gender}-${outfit}`]
   const weaponPose = (manifest.weapons as Record<string, WeaponPose>)[weaponSrc]
     ?? { grip: [0.5, 0.65625], angle: -28, bounds: { left: -0.8, top: -0.9, right: 0.8, bottom: 0.9 } }
-  const weaponSize = 136
+  const weaponSize = 88
   // Fit the complete tilted weapon and body between the two equipment columns.
   const left = showWeapon ? Math.min(0, hand[0] + weaponPose.bounds.left * weaponSize - 4) : 0
   const top = showWeapon ? Math.min(0, hand[1] + weaponPose.bounds.top * weaponSize - 4) : 0
