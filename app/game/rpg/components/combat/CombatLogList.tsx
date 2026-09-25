@@ -63,9 +63,14 @@ function petActionLabel(action: PetAction | null | undefined): string | null {
   return `${action.name} ${parts.join('，')}`
 }
 
+/** 日志只展示这一下攻击。旧的死亡记录里堆着整场施放，取最后一条。 */
 function filterPlayerSkillsUsed(skills: SkillUsedEntry[] | undefined, playerSkillIds: Set<number>) {
   if (!skills?.length || playerSkillIds.size === 0) return []
-  return skills.filter(skill => playerSkillIds.has(skill.skill_id))
+  for (let index = skills.length - 1; index >= 0; index -= 1) {
+    const skill = skills[index]
+    if (playerSkillIds.has(skill.skill_id)) return [{ ...skill, use_count: 1 }]
+  }
+  return []
 }
 
 function CombatLogLootIcon({ item, onClick }: { item: GameItem; onClick: () => void }) {
