@@ -141,6 +141,7 @@ interface GameState {
   sortInventory: (sortBy: 'quality' | 'price' | 'default', inStorage?: boolean) => Promise<void>
   socketGem: (itemId: number, gemItemId: number, socketIndex: number) => Promise<void>
   unsocketGem: (itemId: number, socketIndex: number) => Promise<void>
+  buyGem: (definitionId: number) => Promise<void>
 
   // 技能操作
   fetchSkills: () => Promise<void>
@@ -651,6 +652,30 @@ const store: StateCreator<GameState> = (set, get) => ({
           isLoading: false,
         }
       })
+    } catch (error) {
+      setRequestError(set, error)
+    }
+  },
+
+  buyGem: async definitionId => {
+    startRequest(set)
+    try {
+      const selectedId = getSelectedCharacterIdOrAbort(get, set, {
+        context: 'buyGem',
+        warn: false,
+      })
+      if (!selectedId) return
+      const response = (await post('/rpg/gems/buy', {
+        definition_id: definitionId,
+        character_id: selectedId,
+      })) as { item: GameItem; copper: number }
+      soundManager.play('gold')
+      set(state => ({
+        ...state,
+        character: withUpdatedCopper(state.character, response.copper),
+        inventory: [...state.inventory, response.item],
+        isLoading: false,
+      }))
     } catch (error) {
       setRequestError(set, error)
     }
