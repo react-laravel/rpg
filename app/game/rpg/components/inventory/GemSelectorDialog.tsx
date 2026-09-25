@@ -1,7 +1,7 @@
 'use client'
 
 import type { GameItem } from '../../types'
-import { getEffectiveSocketCount } from '../../utils/itemUtils'
+import { formatGemStatLine, getEffectiveSocketCount } from '../../utils/itemUtils'
 
 interface GemSelectorDialogProps {
   isOpen: boolean
@@ -43,26 +43,36 @@ export function GemSelectorDialog({
         {gems.length === 0 ? (
           <p className="text-muted-foreground py-4 text-center text-sm">背包中没有宝石</p>
         ) : (
-          <div className="mb-4 grid grid-cols-4 gap-2">
+          <ul className="mb-4 max-h-72 space-y-1 overflow-y-auto">
             {gems.map(gem => {
               const emptyIndex = getFirstEmptySocketIndex(socketItem)
+              const name = gem.definition?.name || '宝石'
+              const statLine = formatGemStatLine(gem.definition)
 
               return (
-                <button
-                  key={gem.id}
-                  onClick={() => {
-                    if (emptyIndex >= 0) onSelect(gem, emptyIndex)
-                  }}
-                  disabled={availableSocketCount <= 0}
-                  className="bg-muted hover:bg-muted/80 flex aspect-square flex-col items-center justify-center rounded border p-1 disabled:opacity-50"
-                  title={gem.definition?.description ?? gem.definition?.name}
-                >
-                  <span className="text-lg">💎</span>
-                  <span className="text-[10px]">{gem.definition?.name}</span>
-                </button>
+                <li key={gem.id}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (emptyIndex >= 0) onSelect(gem, emptyIndex)
+                    }}
+                    disabled={availableSocketCount <= 0}
+                    className="hover:bg-muted flex w-full items-center gap-2 rounded-md border px-2 py-2 text-left disabled:opacity-50"
+                  >
+                    <span className="bg-cyan-500/15 text-cyan-100 flex h-8 w-8 shrink-0 items-center justify-center rounded text-sm">
+                      ◆
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-medium">{name}</span>
+                      {statLine && (
+                        <span className="text-muted-foreground block truncate text-xs">{statLine}</span>
+                      )}
+                    </span>
+                  </button>
+                </li>
               )
             })}
-          </div>
+          </ul>
         )}
         <div className="flex justify-end">
           <button

@@ -86,13 +86,11 @@ describe('InventoryGrid', () => {
 
     await user.click(view.getByRole('button', { name: '装备' }))
     await user.click(view.getByRole('button', { name: '镶嵌' }))
-    await user.click(view.getByRole('button', { name: '取下' }))
     await user.click(view.getByRole('button', { name: '出售' }))
     await user.click(view.getByRole('button', { name: /icon-11/i }))
 
     expect(props.onEquip).toHaveBeenCalledTimes(1)
     expect(props.onOpenGemSelector).toHaveBeenCalledWith(item)
-    expect(props.onUnsocketGem).toHaveBeenCalledWith(0)
     expect(view.queryByRole('button', { name: '存入' })).not.toBeInTheDocument()
     expect(props.onSell).toHaveBeenCalledTimes(1)
     expect(props.onSelectedItemChange).toHaveBeenCalledWith(null)

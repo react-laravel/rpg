@@ -51,7 +51,9 @@ export interface GameItem {
   gems?: Array<{
     id: number
     socket_index: number
-    gemDefinition: ItemDefinition
+    gemDefinition?: ItemDefinition
+    /** 接口序列化时的关系名 */
+    gem_definition?: ItemDefinition
   }>
 }
 

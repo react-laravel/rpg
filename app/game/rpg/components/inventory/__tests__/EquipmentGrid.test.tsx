@@ -126,7 +126,7 @@ describe('EquipmentGrid', () => {
     expect(gemManagement.openGemSelector).toHaveBeenCalledWith(item)
   })
 
-  it('unsockets the chosen gem from the selected item', async () => {
+  it('opens the equipped item without a separate gem menu', async () => {
     const user = userEvent.setup()
     const item = createItem({
       id: 13,
@@ -154,9 +154,9 @@ describe('EquipmentGrid', () => {
     )
 
     await user.click(view.getByRole('button', { name: /icon-13/i }))
-    await user.click(view.getByRole('button', { name: /Ruby/i }))
 
-    expect(gemManagement.handleUnsocketGem).toHaveBeenCalledWith(item, 0)
+    expect(view.getByTestId('detail-card')).toHaveTextContent('Equipped Item')
+    expect(view.queryByRole('button', { name: /Ruby/i })).not.toBeInTheDocument()
   })
 
   it('renders slot labels for empty equipment slots', () => {

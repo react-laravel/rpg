@@ -49,7 +49,6 @@ export function EquipmentDetailOverlay({
               item={item}
               onOpenGemSelector={onOpenGemSelector}
               onUnequip={onUnequip}
-              onUnsocketGem={onUnsocketGem}
             />
           }
         />

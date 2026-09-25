@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   formatAffixLine,
   formatItemStatValue,
+  getCatalogItemStats,
   getCompareStatKeys,
   getDisplayableItemStats,
   getEffectiveSocketCount,
@@ -84,6 +85,53 @@ describe('itemUtils', () => {
     }
 
     expect(getItemTotalStats(sword)).toEqual({ attack: 15, defense: 2 })
+  })
+
+  it('uses gem_stats for catalog gems and base_stats for equipment', () => {
+    expect(
+      getCatalogItemStats({ type: 'gem', base_stats: {}, gem_stats: { max_mana: 8 } })
+    ).toEqual({ max_mana: 8 })
+    expect(getCatalogItemStats({ type: 'weapon', base_stats: { attack: 4 } })).toEqual({
+      attack: 4,
+    })
+  })
+
+  it('reads gem stats when the API sends gem_definition', () => {
+    const belt = {
+      id: 2,
+      character_id: 1,
+      definition_id: 2,
+      definition: {
+        id: 2,
+        name: 'Belt',
+        type: 'belt' as const,
+        base_stats: {},
+        required_level: 1,
+      },
+      quality: 'legendary' as const,
+      stats: { max_hp: 2 },
+      affixes: [],
+      is_in_storage: false,
+      quantity: 1,
+      slot_index: null,
+      sockets: 1,
+      gems: [
+        {
+          id: 3,
+          socket_index: 0,
+          gem_definition: {
+            id: 148,
+            name: '生命宝石',
+            type: 'gem' as const,
+            base_stats: {},
+            gem_stats: { max_hp: 10 },
+            required_level: 1,
+          },
+        },
+      ],
+    }
+
+    expect(getItemTotalStats(belt)).toEqual({ max_hp: 12 })
   })
 
   it('formats crit stats for display', () => {

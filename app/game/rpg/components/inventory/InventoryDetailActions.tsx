@@ -19,14 +19,12 @@ interface InventoryDetailActionsProps {
 
 export function InventoryDetailActions({
   canSocket,
-  canUnsocket,
   gemsInInventoryCount,
   isLoading,
   item,
   onEquip,
   onOpenGemSelector,
   onSell,
-  onUnsocketGem,
   source,
 }: InventoryDetailActionsProps) {
   const isInventoryItem = source === 'inventory'
@@ -46,11 +44,6 @@ export function InventoryDetailActions({
           variant="socket"
         >
           镶嵌
-        </ItemActionButton>
-      )}
-      {isInventoryItem && canUnsocket(item) && (
-        <ItemActionButton onClick={() => onUnsocketGem(0)} disabled={isLoading} variant="unsocket">
-          取下
         </ItemActionButton>
       )}
       {isInventoryItem && (

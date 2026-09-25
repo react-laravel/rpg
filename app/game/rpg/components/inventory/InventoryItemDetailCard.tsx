@@ -4,13 +4,16 @@ import type { ReactNode } from 'react'
 import { CopperDisplay } from '../shared/CopperDisplay'
 import { GameItem, QUALITY_COLORS, QUALITY_NAMES, STAT_NAMES } from '../../types'
 import {
+  formatGemStatLine,
   formatItemStatValue,
   getDisplayableItemStats,
+  getEffectiveSocketCount,
   getItemDisplayName,
   getItemTotalStats,
+  getSocketedGemDefinition,
 } from '../../utils/itemUtils'
 import { ItemTipIcon } from '@/components/game/ItemTipIcon'
-import { ItemSocketIndicators } from './ItemSocketIndicators'
+import type { ItemDefinition } from '../../types'
 
 interface InventoryItemDetailCardProps {
   item: GameItem
@@ -28,29 +31,81 @@ interface EquipmentDetailBodyProps {
   showBuyPrice?: boolean
 }
 
+const GEM_STAT_COLOR: Record<string, string> = {
+  attack: 'bg-red-500/25 text-red-200',
+  defense: 'bg-sky-500/25 text-sky-200',
+  max_hp: 'bg-emerald-500/25 text-emerald-200',
+  max_mana: 'bg-cyan-500/25 text-cyan-100',
+  crit_rate: 'bg-amber-500/25 text-amber-200',
+  crit_damage: 'bg-violet-500/25 text-violet-200',
+}
+
+function gemMarkClass(definition: ItemDefinition | undefined): string {
+  const stat = Object.keys(definition?.gem_stats ?? {})[0]
+  return GEM_STAT_COLOR[stat] ?? 'bg-white/10 text-white/70'
+}
+
 export function EquipmentGemSockets({
   item,
   isLoading = false,
   onUnsocketGem,
 }: Pick<EquipmentDetailBodyProps, 'item' | 'isLoading' | 'onUnsocketGem'>) {
-  if ((item.gems?.length ?? 0) === 0 && (item.sockets == null || item.sockets <= 0)) {
-    return null
-  }
+  const socketCount = Math.max(
+    getEffectiveSocketCount(item.sockets),
+    ...(item.gems?.map(gem => gem.socket_index + 1) ?? [0])
+  )
+  if (socketCount <= 0) return null
+
+  const gemsBySocket = new Map(item.gems?.map(gem => [gem.socket_index, gem]) ?? [])
 
   return (
-    <div className="mt-1 flex flex-wrap items-center gap-1">
-      {item.gems?.map(gem => (
-        <button
-          key={gem.id}
-          onClick={() => onUnsocketGem?.(gem.socket_index)}
-          disabled={isLoading || !onUnsocketGem}
-          className="text-cyan-600 hover:underline disabled:opacity-50 dark:text-cyan-400"
-        >
-          💎 {gem.gemDefinition?.name || '宝石'}
-        </button>
-      ))}
-      <ItemSocketIndicators item={item} size="md" variant="detail" />
-    </div>
+    <ul className="mt-2 space-y-1">
+      {Array.from({ length: socketCount }, (_, index) => {
+        const gem = gemsBySocket.get(index)
+        const definition = gem ? getSocketedGemDefinition(gem) : undefined
+        const name = definition?.name || '宝石'
+        const statLine = formatGemStatLine(definition)
+
+        if (!gem) {
+          return (
+            <li
+              key={`empty-${index}`}
+              className="text-muted-foreground flex items-center gap-2 rounded-md border border-dashed border-white/15 px-2 py-1.5 text-xs"
+            >
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded border border-dashed border-white/20 text-[10px]">
+                {index + 1}
+              </span>
+              <span>空孔</span>
+            </li>
+          )
+        }
+
+        return (
+          <li key={gem.id}>
+            <button
+              type="button"
+              onClick={() => onUnsocketGem?.(gem.socket_index)}
+              disabled={isLoading || !onUnsocketGem}
+              aria-label={`取下 ${name}`}
+              className="flex w-full items-center gap-2 rounded-md border border-cyan-400/25 bg-cyan-400/10 px-2 py-1.5 text-left hover:bg-white/10 disabled:opacity-50"
+            >
+              <span
+                className={`flex h-7 w-7 shrink-0 items-center justify-center rounded text-sm ${gemMarkClass(definition)}`}
+              >
+                ◆
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-xs font-medium text-cyan-50">{name}</span>
+                {statLine && (
+                  <span className="text-muted-foreground block truncate text-[10px]">{statLine}</span>
+                )}
+              </span>
+              <span className="text-muted-foreground shrink-0 text-[10px]">取下</span>
+            </button>
+          </li>
+        )
+      })}
+    </ul>
   )
 }
 

@@ -10,6 +10,8 @@ export interface CompendiumItem {
   type: ItemType
   sub_type?: string
   base_stats: Record<string, number>
+  /** 宝石加成。图鉴里宝石的属性在这里，不在 base_stats。 */
+  gem_stats?: Record<string, number>
   required_level: number
   icon?: string
   description?: string

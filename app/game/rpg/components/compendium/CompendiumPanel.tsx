@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { useGameStore } from '../../stores/gameStore'
 import { useMonsterDrops } from '../../hooks/useMonsterDrops'
 import { CompendiumItem, CompendiumMonster, ItemType, STAT_NAMES } from '../../types'
-import { getItemIconFallback, ITEM_TYPE_NAMES } from '../../utils/itemUtils'
+import { formatItemStatValue, getCatalogItemStats, getItemIconFallback, ITEM_TYPE_NAMES } from '../../utils/itemUtils'
 import { getRpgItemImageUrl, getRpgMonsterImageUrl } from '../../utils/assetUrls'
 import { CompendiumItemIcon } from '../shared/CompendiumItemIcon'
 
@@ -252,9 +252,9 @@ export function CompendiumPanel() {
                       )}
                     </div>
                     <div className="space-y-1 text-sm">
-                      {Object.entries(selectedItem.base_stats || {}).map(([stat, value]) => (
+                      {Object.entries(getCatalogItemStats(selectedItem)).map(([stat, value]) => (
                         <p key={stat} className="text-green-600 dark:text-green-400">
-                          +{value} {STAT_NAMES[stat] || stat}
+                          +{formatItemStatValue(Number(value), stat)} {STAT_NAMES[stat] || stat}
                         </p>
                       ))}
                       <p className="text-muted-foreground">

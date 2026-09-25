@@ -189,6 +189,27 @@ export function formatAffixLine(affix: Record<string, number>): string | null {
   return parts.length > 0 ? parts.join(', ') : null
 }
 
+export function getSocketedGemDefinition(gem: {
+  gemDefinition?: ItemDefinition
+  gem_definition?: ItemDefinition
+}): ItemDefinition | undefined {
+  return gem.gemDefinition ?? gem.gem_definition
+}
+
+export function formatGemStatLine(definition: ItemDefinition | undefined): string | null {
+  return formatAffixLine(definition?.gem_stats ?? {})
+}
+
+/** 图鉴详情要展示的属性。宝石写在 gem_stats，装备写在 base_stats。 */
+export function getCatalogItemStats(item: {
+  type?: string
+  base_stats?: Record<string, number>
+  gem_stats?: Record<string, number>
+}): Record<string, number> {
+  if (item.type === 'gem') return { ...(item.gem_stats ?? {}) }
+  return { ...(item.base_stats ?? {}) }
+}
+
 /**
  * 计算物品的总属性（包括基础属性 + 词缀 + 已镶嵌宝石）
  */
@@ -206,7 +227,7 @@ export function getItemTotalStats(item: GameItem): Record<string, number> {
   })
 
   item.gems?.forEach(gem => {
-    Object.entries(gem.gemDefinition?.gem_stats ?? {}).forEach(([key, value]) => {
+    Object.entries(getSocketedGemDefinition(gem)?.gem_stats ?? {}).forEach(([key, value]) => {
       total[key] = (total[key] || 0) + value
     })
   })
