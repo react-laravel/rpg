@@ -39,9 +39,6 @@ export const computeQualityStats = (items: GameItem[]) => {
   const stats: Record<string, { count: number; totalPrice: number }> = {}
 
   items.forEach(item => {
-    const type = item.definition?.type
-    if (type === 'gem') return
-
     const quality = item.quality
     if (!stats[quality]) {
       stats[quality] = { count: 0, totalPrice: 0 }

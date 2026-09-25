@@ -43,7 +43,7 @@ describe('inventoryUtils', () => {
     expect(filterSlotsByCategory(slots, null)).toEqual(slots)
   })
 
-  it('computes quality stats and excludes gem items', () => {
+  it('counts gems in their quality when summarizing recycle value', () => {
     const commonWeapon = createItem({
       id: 1,
       quality: 'common',
@@ -60,11 +60,14 @@ describe('inventoryUtils', () => {
     })
     const gem = createItem({
       id: 4,
+      quality: 'common',
+      quantity: 1,
+      sell_price: 40,
       definition: { id: 4, name: 'Gem', type: 'gem', base_stats: {}, required_level: 1 },
     })
 
     expect(computeQualityStats([commonWeapon, rareArmor, gem])).toEqual({
-      common: { count: 1, totalPrice: 60 },
+      common: { count: 2, totalPrice: 100 },
       rare: { count: 1, totalPrice: 120 },
     })
   })

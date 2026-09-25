@@ -775,9 +775,7 @@ const store: StateCreator<GameState> = (set, get) => ({
         ...state,
         character: withUpdatedCopper(state.character, response.copper),
         inventory: state.inventory.filter(i =>
-          quality === 'all'
-            ? i.definition?.type === 'gem'
-            : i.quality !== quality || i.definition?.type === 'gem'
+          quality === 'all' ? false : i.quality !== quality
         ),
         isLoading: false,
       }))
