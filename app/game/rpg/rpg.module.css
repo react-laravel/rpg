@@ -289,6 +289,25 @@
     0 0 8px rgb(0 0 0 / 0.8);
 }
 
+.damage-number-pet {
+  color: #5eead4;
+  text-shadow:
+    0 2px 0 rgb(19 78 74 / 0.95),
+    1px 0 0 rgb(0 0 0 / 0.9),
+    -1px 0 0 rgb(0 0 0 / 0.9),
+    0 0 8px rgb(0 0 0 / 0.8);
+}
+
+@keyframes pet-swing {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-6px) scale(1.06); }
+  100% { transform: translateY(0); }
+}
+
+.pet-swing {
+  animation: pet-swing 0.35s ease-out;
+}
+
 .damage-number-crit {
   color: #fbbf24;
   font-size: 1.28rem;
@@ -474,6 +493,7 @@
   .monster-death,
   .monster-hit,
   .character-hit,
+  .pet-swing,
   .monster-idle,
   .character-idle,
   .damage-number,

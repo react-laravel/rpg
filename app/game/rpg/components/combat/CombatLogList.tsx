@@ -24,7 +24,7 @@ import {
 import { formatItemStatValue } from '../../utils/itemUtils'
 import { getDifficultyLabel } from '../../utils/difficulty'
 import { ChevronRight, CircleCheckBig, Coins, ScrollText, Swords, X } from 'lucide-react'
-import type { SkillUsedEntry } from '../../types'
+import type { PetAction, SkillUsedEntry } from '../../types'
 import interfaceStyles from '../../interface.module.css'
 
 function CombatLogSkillIcons({ skills }: { skills: SkillUsedEntry[] }) {
@@ -49,6 +49,18 @@ function CombatLogSkillIcons({ skills }: { skills: SkillUsedEntry[] }) {
       })}
     </span>
   )
+}
+
+function petActionLabel(action: PetAction | null | undefined): string | null {
+  if (!action) return null
+  const parts: string[] = []
+  if (action.damage > 0) {
+    const target = action.monster_name ? ` ${action.monster_name}` : ''
+    parts.push(`攻击${target} -${action.damage}`)
+  }
+  if (action.damage_taken > 0) parts.push(`受到 -${action.damage_taken}`)
+  if (parts.length === 0) return null
+  return `${action.name} ${parts.join('，')}`
 }
 
 function filterPlayerSkillsUsed(skills: SkillUsedEntry[] | undefined, playerSkillIds: Set<number>) {
@@ -313,6 +325,21 @@ function CombatLogDetailDialog({
                     -{d.damage_detail.counter_damage}
                   </span>
                 </div>
+                {d.pet_action && d.pet_action.damage > 0 && (
+                  <div className="flex justify-between gap-2">
+                    <span>
+                      宝宝攻击
+                      {d.pet_action.monster_name ? ` ${d.pet_action.monster_name}` : ''}
+                    </span>
+                    <span className="tabular-nums text-teal-500">{d.pet_action.damage}</span>
+                  </div>
+                )}
+                {d.pet_action && d.pet_action.damage_taken > 0 && (
+                  <div className="flex justify-between gap-2">
+                    <span>宝宝受到</span>
+                    <span className="tabular-nums text-rose-500">-{d.pet_action.damage_taken}</span>
+                  </div>
+                )}
               </div>
             ) : (
               <p className="text-muted-foreground text-sm italic">暂无数据（旧日志）</p>
@@ -380,6 +407,7 @@ export function CombatLogList({ logs }: { logs: (CombatResult | CombatLogType)[]
         const logId = extractCombatLogId(log)
 
         const playerSkillsUsed = filterPlayerSkillsUsed(log.skills_used, playerSkillIds)
+        const petLabel = petActionLabel(log.pet_action)
 
         return (
           <div key={logKey}>
@@ -415,6 +443,11 @@ export function CombatLogList({ logs }: { logs: (CombatResult | CombatLogType)[]
                 )}
                 <span className="text-foreground truncate font-medium">{getCombatLogMonsterName(log)}</span>
                 {playerSkillsUsed.length > 0 && <CombatLogSkillIcons skills={playerSkillsUsed} />}
+                {petLabel && (
+                  <span className="truncate text-[10px] text-teal-600 dark:text-teal-300" data-pet-log>
+                    {petLabel}
+                  </span>
+                )}
               </div>
               <div className="flex h-5 shrink-0 items-center justify-end gap-1 sm:gap-2">
                 {log.loot?.item && (

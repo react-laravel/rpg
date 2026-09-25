@@ -30,6 +30,7 @@ export type {
   CombatResult,
   CombatLog,
   CombatLogDetail,
+  PetAction,
 } from './combat'
 
 // Compendium types

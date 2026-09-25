@@ -125,6 +125,48 @@ describe('battle resource display', () => {
     expect(document.querySelector('[data-shield="break"]')).not.toBeNull()
   })
 
+  it('aligns the pet with the character and shows the hit it took', async () => {
+    render(
+      <BattleArena
+        {...baseProps}
+        isFighting
+        currentHp={30}
+        damageTaken={0}
+        combatLogId={3}
+        character={{ name: '我', level: 2 }}
+        pet={{
+          name: '小兽',
+          form: 'whelp',
+          level: 2,
+          experience: 0,
+          hp: 13,
+          max_hp: 14,
+          attack: 3,
+        }}
+        petAction={{
+          name: '小兽',
+          damage: 3,
+          position: 0,
+          monster_name: '史莱姆',
+          damage_taken: 1,
+        }}
+      />
+    )
+    await act(async () => {})
+
+    const pet = document.querySelector('[data-pet="alive"]')
+    const petImage = document.querySelector('[data-combat-unit-image="pet"]')
+    const characterImage = document.querySelector('[data-combat-unit-image="character"]')
+    expect(pet?.querySelector('[data-reserve-mana]')).not.toBeNull()
+    expect(petImage?.className).toContain('h-14')
+    expect(petImage?.className).toContain('w-14')
+    expect(characterImage?.className).toContain('h-14')
+    expect(characterImage?.className).toContain('w-14')
+    expect(screen.getByText('小兽 2级')).toBeInTheDocument()
+    expect(screen.getByText('13/14')).toBeInTheDocument()
+    expect(document.querySelector('[data-pet-damage]')).toHaveTextContent('-1')
+  })
+
   it('searches for enemies while fighting without monsters instead of showing paused', async () => {
     render(
       <BattleArena

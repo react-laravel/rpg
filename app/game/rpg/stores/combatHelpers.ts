@@ -167,6 +167,7 @@ export function buildCombatLogDetailFromEntry(
       skills_used: log.skills_used ?? [],
       loot_dropped: log.loot_dropped ?? log.loot ?? null,
       round_regen: log.round_regen ?? null,
+      pet_action: log.pet_action ?? null,
       created_at: log.created_at,
       character: {
         level: log.character_level ?? 0,
@@ -229,6 +230,7 @@ export function buildCombatLogDetailFromEntry(
     skills_used: result.skills_used ?? [],
     loot_dropped: result.loot?.item ? { item: result.loot.item } : null,
     round_regen: result.round_regen ?? null,
+    pet_action: result.pet_action ?? null,
     created_at: new Date().toISOString(),
     character: {
       level: result.character?.level ?? 0,

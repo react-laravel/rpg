@@ -24,6 +24,19 @@ export interface CombatMonster {
   position?: number
   /** 本场是否被攻击 */
   was_attacked?: boolean
+  /** 宝宝这一拍实际打掉的生命，已计入 damage_taken */
+  pet_damage?: number
+  /** 宝宝这一拍的攻击数值，目标已死时仍会显示 */
+  pet_swing?: number
+}
+
+/** 宝宝这一拍的攻击和挨打 */
+export interface PetAction {
+  name: string
+  damage: number
+  position: number | null
+  monster_name: string | null
+  damage_taken: number
 }
 
 /** 单场战斗中释放的技能（含次数） */
@@ -87,6 +100,8 @@ export interface CombatResult {
   round_regen?: Record<string, { name: string; restored: number }> | null
   /** 魔法护盾等角色护盾 */
   shield?: CombatShield | null
+  /** 宝宝这一拍的攻击和受到的伤害 */
+  pet_action?: PetAction | null
   character: GameCharacter
   /** 仅当本场战斗结束（胜利/失败）时存在 */
   combat_log_id?: number
@@ -129,6 +144,8 @@ export interface CombatLog {
   skills_used?: SkillUsedEntry[]
   /** 战斗推进后自动恢复记录 */
   round_regen?: Record<string, { name: string; restored: number }> | null
+  /** 宝宝这一拍的攻击和受到的伤害 */
+  pet_action?: PetAction | null
   created_at: string
 }
 
@@ -152,6 +169,7 @@ export interface CombatLogDetail {
   skills_used: SkillUsedEntry[]
   loot_dropped: Record<string, unknown> | null
   round_regen?: Record<string, { name: string; restored: number }> | null
+  pet_action?: PetAction | null
   created_at: string
   character: {
     level: number

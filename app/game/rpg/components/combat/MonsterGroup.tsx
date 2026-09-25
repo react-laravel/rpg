@@ -14,7 +14,7 @@ import {
 } from '../../utils/combatUtils'
 import styles from '../../rpg.module.css'
 
-type MonsterWithMeta = CombatMonster & { damage_taken?: number; was_attacked?: boolean }
+type MonsterWithMeta = CombatMonster & { damage_taken?: number; was_attacked?: boolean; pet_damage?: number; pet_swing?: number }
 
 // sessionStorage key，用于持久化已显示过动画的怪物 instance_id
 const APPEARED_MONSTERS_KEY = 'rpg_appeared_monsters'
@@ -66,6 +66,7 @@ export function MonsterGroup({
   // 存储当前新出现的怪物 instance_id（立即可用，不需要等待状态更新）
   const newAppearingRef = useRef<Set<string>>(new Set())
   const [damageTexts, setDamageTexts] = useState<Record<string, number>>({})
+  const [petSwingTexts, setPetSwingTexts] = useState<Record<string, number>>({})
   // 选中的怪物（用于弹窗显示）
   const [selectedMonster, setSelectedMonster] = useState<MonsterWithMeta | null>(null)
   // 记录死亡的怪物，用于触发动画
@@ -259,30 +260,41 @@ export function MonsterGroup({
     }
 
     const newDamage: Record<string, number> = {}
+    const newPetSwing: Record<string, number> = {}
 
     validMonsters.forEach(m => {
       // 使用 position 作为 key 来区分同一波中的不同怪物实例
       const key = `pos-${m.position}`
       const d = m.damage_taken
-      // damage_taken >= 0 表示本次被攻击了，-1 表示未受攻击
+      const petPortion = m.pet_damage ?? 0
+      // damage_taken >= 0 表示本次被攻击了，-1 表示未受攻击。宝宝的一份单独显示。
       if (d != null && d >= 0) {
-        newDamage[key] = d
+        const playerDamage = Math.max(0, d - petPortion)
+        if (playerDamage > 0) newDamage[key] = playerDamage
       }
+      const swing = m.pet_swing ?? 0
+      if (swing > 0) newPetSwing[key] = swing
     })
 
-    if (Object.keys(newDamage).length > 0) {
+    if (Object.keys(newDamage).length > 0 || Object.keys(newPetSwing).length > 0) {
       queueMicrotask(() => {
-        setDamageTexts(prev => ({ ...prev, ...newDamage }))
-        scheduleTimeout(() => setDamageTexts({}), DAMAGE_TEXT_DURATION_MS)
+        if (Object.keys(newDamage).length > 0) {
+          setDamageTexts(prev => ({ ...prev, ...newDamage }))
+        }
+        if (Object.keys(newPetSwing).length > 0) {
+          setPetSwingTexts(prev => ({ ...prev, ...newPetSwing }))
+        }
+        scheduleTimeout(() => {
+          setDamageTexts({})
+          setPetSwingTexts({})
+        }, DAMAGE_TEXT_DURATION_MS)
       })
       // 触发被攻击后退动画（被攻击且伤害大于0时）
       const hitPositions = validMonsters
         .filter(
           m =>
-            m.damage_taken != null &&
-            m.damage_taken >= 0 &&
-            m.damage_taken > 0 &&
-            m.position != null
+            m.position != null &&
+            (((m.damage_taken ?? -1) > 0) || (m.pet_swing ?? 0) > 0)
         )
         .map(m => m.position as number)
       if (hitPositions.length > 0) {
@@ -340,6 +352,7 @@ export function MonsterGroup({
 
           const isNew = m.instance_id ? appearingMonsters.has(m.instance_id) : false
           const damage = showDamageAndHp ? damageTexts[displayMonsterKey] : undefined
+          const petSwing = showDamageAndHp ? petSwingTexts[displayMonsterKey] : undefined
           const isHit = showDamageAndHp && m.position != null && hitMonsters.has(m.position)
           const typeLabel = m.type === 'boss' ? 'Boss' : m.type === 'elite' ? '精英' : '普通'
 
@@ -356,13 +369,25 @@ export function MonsterGroup({
             >
               <CombatResourceBars hp={m.hp ?? 0} maxHp={m.max_hp ?? 0} />
               <div data-effect-target={pos} className="relative flex flex-col items-center">
-                {damage !== undefined && damage > 0 && (
-                  <span
-                    className={`${styles['damage-number']} ${isCrit ? styles['damage-number-crit'] : ''} pointer-events-none absolute top-1/2 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap`}
-                    data-crit={isCrit ? 'true' : undefined}
-                  >
-                    {isCrit && <span className={styles['crit-label']}>暴击</span>}
-                    -{damage}
+                {((damage !== undefined && damage > 0) || (petSwing !== undefined && petSwing > 0)) && (
+                  <span className="pointer-events-none absolute top-1/2 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center whitespace-nowrap">
+                    {damage !== undefined && damage > 0 && (
+                      <span
+                        className={`${styles['damage-number']} ${isCrit ? styles['damage-number-crit'] : ''}`}
+                        data-crit={isCrit ? 'true' : undefined}
+                      >
+                        {isCrit && <span className={styles['crit-label']}>暴击</span>}
+                        -{damage}
+                      </span>
+                    )}
+                    {petSwing !== undefined && petSwing > 0 && (
+                      <span
+                        className={`${styles['damage-number']} ${styles['damage-number-pet']}`}
+                        data-pet-swing
+                      >
+                        -{petSwing}
+                      </span>
+                    )}
                   </span>
                 )}
                 <span className={!isDead && !isHit && !isNew ? styles['monster-idle'] : undefined}>

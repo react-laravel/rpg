@@ -223,6 +223,7 @@ export function CombatPanel() {
                       : null
                   }
                   pet={character?.pet ?? null}
+                  petAction={combatResult?.pet_action ?? null}
                   combatStats={combatStats}
                   currentHp={currentHp}
                   currentMana={currentMana}

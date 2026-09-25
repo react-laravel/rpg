@@ -1,6 +1,6 @@
 'use client'
 
-import { type CombatMonster, type CombatShield, type GameCharacter, type SkillUsedEntry } from '../../types'
+import { type CombatMonster, type CombatShield, type GameCharacter, type PetAction, type SkillUsedEntry } from '../../types'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { MonsterIcon } from './MonsterIcon'
 import { MonsterGroup } from './MonsterGroup'
@@ -16,11 +16,14 @@ import styles from '../../rpg.module.css'
 
 const CHARACTER_DAMAGE_TEXT_MS = 2200
 const CHARACTER_REGEN_STAGGER_MS = 350
+const UNIT_CAPTION_CLASS =
+  'h-3 w-full truncate text-center text-[9px] leading-3 font-semibold text-white drop-shadow sm:h-4 sm:text-[11px] sm:leading-4'
 
 /** 战斗对阵：上侧怪物（支持多只），下侧用户，中间 VS 可点击开始/停止挂机 */
 export function BattleArena({
   character,
   pet = null,
+  petAction = null,
   combatStats,
   currentHp,
   currentMana,
@@ -42,6 +45,7 @@ export function BattleArena({
 }: {
   character: { name: string; level: number } | null
   pet?: GameCharacter['pet']
+  petAction?: PetAction | null
   combatStats: { max_hp: number; max_mana: number } | null
   currentHp: number | null
   currentMana: number | null
@@ -83,6 +87,8 @@ export function BattleArena({
   const [characterRegenHpText, setCharacterRegenHpText] = useState<number | null>(null)
   const [characterRegenMpText, setCharacterRegenMpText] = useState<number | null>(null)
   const [characterHit, setCharacterHit] = useState(false)
+  const [petDamageText, setPetDamageText] = useState<number | null>(null)
+  const [petSwinging, setPetSwinging] = useState(false)
   const [shieldBreaking, setShieldBreaking] = useState(false)
   const lastShieldBreakKeyRef = useRef<string | null>(null)
 
@@ -133,6 +139,12 @@ export function BattleArena({
   const skillRoundPending = Boolean(skillRoundKey && settledSkillRoundKey !== skillRoundKey)
   const deferDamageDisplay = skillRoundPending || monsterAppearBlocking
   const showDamageAndHp = !deferDamageDisplay
+  const petHp = pet?.hp ?? 0
+  const petMaxHp = pet?.max_hp ?? petHp
+  const shownPetHp =
+    pet && hasRoundData && deferDamageDisplay
+      ? Math.min(petMaxHp, petHp + (petAction?.damage_taken ?? 0))
+      : petHp
   // The hit releases HP/damage; the canvas stays mounted until its tail has faded.
   const activeSkillEffect = skillRoundKey && completedSkillRoundKey !== skillRoundKey && !monsterAppearBlocking
     ? computedSkillEffect : null
@@ -167,6 +179,8 @@ export function BattleArena({
       setCharacterRegenHpText(null)
       setCharacterRegenMpText(null)
       setCharacterHit(false)
+      setPetDamageText(null)
+      setPetSwinging(false)
       setShieldBreaking(false)
     })
   }, [combatRoundKey])
@@ -193,6 +207,16 @@ export function BattleArena({
         scheduleCharacterTimeout(() => setCharacterDamageText(null), CHARACTER_DAMAGE_TEXT_MS)
       } else {
         setDisplayCharacterHp(finalCharacterHp)
+      }
+
+      const petTaken = petAction?.damage_taken ?? 0
+      if (petTaken > 0) {
+        setPetDamageText(petTaken)
+        scheduleCharacterTimeout(() => setPetDamageText(null), CHARACTER_DAMAGE_TEXT_MS)
+      }
+      if ((petAction?.damage ?? 0) > 0) {
+        setPetSwinging(true)
+        scheduleCharacterTimeout(() => setPetSwinging(false), 350)
       }
 
       if (hpRegen > 0) {
@@ -226,6 +250,7 @@ export function BattleArena({
     hpAfterMonsterHit,
     finalCharacterHp,
     finalCharacterMana,
+    petAction,
     scheduleCharacterTimeout,
   ])
 
@@ -264,7 +289,7 @@ export function BattleArena({
       // 后端用 -1 表示未受击，只有 >=0 才是实际受到的伤害，用于还原扣血前血量
       const taken = rawTaken >= 0 ? rawTaken : 0
       const beforeHp = Math.min(m.max_hp ?? 99999, (m.hp ?? 0) + taken)
-      return { ...m, hp: beforeHp, damage_taken: undefined } as typeof m
+      return { ...m, hp: beforeHp, damage_taken: undefined, pet_damage: undefined, pet_swing: undefined } as typeof m
     })
   }, [monsters, deferDamageDisplay])
 
@@ -414,18 +439,36 @@ export function BattleArena({
         {/* 下侧：宝宝站在角色旁边。怪物反击随机打其中一边 */}
         <div className="flex shrink-0 items-end justify-center gap-2 px-3 pb-3 sm:gap-3 sm:px-5 sm:pb-5">
           {pet && (
-            <div className="flex w-16 shrink-0 flex-col items-center gap-1" data-pet={pet.hp > 0 ? 'alive' : 'down'}>
-              <CombatResourceBars hp={pet.hp} maxHp={pet.max_hp} />
-              <div
-                className={`relative flex h-12 w-12 items-center justify-center rounded-full border-2 text-sm font-bold sm:h-14 sm:w-14 ${
-                  pet.hp > 0
-                    ? 'border-teal-300/80 bg-teal-950/50 text-teal-100'
-                    : 'border-white/20 bg-black/40 text-white/40'
-                }`}
-              >
-                {pet.name.slice(0, 1)}
+            <div
+              className={`${COMBAT_UNIT_PANEL_WIDTH_CLASS} flex shrink-0 flex-col items-center gap-1`}
+              data-pet={pet.hp > 0 ? 'alive' : 'down'}
+            >
+              <CombatResourceBars hp={shownPetHp} maxHp={pet.max_hp} reserveMana />
+              <div className="relative flex flex-col items-center">
+                {showDamageAndHp && petDamageText != null && (
+                  <span
+                    className={`${styles['damage-number']} pointer-events-none absolute bottom-0 right-full z-20 mr-1 whitespace-nowrap`}
+                    data-pet-damage
+                  >
+                    -{petDamageText}
+                  </span>
+                )}
+                <div
+                  data-combat-unit-image="pet"
+                  className={`relative ${COMBAT_UNIT_IMAGE_SIZE_CLASS} shrink-0 ${petSwinging && showDamageAndHp ? styles['pet-swing'] : ''} ${petDamageText != null ? styles['character-hit'] : ''}`}
+                >
+                  <div
+                    className={`relative flex h-full w-full items-center justify-center rounded-full border-2 text-xl font-bold sm:text-2xl ${
+                      pet.hp > 0
+                        ? 'border-teal-300/80 bg-teal-950/50 text-teal-100'
+                        : 'border-white/20 bg-black/40 text-white/40'
+                    }`}
+                  >
+                    {pet.name.slice(0, 1)}
+                  </div>
+                </div>
               </div>
-              <p className="w-full truncate text-center text-[9px] leading-3 font-semibold text-white drop-shadow sm:text-[11px]">
+              <p className={UNIT_CAPTION_CLASS}>
                 {pet.name} {pet.level}级
               </p>
             </div>
@@ -495,6 +538,7 @@ export function BattleArena({
                 )}
               </div>
             </div>
+            {pet && <p className={`${UNIT_CAPTION_CLASS} invisible`} aria-hidden>&nbsp;</p>}
           </div>
         </div>
       </div>

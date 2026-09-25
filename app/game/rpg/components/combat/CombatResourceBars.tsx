@@ -24,11 +24,30 @@ function ResourceBar({ kind, value, max }: { kind: 'hp' | 'mana'; value: number;
   )
 }
 
-export function CombatResourceBars({ hp, maxHp, mana, maxMana }: { hp: number; maxHp: number; mana?: number; maxMana?: number }) {
+export function CombatResourceBars({
+  hp,
+  maxHp,
+  mana,
+  maxMana,
+  reserveMana = false,
+}: {
+  hp: number
+  maxHp: number
+  mana?: number
+  maxMana?: number
+  /** 没有法力条时占住同样高度，让旁边的角色头像对齐 */
+  reserveMana?: boolean
+}) {
+  const showMana = mana != null && maxMana != null
   return (
     <div data-combat-resources className="relative z-10 w-full min-w-0 space-y-0.5 rounded bg-black/45 px-1 py-0.5 backdrop-blur-sm">
       <ResourceBar kind="hp" value={hp} max={maxHp} />
-      {mana != null && maxMana != null && <ResourceBar kind="mana" value={mana} max={maxMana} />}
+      {showMana && <ResourceBar kind="mana" value={mana} max={maxMana} />}
+      {reserveMana && !showMana && (
+        <div className="invisible" aria-hidden data-reserve-mana>
+          <ResourceBar kind="mana" value={0} max={1} />
+        </div>
+      )}
     </div>
   )
 }
