@@ -141,7 +141,6 @@ interface GameState {
   sortInventory: (sortBy: 'quality' | 'price' | 'default', inStorage?: boolean) => Promise<void>
   socketGem: (itemId: number, gemItemId: number, socketIndex: number) => Promise<void>
   unsocketGem: (itemId: number, socketIndex: number) => Promise<void>
-  buyGem: (definitionId: number) => Promise<void>
 
   // 技能操作
   fetchSkills: () => Promise<void>
@@ -657,30 +656,6 @@ const store: StateCreator<GameState> = (set, get) => ({
     }
   },
 
-  buyGem: async definitionId => {
-    startRequest(set)
-    try {
-      const selectedId = getSelectedCharacterIdOrAbort(get, set, {
-        context: 'buyGem',
-        warn: false,
-      })
-      if (!selectedId) return
-      const response = (await post('/rpg/gems/buy', {
-        definition_id: definitionId,
-        character_id: selectedId,
-      })) as { item: GameItem; copper: number }
-      soundManager.play('gold')
-      set(state => ({
-        ...state,
-        character: withUpdatedCopper(state.character, response.copper),
-        inventory: [...state.inventory, response.item],
-        isLoading: false,
-      }))
-    } catch (error) {
-      setRequestError(set, error)
-    }
-  },
-
   unsocketGem: async (itemId, socketIndex) => {
     startRequest(set)
     try {
@@ -835,7 +810,7 @@ const store: StateCreator<GameState> = (set, get) => ({
       const params = `?character_id=${selectedId}`
       const response = (await apiGet(`/rpg/skills${params}`)) as {
         skills: SkillWithLearnedState[]
-        skill_points: number
+        copper?: number
       }
       const skills = response.skills ?? []
 
@@ -844,7 +819,10 @@ const store: StateCreator<GameState> = (set, get) => ({
       set(state => ({
         ...state,
         skills,
-        character: patchCharacter(state.character, { skill_points: response.skill_points }),
+        character:
+          typeof response.copper === 'number'
+            ? patchCharacter(state.character, { copper: response.copper })
+            : state.character,
         enabledSkillIds,
         isLoading: false,
       }))
@@ -864,13 +842,16 @@ const store: StateCreator<GameState> = (set, get) => ({
       const response = (await post('/rpg/skills/learn', {
         skill_id: skillId,
         character_id: selectedId,
-      })) as { character_skill?: CharacterSkill; skill_points: number }
+      })) as { character_skill?: CharacterSkill; copper?: number }
       const cs = response.character_skill
       set(state => {
         if (!cs) {
           return {
             ...state,
-            character: patchCharacter(state.character, { skill_points: response.skill_points }),
+            character:
+              typeof response.copper === 'number'
+                ? patchCharacter(state.character, { copper: response.copper })
+                : state.character,
             isLoading: false,
           }
         }
@@ -924,7 +905,10 @@ const store: StateCreator<GameState> = (set, get) => ({
         return {
           ...state,
           skills: nextSkills,
-          character: patchCharacter(state.character, { skill_points: response.skill_points }),
+          character:
+            typeof response.copper === 'number'
+              ? patchCharacter(state.character, { copper: response.copper })
+              : state.character,
           enabledSkillIds: newEnabledSkillIds,
           isLoading: false,
         }

@@ -4,7 +4,9 @@ import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { useGameStore } from '../../stores/gameStore'
 import type { SkillWithLearnedState, SkillStage } from '../../types'
+import { CopperDisplay } from '../shared/CopperDisplay'
 import { SkillIcon } from '../shared/SkillIcon'
+import { skillLearnCopperCost } from '../../utils/skillLearnCost'
 
 const STAGE_TABS: { id: SkillStage; name: string; unlock: number }[] = [
   { id: 'basic', name: '基础', unlock: 1 },
@@ -153,8 +155,8 @@ function SkillNodeCard({
         )}
         {isLocked && reason && <p className="mt-1 text-[10px] text-yellow-600">{reason}</p>}
         {!isLearned && !isLocked && (
-          <span className="mt-1 inline-block text-[10px] text-yellow-600">
-            {skill.skill_points_cost ?? 1} 点
+          <span className="mt-1 inline-flex items-center gap-1 text-[10px] text-yellow-600">
+            <CopperDisplay copper={skillLearnCopperCost(skill)} size="xs" />
           </span>
         )}
         {hasManaCost && (
@@ -288,9 +290,16 @@ function groupSkillsByLines(skillsInStage: SkillWithLearnedState[]): SkillWithLe
     list.push(skill)
     lineMap.set(line, list)
   }
-  return Array.from(lineMap.values()).map(list =>
-    [...list].sort((a, b) => getNodeTier(a) - getNodeTier(b))
+  const lines = Array.from(lineMap.values()).map(list =>
+    [...list].sort((a, b) => getNodeTier(a) - getNodeTier(b) || (a.spec_branch ?? '').localeCompare(b.spec_branch ?? ''))
   )
+  const lineRank = (line: SkillWithLearnedState[]) => {
+    const base = line.find(skill => getNodeTier(skill) === 0) ?? line[0]
+    if (base?.effect_key === 'fireball') return 0
+    if (base?.effect_key === 'ice-arrow') return 1
+    return 2
+  }
+  return lines.sort((a, b) => lineRank(a) - lineRank(b))
 }
 
 export function SkillPanel() {
@@ -366,8 +375,8 @@ export function SkillPanel() {
       if (lockReason(skill)) return false
       if (!character) return false
       const isRespec = getSiblingSpecLearned(skill) !== null
-      const cost = isRespec ? 0 : (skill.skill_points_cost ?? 1)
-      return character.skill_points >= cost
+      const cost = isRespec ? 0 : skillLearnCopperCost(skill)
+      return character.copper >= cost
     },
     [character, getSiblingSpecLearned, lockReason]
   )
@@ -386,7 +395,7 @@ export function SkillPanel() {
   }, [learningSkill, learnSkill])
 
   const siblingForConfirm = learningSkill ? getSiblingSpecLearned(learningSkill) : null
-  const confirmCost = siblingForConfirm ? 0 : (learningSkill?.skill_points_cost ?? 1)
+  const confirmCost = siblingForConfirm ? 0 : learningSkill ? skillLearnCopperCost(learningSkill) : 0
   const needsReseed = skills.length > 0 && treeSkills.length === 0
 
   const scrollToStage = useCallback((stageId: SkillStage) => {
@@ -429,8 +438,8 @@ export function SkillPanel() {
           <div className="flex items-center justify-between gap-2">
             <span className="text-muted-foreground text-sm">技能树</span>
             <div className="flex items-center gap-2">
-              <span className="text-muted-foreground text-sm">技能点</span>
-              <span className="text-primary text-lg font-bold">{character.skill_points}</span>
+              <span className="text-muted-foreground text-sm">铜币</span>
+              <CopperDisplay copper={character.copper} size="sm" />
             </div>
           </div>
           <div className="flex gap-1 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -526,7 +535,13 @@ export function SkillPanel() {
               )}
             </p>
             <p className="text-muted-foreground mb-4 text-xs sm:text-sm">
-              {confirmCost === 0 ? '专精切换免费，不消耗技能点' : `将消耗 ${confirmCost} 技能点`}
+              {confirmCost === 0 ? (
+                '专精切换免费'
+              ) : (
+                <span className="inline-flex items-center gap-1">
+                  将消耗 <CopperDisplay copper={confirmCost} size="sm" />
+                </span>
+              )}
             </p>
             <div className="flex justify-end gap-2">
               <button

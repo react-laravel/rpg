@@ -15,7 +15,7 @@ import {
   getEquipmentSlot,
 } from '@/app/game/rpg/utils/itemUtils'
 import { CopperDisplay } from '@/app/game/rpg/components/shared/CopperDisplay'
-import { ItemSocketIndicators } from '@/app/game/rpg/components/inventory/ItemSocketIndicators'
+import { EquipmentGemSockets } from '@/app/game/rpg/components/inventory/InventoryItemDetailCard'
 import { ItemUpgradeIndicator } from '@/app/game/rpg/components/inventory/ItemUpgradeIndicator'
 import { isHigherValueThanEquipped } from '@/app/game/rpg/components/inventory/inventoryEquipmentUtils'
 import { useGameStore } from '@/app/game/rpg/stores/gameStore'
@@ -44,7 +44,6 @@ function CompareItemIconSlot({
     >
       <ItemIcon item={item} className="drop-shadow-sm" />
       {showUpgradeIndicator && <ItemUpgradeIndicator />}
-      <ItemSocketIndicators item={item} className="absolute -top-1 -right-1 z-10" />
     </ItemImagePreview>
   )
 }
@@ -65,25 +64,28 @@ function CompareItemHeader({
   const requiredLevel = item?.definition?.required_level
 
   return (
-    <div className="mb-2 flex min-h-[3.25rem] items-start gap-2">
-      {item ? (
-        <CompareItemIconSlot
-          item={item}
-          sizeClass={sizeClass}
-          showUpgradeIndicator={showUpgradeIndicator}
-        />
-      ) : null}
-      <div className="min-w-0 flex-1">
-        <span
-          className="block text-sm leading-tight font-bold break-words"
-          style={{ color: nameColor }}
-        >
-          {name}
-        </span>
-        {requiredLevel != null && requiredLevel > 0 ? (
-          <p className="text-muted-foreground mt-0.5 text-xs">需求等级: {requiredLevel}</p>
+    <div className="mb-2">
+      <div className="flex min-h-[3.25rem] items-start gap-2">
+        {item ? (
+          <CompareItemIconSlot
+            item={item}
+            sizeClass={sizeClass}
+            showUpgradeIndicator={showUpgradeIndicator}
+          />
         ) : null}
+        <div className="min-w-0 flex-1">
+          <span
+            className="block text-sm leading-tight font-bold break-words"
+            style={{ color: nameColor }}
+          >
+            {name}
+          </span>
+          {requiredLevel != null && requiredLevel > 0 ? (
+            <p className="text-muted-foreground mt-0.5 text-xs">需求等级: {requiredLevel}</p>
+          ) : null}
+        </div>
       </div>
+      {item ? <EquipmentGemSockets item={item} layout="inline" /> : null}
     </div>
   )
 }

@@ -1,5 +1,6 @@
 'use client'
 
+import { ItemIcon } from '@/components/game/ItemIcon'
 import type { GameItem } from '../../types'
 import { formatGemStatLine, getEffectiveSocketCount } from '../../utils/itemUtils'
 
@@ -59,8 +60,8 @@ export function GemSelectorDialog({
                     disabled={availableSocketCount <= 0}
                     className="hover:bg-muted flex w-full items-center gap-2 rounded-md border px-2 py-2 text-left disabled:opacity-50"
                   >
-                    <span className="bg-cyan-500/15 text-cyan-100 flex h-8 w-8 shrink-0 items-center justify-center rounded text-sm">
-                      ◆
+                    <span className="relative h-8 w-8 shrink-0">
+                      <ItemIcon item={gem} />
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-sm font-medium">{name}</span>

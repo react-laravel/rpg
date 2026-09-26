@@ -1,11 +1,10 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import type { GameItem } from '../../types'
 import { useGameStore } from '../../stores/gameStore'
 import { GemSelectorDialog } from './GemSelectorDialog'
-import { GemShopDialog } from './GemShopDialog'
 import { InventoryGrid } from './InventoryGrid'
 import { InventoryToolbar } from './InventoryToolbar'
 import { SellQuantityDialog } from './SellQuantityDialog'
@@ -74,7 +73,6 @@ export function InventoryPanel() {
     unsocketGem,
   })
 
-  const [gemShopOpen, setGemShopOpen] = useState(false)
   const {
     categoryId,
     displaySlots,
@@ -106,7 +104,6 @@ export function InventoryPanel() {
 
   return (
     <>
-      <GemShopDialog open={gemShopOpen} onClose={() => setGemShopOpen(false)} />
       <GemSelectorDialog
         isOpen={showGemSelector}
         socketItem={selectedSocketItem}
@@ -129,7 +126,6 @@ export function InventoryPanel() {
             categoryId={categoryId}
             isLoading={isLoading}
             onCategoryChange={setCategoryId}
-            onOpenGemShop={() => setGemShopOpen(true)}
             onRecycleQuality={handleRecycleQuality}
             onSort={sortInventory}
             qualityStats={qualityStats}

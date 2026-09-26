@@ -196,6 +196,29 @@ export function getSocketedGemDefinition(gem: {
   return gem.gemDefinition ?? gem.gem_definition
 }
 
+/** 镶嵌宝石用背包物品同一套图标。 */
+export function socketedGemIconItem(gem: {
+  id: number
+  gemDefinition?: ItemDefinition
+  gem_definition?: ItemDefinition
+}): GameItem | null {
+  const definition = getSocketedGemDefinition(gem)
+  if (!definition) return null
+
+  return {
+    id: gem.id,
+    character_id: 0,
+    definition_id: definition.id,
+    definition,
+    quality: 'common',
+    stats: {},
+    affixes: [],
+    is_in_storage: false,
+    quantity: 1,
+    slot_index: null,
+  }
+}
+
 export function formatGemStatLine(definition: ItemDefinition | undefined): string | null {
   return formatAffixLine(definition?.gem_stats ?? {})
 }

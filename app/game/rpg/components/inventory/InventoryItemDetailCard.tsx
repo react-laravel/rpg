@@ -11,9 +11,10 @@ import {
   getItemDisplayName,
   getItemTotalStats,
   getSocketedGemDefinition,
+  socketedGemIconItem,
 } from '../../utils/itemUtils'
+import { ItemIcon } from '@/components/game/ItemIcon'
 import { ItemTipIcon } from '@/components/game/ItemTipIcon'
-import type { ItemDefinition } from '../../types'
 
 interface InventoryItemDetailCardProps {
   item: GameItem
@@ -31,25 +32,14 @@ interface EquipmentDetailBodyProps {
   showBuyPrice?: boolean
 }
 
-const GEM_STAT_COLOR: Record<string, string> = {
-  attack: 'bg-red-500/25 text-red-200',
-  defense: 'bg-sky-500/25 text-sky-200',
-  max_hp: 'bg-emerald-500/25 text-emerald-200',
-  max_mana: 'bg-cyan-500/25 text-cyan-100',
-  crit_rate: 'bg-amber-500/25 text-amber-200',
-  crit_damage: 'bg-violet-500/25 text-violet-200',
-}
-
-function gemMarkClass(definition: ItemDefinition | undefined): string {
-  const stat = Object.keys(definition?.gem_stats ?? {})[0]
-  return GEM_STAT_COLOR[stat] ?? 'bg-white/10 text-white/70'
-}
-
 export function EquipmentGemSockets({
   item,
   isLoading = false,
   onUnsocketGem,
-}: Pick<EquipmentDetailBodyProps, 'item' | 'isLoading' | 'onUnsocketGem'>) {
+  layout = 'stack',
+}: Pick<EquipmentDetailBodyProps, 'item' | 'isLoading' | 'onUnsocketGem'> & {
+  layout?: 'stack' | 'inline'
+}) {
   const socketCount = Math.max(
     getEffectiveSocketCount(item.sockets),
     ...(item.gems?.map(gem => gem.socket_index + 1) ?? [0])
@@ -59,49 +49,72 @@ export function EquipmentGemSockets({
   const gemsBySocket = new Map(item.gems?.map(gem => [gem.socket_index, gem]) ?? [])
 
   return (
-    <ul className="mt-2 space-y-1">
+    <ul className={layout === 'inline' ? 'mt-1 space-y-1' : 'space-y-1'}>
       {Array.from({ length: socketCount }, (_, index) => {
         const gem = gemsBySocket.get(index)
         const definition = gem ? getSocketedGemDefinition(gem) : undefined
         const name = definition?.name || '宝石'
         const statLine = formatGemStatLine(definition)
+        const iconItem = gem ? socketedGemIconItem(gem) : null
 
-        if (!gem) {
+        if (!gem || !iconItem) {
           return (
             <li
               key={`empty-${index}`}
-              className="text-muted-foreground flex items-center gap-2 rounded-md border border-dashed border-white/15 px-2 py-1.5 text-xs"
+              className={`text-muted-foreground flex gap-1.5 text-[10px] ${layout === 'inline' ? 'items-center' : 'flex-col items-center'}`}
             >
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded border border-dashed border-white/20 text-[10px]">
-                {index + 1}
+              <span className="border-border flex h-8 w-8 items-center justify-center rounded border border-dashed">
+                空
               </span>
               <span>空孔</span>
             </li>
           )
         }
 
+        const body = (
+          <>
+            <span className="relative h-8 w-8 shrink-0">
+              <ItemIcon item={iconItem} />
+            </span>
+            <span className={layout === 'inline' ? 'min-w-0 flex-1' : 'w-full'}>
+              <span
+                className={`block truncate text-[10px] leading-tight font-medium ${layout === 'stack' ? 'text-center' : ''}`}
+              >
+                {name}
+              </span>
+              {statLine && (
+                <span
+                  className={`text-muted-foreground block truncate text-[10px] leading-tight ${layout === 'stack' ? 'text-center' : ''}`}
+                >
+                  {statLine}
+                </span>
+              )}
+            </span>
+            {onUnsocketGem && <span className="text-muted-foreground shrink-0 text-[10px]">取下</span>}
+          </>
+        )
+        const rowClass =
+          layout === 'inline'
+            ? 'flex w-full items-center gap-1.5 rounded px-0.5 py-0.5 text-left'
+            : 'flex w-full flex-col items-center gap-0.5 rounded px-0.5 py-1'
+
         return (
           <li key={gem.id}>
-            <button
-              type="button"
-              onClick={() => onUnsocketGem?.(gem.socket_index)}
-              disabled={isLoading || !onUnsocketGem}
-              aria-label={`取下 ${name}`}
-              className="flex w-full items-center gap-2 rounded-md border border-cyan-400/25 bg-cyan-400/10 px-2 py-1.5 text-left hover:bg-white/10 disabled:opacity-50"
-            >
-              <span
-                className={`flex h-7 w-7 shrink-0 items-center justify-center rounded text-sm ${gemMarkClass(definition)}`}
+            {onUnsocketGem ? (
+              <button
+                type="button"
+                onClick={() => onUnsocketGem(gem.socket_index)}
+                disabled={isLoading}
+                aria-label={`取下 ${name}`}
+                className={`${rowClass} hover:bg-white/10 disabled:opacity-50`}
               >
-                ◆
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block truncate text-xs font-medium text-cyan-50">{name}</span>
-                {statLine && (
-                  <span className="text-muted-foreground block truncate text-[10px]">{statLine}</span>
-                )}
-              </span>
-              <span className="text-muted-foreground shrink-0 text-[10px]">取下</span>
-            </button>
+                {body}
+              </button>
+            ) : (
+              <div className={rowClass} title={name}>
+                {body}
+              </div>
+            )}
           </li>
         )
       })}
@@ -111,10 +124,8 @@ export function EquipmentGemSockets({
 
 export function EquipmentDetailBody({
   item,
-  isLoading = false,
-  onUnsocketGem,
   showBuyPrice = false,
-}: EquipmentDetailBodyProps) {
+}: Pick<EquipmentDetailBodyProps, 'item' | 'showBuyPrice'>) {
   const displayStats = getDisplayableItemStats(getItemTotalStats(item))
   const hasBuyPrice =
     showBuyPrice && item.definition?.buy_price != null && item.definition.buy_price > 0
@@ -127,7 +138,6 @@ export function EquipmentDetailBody({
           {item.definition.description}
         </p>
       )}
-      <EquipmentGemSockets item={item} isLoading={isLoading} onUnsocketGem={onUnsocketGem} />
 
       {hasStatBlock && (
         <div className="mt-1 space-y-0.5 text-xs">
@@ -181,7 +191,10 @@ export function InventoryItemDetailCard({
           borderBottom: `1px solid ${QUALITY_COLORS[item.quality]}30`,
         }}
       >
-        <ItemTipIcon item={item} className="shrink-0 drop-shadow-lg" />
+        <div className="flex w-[100px] shrink-0 flex-col items-center gap-1">
+          <ItemTipIcon item={item} className="drop-shadow-lg" />
+          <EquipmentGemSockets item={item} isLoading={isLoading} onUnsocketGem={onUnsocketGem} />
+        </div>
 
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between">
@@ -207,12 +220,7 @@ export function InventoryItemDetailCard({
             </button>
           </div>
 
-          <EquipmentDetailBody
-            item={item}
-            isLoading={isLoading}
-            onUnsocketGem={onUnsocketGem}
-            showBuyPrice={showBuyPrice}
-          />
+          <EquipmentDetailBody item={item} showBuyPrice={showBuyPrice} />
         </div>
       </div>
 

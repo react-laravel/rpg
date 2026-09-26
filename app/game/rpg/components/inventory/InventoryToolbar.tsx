@@ -18,7 +18,6 @@ interface InventoryToolbarProps {
   categoryId: string
   isLoading: boolean
   onCategoryChange: (categoryId: string) => void
-  onOpenGemShop: () => void
   onRecycleQuality: (quality: string) => void
   onSort: (sortType: 'default' | 'quality' | 'price', inStorage: boolean) => void
   qualityStats: Record<string, QualityStat>
@@ -29,7 +28,6 @@ export function InventoryToolbar({
   categoryId,
   isLoading,
   onCategoryChange,
-  onOpenGemShop,
   onRecycleQuality,
   onSort,
   qualityStats,
@@ -103,14 +101,6 @@ export function InventoryToolbar({
             ))}
           </PopoverContent>
         </Popover>
-
-        <button
-          type="button"
-          className={`${TOOLBAR_ACTION_BTN_CLASS} bg-amber-600 text-white hover:bg-amber-700`}
-          onClick={onOpenGemShop}
-        >
-          买宝石
-        </button>
 
         <Popover>
           <PopoverTrigger asChild>

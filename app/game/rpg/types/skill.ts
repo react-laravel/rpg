@@ -43,6 +43,8 @@ export interface SkillDefinition {
   /** 单体(single) 或 群体(all) */
   target_type?: SkillTargetType
   skill_points_cost?: number
+  /** 学习消耗的铜币。专精切换不收这笔。 */
+  learn_copper_cost?: number
 }
 
 /** 技能列表项：定义 + 是否已学；已学时含 character_skill_id、level、slot_index */

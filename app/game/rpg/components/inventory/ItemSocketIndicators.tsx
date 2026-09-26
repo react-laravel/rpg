@@ -1,7 +1,8 @@
 'use client'
 
+import { ItemIcon } from '@/components/game/ItemIcon'
 import type { GameItem } from '../../types'
-import { getEffectiveSocketCount } from '../../utils/itemUtils'
+import { getEffectiveSocketCount, socketedGemIconItem } from '../../utils/itemUtils'
 
 type SocketVariant = 'compact' | 'detail'
 type SocketSize = 'sm' | 'md'
@@ -32,25 +33,32 @@ export function ItemSocketIndicators({
   const socketCount = getEffectiveSocketCount(item.sockets)
   if (socketCount <= 0) return null
 
-  const filledIndices = new Set(item.gems?.map(gem => gem.socket_index) ?? [])
+  const gemsBySocket = new Map(item.gems?.map(gem => [gem.socket_index, gem]) ?? [])
   const classes = ['flex -space-x-1', className].filter(Boolean).join(' ')
 
   return (
     <div className={classes}>
       {Array.from({ length: socketCount }).map((_, idx) => {
-        const isFilled = filledIndices.has(idx)
+        const gem = gemsBySocket.get(idx)
+        const iconItem = gem ? socketedGemIconItem(gem) : null
+
+        if (iconItem) {
+          return (
+            <span
+              key={idx}
+              className={`relative overflow-hidden rounded-sm border border-black/40 bg-black/60 ${SIZE_CLASSES[size]}`}
+              title={iconItem.definition?.name}
+            >
+              <ItemIcon item={iconItem} />
+            </span>
+          )
+        }
 
         return (
           <span
             key={idx}
-            className={`flex items-center justify-center rounded-full border font-medium ${
-              SIZE_CLASSES[size]
-            } ${
-              isFilled ? 'border-cyan-400 bg-cyan-500 text-white' : EMPTY_SOCKET_CLASSES[variant]
-            }`}
-          >
-            {isFilled ? '💎' : ''}
-          </span>
+            className={`rounded-full border ${SIZE_CLASSES[size]} ${EMPTY_SOCKET_CLASSES[variant]}`}
+          />
         )
       })}
     </div>
