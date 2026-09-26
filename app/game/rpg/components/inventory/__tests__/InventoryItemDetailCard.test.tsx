@@ -48,12 +48,12 @@ describe('InventoryItemDetailCard gems', () => {
 
     render(<InventoryItemDetailCard item={item} onClose={vi.fn()} onUnsocketGem={onUnsocketGem} />)
 
-    expect(screen.getByRole('button', { name: '取下 生命宝石' })).toHaveTextContent('+10 生命值')
-    expect(screen.getByRole('button', { name: '取下 法力宝石' })).toHaveTextContent('+8 魔法值')
-    expect(screen.getByText('空孔')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '取下 生命宝石 +10 生命值' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '取下 法力宝石 +8 魔法值' })).toBeInTheDocument()
+    expect(screen.getByTitle('空孔')).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: '取下 ▾' })).not.toBeInTheDocument()
 
-    await user.click(screen.getByRole('button', { name: '取下 生命宝石' }))
+    await user.click(screen.getByRole('button', { name: '取下 生命宝石 +10 生命值' }))
 
     expect(onUnsocketGem).toHaveBeenCalledWith(0)
   })

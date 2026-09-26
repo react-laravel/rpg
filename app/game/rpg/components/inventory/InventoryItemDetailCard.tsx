@@ -36,10 +36,7 @@ export function EquipmentGemSockets({
   item,
   isLoading = false,
   onUnsocketGem,
-  layout = 'stack',
-}: Pick<EquipmentDetailBodyProps, 'item' | 'isLoading' | 'onUnsocketGem'> & {
-  layout?: 'stack' | 'inline'
-}) {
+}: Pick<EquipmentDetailBodyProps, 'item' | 'isLoading' | 'onUnsocketGem'>) {
   const socketCount = Math.max(
     getEffectiveSocketCount(item.sockets),
     ...(item.gems?.map(gem => gem.socket_index + 1) ?? [0])
@@ -49,54 +46,33 @@ export function EquipmentGemSockets({
   const gemsBySocket = new Map(item.gems?.map(gem => [gem.socket_index, gem]) ?? [])
 
   return (
-    <ul className={layout === 'inline' ? 'mt-1 space-y-1' : 'space-y-1'}>
+    <ul className="flex w-full flex-wrap justify-center gap-1">
       {Array.from({ length: socketCount }, (_, index) => {
         const gem = gemsBySocket.get(index)
         const definition = gem ? getSocketedGemDefinition(gem) : undefined
         const name = definition?.name || '宝石'
         const statLine = formatGemStatLine(definition)
         const iconItem = gem ? socketedGemIconItem(gem) : null
+        const detail = statLine ? `${name} ${statLine}` : name
 
         if (!gem || !iconItem) {
           return (
-            <li
-              key={`empty-${index}`}
-              className={`text-muted-foreground flex gap-1.5 text-[10px] ${layout === 'inline' ? 'items-center' : 'flex-col items-center'}`}
-            >
-              <span className="border-border flex h-8 w-8 items-center justify-center rounded border border-dashed">
+            <li key={`empty-${index}`}>
+              <span
+                className="border-border text-muted-foreground flex h-7 w-7 items-center justify-center rounded border border-dashed text-[10px]"
+                title="空孔"
+              >
                 空
               </span>
-              <span>空孔</span>
             </li>
           )
         }
 
-        const body = (
-          <>
-            <span className="relative h-8 w-8 shrink-0">
-              <ItemIcon item={iconItem} />
-            </span>
-            <span className={layout === 'inline' ? 'min-w-0 flex-1' : 'w-full'}>
-              <span
-                className={`block truncate text-[10px] leading-tight font-medium ${layout === 'stack' ? 'text-center' : ''}`}
-              >
-                {name}
-              </span>
-              {statLine && (
-                <span
-                  className={`text-muted-foreground block truncate text-[10px] leading-tight ${layout === 'stack' ? 'text-center' : ''}`}
-                >
-                  {statLine}
-                </span>
-              )}
-            </span>
-            {onUnsocketGem && <span className="text-muted-foreground shrink-0 text-[10px]">取下</span>}
-          </>
+        const icon = (
+          <span className="relative block h-7 w-7">
+            <ItemIcon item={iconItem} />
+          </span>
         )
-        const rowClass =
-          layout === 'inline'
-            ? 'flex w-full items-center gap-1.5 rounded px-0.5 py-0.5 text-left'
-            : 'flex w-full flex-col items-center gap-0.5 rounded px-0.5 py-1'
 
         return (
           <li key={gem.id}>
@@ -105,15 +81,16 @@ export function EquipmentGemSockets({
                 type="button"
                 onClick={() => onUnsocketGem(gem.socket_index)}
                 disabled={isLoading}
-                aria-label={`取下 ${name}`}
-                className={`${rowClass} hover:bg-white/10 disabled:opacity-50`}
+                aria-label={`取下 ${detail}`}
+                title={`取下 ${detail}`}
+                className="hover:bg-white/10 rounded p-0.5 disabled:opacity-50"
               >
-                {body}
+                {icon}
               </button>
             ) : (
-              <div className={rowClass} title={name}>
-                {body}
-              </div>
+              <span className="block p-0.5" title={detail}>
+                {icon}
+              </span>
             )}
           </li>
         )

@@ -85,7 +85,7 @@ function CompareItemHeader({
           ) : null}
         </div>
       </div>
-      {item ? <EquipmentGemSockets item={item} layout="inline" /> : null}
+      {item ? <EquipmentGemSockets item={item} /> : null}
     </div>
   )
 }
