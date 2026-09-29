@@ -51,16 +51,33 @@ function CombatLogSkillIcons({ skills }: { skills: SkillUsedEntry[] }) {
   )
 }
 
-function petActionLabel(action: PetAction | null | undefined): string | null {
-  if (!action) return null
-  const parts: string[] = []
-  if (action.damage > 0) {
-    const target = action.monster_name ? ` ${action.monster_name}` : ''
-    parts.push(`攻击${target} -${action.damage}`)
-  }
-  if (action.damage_taken > 0) parts.push(`受到 -${action.damage_taken}`)
-  if (parts.length === 0) return null
-  return `${action.name} ${parts.join('，')}`
+/** 列表第二行只留数字。目标就是本行怪物时不再重复名字。 */
+function PetActionSummary({ action, monsterName }: { action: PetAction; monsterName: string }) {
+  const dealt = action.damage > 0
+  const taken = action.damage_taken > 0
+  if (!dealt && !taken) return null
+  const otherTarget =
+    dealt && action.monster_name && action.monster_name !== monsterName ? action.monster_name : null
+
+  return (
+    <p
+      className="flex flex-wrap items-center gap-x-2 gap-y-0.5 pl-5 text-[11px] leading-4"
+      data-pet-log
+    >
+      {dealt && (
+        <span className="text-teal-600 tabular-nums dark:text-teal-300">
+          {otherTarget
+            ? `${action.name} 攻击 ${otherTarget} -${action.damage}`
+            : `${action.name} -${action.damage}`}
+        </span>
+      )}
+      {taken && (
+        <span className="text-rose-600 tabular-nums dark:text-rose-300">
+          受到 -{action.damage_taken}
+        </span>
+      )}
+    </p>
+  )
 }
 
 /** 日志只展示这一下攻击。旧的死亡记录里堆着整场施放，取最后一条。 */
@@ -412,15 +429,14 @@ export function CombatLogList({ logs }: { logs: (CombatResult | CombatLogType)[]
         const logId = extractCombatLogId(log)
 
         const playerSkillsUsed = filterPlayerSkillsUsed(log.skills_used, playerSkillIds)
-        const petLabel = petActionLabel(log.pet_action)
+        const monsterName = getCombatLogMonsterName(log)
 
         return (
           <div key={logKey}>
-            {/* 战斗日志主体 - 可点击 */}
             <div
               role={logId ? 'button' : undefined}
               tabIndex={logId ? 0 : undefined}
-              aria-label={logId ? `查看${getCombatLogMonsterName(log)}的战斗记录` : undefined}
+              aria-label={logId ? `查看${monsterName}的战斗记录` : undefined}
               onClick={() => {
                 const id = extractCombatLogId(log)
                 if (id) {
@@ -438,51 +454,51 @@ export function CombatLogList({ logs }: { logs: (CombatResult | CombatLogType)[]
                   }
                 }
               }}
-              className={`${interfaceStyles.logRow} focus-visible:ring-ring flex min-h-12 w-full items-center gap-2 px-2 py-2 text-xs focus-visible:ring-2 focus-visible:outline-none ${logId ? 'cursor-pointer' : ''}`}
+              className={`${interfaceStyles.logRow} focus-visible:ring-ring flex min-h-11 w-full flex-col justify-center gap-0.5 px-2 py-1.5 text-xs focus-visible:ring-2 focus-visible:outline-none ${logId ? 'cursor-pointer' : ''}`}
             >
-              <div className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden sm:gap-2">
+              <div className="flex min-w-0 items-center gap-1.5">
                 {isVictory ? (
                   <CircleCheckBig className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
                 ) : (
                   <Swords className="h-3.5 w-3.5 shrink-0 text-orange-500" />
                 )}
-                <span className="text-foreground truncate font-medium">{getCombatLogMonsterName(log)}</span>
+                <span className="text-foreground min-w-0 flex-1 truncate font-medium" title={monsterName}>
+                  {monsterName}
+                </span>
                 {playerSkillsUsed.length > 0 && <CombatLogSkillIcons skills={playerSkillsUsed} />}
-                {petLabel && (
-                  <span className="truncate text-[10px] text-teal-600 dark:text-teal-300" data-pet-log>
-                    {petLabel}
-                  </span>
-                )}
-              </div>
-              <div className="flex h-5 shrink-0 items-center justify-end gap-1 sm:gap-2">
-                {log.loot?.item && (
-                  <CombatLogLootIcon
-                    item={log.loot.item}
-                    onClick={() => setSelectedItem(log.loot!.item!)}
-                  />
-                )}
-                {(log.copper_gained ?? 0) > 0 && (
-                  <span className="inline-flex h-4 items-center gap-0.5 leading-none text-[11px] tabular-nums text-yellow-600 dark:text-yellow-400">
-                    <span className="leading-none">+</span>
-                    <CopperDisplay
-                      copper={log.copper_gained}
-                      size="xs"
-                      nowrap
-                      className="!text-[11px] leading-none"
+                <div className="flex shrink-0 items-center gap-1.5 whitespace-nowrap">
+                  {log.loot?.item && (
+                    <CombatLogLootIcon
+                      item={log.loot.item}
+                      onClick={() => setSelectedItem(log.loot!.item!)}
                     />
-                  </span>
-                )}
-                {(log.experience_gained ?? 0) > 0 && (
-                  <span
-                    className="inline-flex h-4 items-center leading-none text-[11px] tabular-nums text-purple-600 dark:text-purple-300"
-                    title={`获得 ${log.experience_gained} 经验`}
-                  >
-                    +{log.experience_gained}
-                    <span className="ml-0.5 text-[9px] leading-none">EXP</span>
-                  </span>
-                )}
-                {logId && <ChevronRight aria-hidden="true" className="text-muted-foreground/60 h-3 w-3" />}
+                  )}
+                  {(log.copper_gained ?? 0) > 0 && (
+                    <span className="inline-flex h-4 items-center gap-0.5 text-[11px] leading-none text-yellow-600 tabular-nums dark:text-yellow-400">
+                      <span className="leading-none">+</span>
+                      <CopperDisplay
+                        copper={log.copper_gained}
+                        size="xs"
+                        nowrap
+                        className="!text-[11px] leading-none"
+                      />
+                    </span>
+                  )}
+                  {(log.experience_gained ?? 0) > 0 && (
+                    <span
+                      className="inline-flex h-4 items-center text-[11px] leading-none text-purple-600 tabular-nums dark:text-purple-300"
+                      title={`获得 ${log.experience_gained} 经验`}
+                    >
+                      +{log.experience_gained}
+                      <span className="ml-0.5 text-[9px] leading-none">EXP</span>
+                    </span>
+                  )}
+                  {logId && (
+                    <ChevronRight aria-hidden="true" className="text-muted-foreground/60 h-3 w-3" />
+                  )}
+                </div>
               </div>
+              {log.pet_action && <PetActionSummary action={log.pet_action} monsterName={monsterName} />}
             </div>
           </div>
         )

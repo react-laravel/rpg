@@ -31,7 +31,34 @@ describe('CombatLogList pet lines', () => {
 
     render(<CombatLogList logs={[log]} />)
 
-    expect(screen.getByText('小兽 攻击 史莱姆 -3，受到 -1')).toBeInTheDocument()
+    expect(screen.getByText('小兽 -3')).toBeInTheDocument()
+    expect(screen.getByText('受到 -1')).toBeInTheDocument()
+    expect(screen.queryByText(/攻击 史莱姆/)).not.toBeInTheDocument()
+  })
+
+  it('names the familiar target when it is a different monster', () => {
+    const log = {
+      victory: false,
+      monster: { name: '灯笼水母', type: 'normal', level: 1, hp: 0, max_hp: 8 },
+      damage_dealt: 8,
+      damage_taken: 0,
+      experience_gained: 0,
+      copper_gained: 0,
+      loot: {},
+      character: { id: 1, name: '我' } as GameCharacter,
+      combat_log_id: 10,
+      pet_action: {
+        name: '小兽',
+        damage: 4,
+        position: 1,
+        monster_name: '史莱姆',
+        damage_taken: 0,
+      },
+    } as CombatResult
+
+    render(<CombatLogList logs={[log]} />)
+
+    expect(screen.getByText('小兽 攻击 史莱姆 -4')).toBeInTheDocument()
   })
 
   it('shows only the last cast when a death log repeats every cast', () => {
