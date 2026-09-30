@@ -56,6 +56,7 @@ export function GemSelectorDialog({
                 <li key={gem.id}>
                   <button
                     type="button"
+                    title={name}
                     onClick={() => {
                       if (emptyIndex >= 0) onSelect(gem, emptyIndex)
                     }}
@@ -66,7 +67,9 @@ export function GemSelectorDialog({
                       <ItemIcon item={gem} />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-medium">{name}</span>
+                      <span className="block truncate text-sm font-medium">
+                        {name}{gem.quantity > 1 && ` ×${gem.quantity}`}
+                      </span>
                       {statLine && (
                         <span className="text-muted-foreground block truncate text-xs">{statLine}</span>
                       )}

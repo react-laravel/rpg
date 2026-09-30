@@ -622,6 +622,7 @@ const store: StateCreator<GameState> = (set, get) => ({
         character_id: selectedId,
       })) as {
         equipment: GameItem
+        gem_item?: GameItem | null
         combat_stats?: CombatStats
         stats_breakdown?: CombatStatsBreakdown
         message: string
@@ -637,7 +638,10 @@ const store: StateCreator<GameState> = (set, get) => ({
 
         return {
           ...state,
-          inventory: inventory.filter(item => item.id !== gemItemId),
+          inventory: inventory.flatMap(item => {
+            if (item.id !== gemItemId) return [item]
+            return response.gem_item ? [response.gem_item] : []
+          }),
           equipment,
           combatStats: response.combat_stats ?? state.combatStats,
           statsBreakdown: response.stats_breakdown ?? state.statsBreakdown,

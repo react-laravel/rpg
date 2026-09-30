@@ -51,7 +51,7 @@ describe('useInventoryPanelView', () => {
     expect(result.current.displaySlots[1]?.item).toBeNull()
   })
 
-  it('computes quality stats while excluding gem items', () => {
+  it('includes gem items in quality recycle counts and prices', () => {
     const inventory = [
       createItem({ id: 21, quality: 'common', sell_price: 10, quantity: 2 }),
       createItem({
@@ -79,6 +79,7 @@ describe('useInventoryPanelView', () => {
     expect(result.current.qualityStats).toEqual({
       common: { count: 1, totalPrice: 20 },
       rare: { count: 1, totalPrice: 25 },
+      magic: { count: 1, totalPrice: 99 },
     })
   })
 

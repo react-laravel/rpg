@@ -33,15 +33,18 @@ export function useGemManagement({
   const [selectedSocketItem, setSelectedSocketItem] = useState<GameItem | null>(null)
   const [isSocketing, setIsSocketing] = useState(false)
   const socketingRef = useRef(false)
+  const selectorSessionRef = useRef(0)
 
   const gemsInInventory = useMemo(() => getGemsInInventory(inventory), [inventory])
 
   const closeGemSelector = useCallback(() => {
+    selectorSessionRef.current += 1
     setShowGemSelector(false)
     setSelectedSocketItem(null)
   }, [])
 
   const openGemSelector = useCallback((item: GameItem) => {
+    selectorSessionRef.current += 1
     setSelectedSocketItem(item)
     setShowGemSelector(true)
   }, [])
@@ -51,12 +54,15 @@ export function useGemManagement({
       if (!selectedSocketItem || socketingRef.current) return
 
       socketingRef.current = true
+      const selectorSession = selectorSessionRef.current
       setIsSocketing(true)
       try {
         const updated = await socketGem(selectedSocketItem.id, gemItem.id, socketIndex)
-        if (!updated) return
+        if (!updated || selectorSession !== selectorSessionRef.current) return
 
-        const gemsLeft = gemsInInventory.some(gem => gem.id !== gemItem.id)
+        const gemsLeft = gemsInInventory.some(
+          gem => gem.id !== gemItem.id || gem.quantity > 1
+        )
         if (canSocketItem(updated) && gemsLeft) {
           setSelectedSocketItem(updated)
           return

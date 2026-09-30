@@ -2,6 +2,7 @@ import { renderHook, act } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { canSocketItem, getGemsInInventory, useGemManagement } from '../useGemManagement'
 import { createItem } from './testUtils'
+import type { GameItem } from '../../../types'
 
 describe('useGemManagement', () => {
   beforeEach(() => {
@@ -212,6 +213,93 @@ describe('useGemManagement', () => {
     expect(onSocketComplete).not.toHaveBeenCalled()
     expect(result.current.showGemSelector).toBe(true)
     expect(result.current.selectedSocketItem).toBe(afterFirst)
+  })
+
+  it('keeps socketing when the only gem stack still has units left', async () => {
+    const gem = createItem({
+      id: 32,
+      quantity: 2,
+      definition: { id: 32, name: 'Ruby', type: 'gem', base_stats: {}, required_level: 1 },
+    })
+    const item = createItem({ id: 31, sockets: 2 })
+    const updated = createItem({
+      ...item,
+      gems: [{ id: 1, socket_index: 0, gemDefinition: gem.definition }],
+    })
+    const onSocketComplete = vi.fn()
+    const { result } = renderHook(() =>
+      useGemManagement({
+        inventory: [gem],
+        socketGem: vi.fn(async () => updated),
+        unsocketGem: vi.fn(async () => undefined),
+        onSocketComplete,
+      })
+    )
+
+    act(() => result.current.openGemSelector(item))
+    await act(async () => result.current.handleSocketGem(gem, 0))
+
+    expect(result.current.showGemSelector).toBe(true)
+    expect(result.current.selectedSocketItem).toBe(updated)
+    expect(onSocketComplete).not.toHaveBeenCalled()
+  })
+
+  it.each([false, true])('ignores an old socket response after dismissal (reopen: %s)', async reopen => {
+    const gem = createItem({ id: 32 })
+    const item = createItem({ id: 31, sockets: 1 })
+    const nextItem = createItem({ id: 41, sockets: 2 })
+    let finish!: (value: GameItem) => void
+    const socketGem = vi.fn(() => new Promise<GameItem>(resolve => { finish = resolve }))
+    const onSocketComplete = vi.fn()
+    const { result } = renderHook(() =>
+      useGemManagement({
+        inventory: [gem],
+        socketGem,
+        unsocketGem: vi.fn(async () => undefined),
+        onSocketComplete,
+      })
+    )
+
+    act(() => result.current.openGemSelector(item))
+    let pending!: Promise<void>
+    act(() => { pending = result.current.handleSocketGem(gem, 0) })
+    act(() => {
+      result.current.closeGemSelector()
+      if (reopen) result.current.openGemSelector(nextItem)
+    })
+    await act(async () => { finish(item); await pending })
+
+    expect(result.current.showGemSelector).toBe(reopen)
+    expect(result.current.selectedSocketItem).toBe(reopen ? nextItem : null)
+    expect(result.current.isSocketing).toBe(false)
+    expect(onSocketComplete).not.toHaveBeenCalled()
+  })
+
+  it('prevents repeated clicks and permits retry after a failed request', async () => {
+    const gem = createItem({ id: 32 })
+    const item = createItem({ id: 31, sockets: 1 })
+    let finish!: (value: GameItem | null) => void
+    const socketGem = vi.fn(() => new Promise<GameItem | null>(resolve => { finish = resolve }))
+    const { result } = renderHook(() =>
+      useGemManagement({ inventory: [gem], socketGem, unsocketGem: vi.fn(async () => undefined) })
+    )
+
+    act(() => result.current.openGemSelector(item))
+    let pending!: Promise<void>
+    act(() => {
+      pending = result.current.handleSocketGem(gem, 0)
+      void result.current.handleSocketGem(gem, 0)
+    })
+    expect(socketGem).toHaveBeenCalledTimes(1)
+    expect(result.current.isSocketing).toBe(true)
+    await act(async () => { finish(null); await pending })
+    expect(result.current.showGemSelector).toBe(true)
+    expect(result.current.selectedSocketItem).toBe(item)
+    expect(result.current.isSocketing).toBe(false)
+
+    socketGem.mockResolvedValueOnce(item)
+    await act(async () => result.current.handleSocketGem(gem, 0))
+    expect(socketGem).toHaveBeenCalledTimes(2)
   })
 
   it('unsockets a gem and triggers completion callback', async () => {
