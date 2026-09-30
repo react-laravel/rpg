@@ -399,7 +399,7 @@ export function BattleArena({
             />
           ) : !isLoading && isFighting && monster ? (
             <div className={`${COMBAT_UNIT_PANEL_WIDTH_CLASS} flex flex-col items-center gap-1 ${isMonsterDead && showDamageAndHp ? styles['monster-death'] : ''}`}>
-              {monster.max_hp != null && <CombatResourceBars hp={monster.hp ?? 0} maxHp={monster.max_hp} />}
+              {monster.max_hp != null && <CombatResourceBars hp={deferDamageDisplay ? (monsterHpBeforeRound ?? finalMonsterHp) : finalMonsterHp} maxHp={monster.max_hp} />}
               <div data-effect-target={0}>
                 <MonsterIcon key={monsterId} icon={monster.icon} name={monster.name} />
               </div>

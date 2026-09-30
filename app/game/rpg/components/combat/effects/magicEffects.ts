@@ -1,4 +1,5 @@
-import { bolt, burst, clamp01, easeOut, glow, impact, line, mix, noise, pointBetween, projectile, rgba, ring, shard, shieldGlyph, TAU, type EffectFrame } from './effectDrawing'
+import { detailCount, elementalGlyph, elementalImpact, elementalProjectile, polygon, snowflake } from './elementalDrawing'
+import { bolt, burst, clamp01, easeOut, glow, line, noise, pointBetween, rgba, ring, shard, shieldGlyph, TAU, type EffectFrame } from './effectDrawing'
 
 export function drawMagicEffect(f: EffectFrame) {
   const { ctx, elapsed: ms, timing, profile, unit: u, source, targets, type } = f
@@ -7,21 +8,15 @@ export function drawMagicEffect(f: EffectFrame) {
   const tail = 1 - clamp01(age / (timing.durationMs - timing.hitMs))
 
   if (profile.family === 'fire' || profile.family === 'ice' || profile.family === 'arcane') {
+    const shape = profile.family === 'fire' ? 'flame' : profile.family === 'ice' ? 'crystal' : 'missile'
     for (const target of targets) {
       const count = profile.family === 'arcane' ? 3 : 1
       for (let i = 0; i < count; i++) {
         const p = (flight - i * 0.12) / (1 - i * 0.12)
-        projectile(f, source, target, p, (i - (count - 1) / 2) * 70 * u, profile.family === 'ice' ? 'ice' : 'orb', count > 1 ? 0.72 : 1)
+        // All three missiles arrive on the authoritative hit, despite separate launch times.
+        elementalProjectile(f, source, target, p, (i - (count - 1) / 2) * 58 * u, shape, count > 1 ? 0.8 : 1)
       }
-      impact(f, target, age)
-      if (profile.family === 'ice') burst(f, target, age, { ice: true, count: 14, radius: 80 })
-      if (profile.family === 'fire' && age >= 0) {
-        for (let i = 0; i < 7; i++) {
-          const x = target.x + (noise(i, f.seed) - 0.5) * 60 * u
-          const y = target.y - easeOut(clamp01(age / 600)) * (20 + noise(i + 20, f.seed) * 60) * u
-          glow(ctx, {x, y}, (12 + noise(i + 3, f.seed) * 15) * u * tail, i % 2 ? profile.highlight : profile.color, tail * 0.45)
-        }
-      }
+      elementalImpact(f, target, age, shape)
     }
     return
   }
@@ -38,7 +33,13 @@ export function drawMagicEffect(f: EffectFrame) {
           const angle = (branch / 3) * TAU + index
           bolt(f, target, { x: target.x + Math.cos(angle) * 44 * u, y: target.y + Math.sin(angle) * 28 * u }, 1, tail * 0.45, branch * 7)
         }
-        impact(f, target, age, type === 'thunder-wrath' ? 1.4 : 0.8)
+        const flash = Math.max(0, 1 - age / 150)
+        glow(ctx, target, 25 * u, profile.highlight, flash * 0.55)
+        // A sharp star and short ground arcs distinguish electricity from an explosion.
+        for (let ray = 0; ray < 4; ray++) {
+          const angle = ray / 4 * TAU + Math.PI / 4
+          shard(ctx, target, (15 + flash * 19) * u, angle, profile.highlight, flash * 0.8)
+        }
       }
     })
     return
@@ -53,15 +54,32 @@ export function drawMagicEffect(f: EffectFrame) {
         const end = { x: target.x + (i - (count - 1) / 2) * 16 * u, y: target.y }
         const start = { x: end.x - 100 * u, y: -45 * u }
         if (p >= 0 && p < 1) {
-          projectile(f, start, end, p * p, 0, 'orb', count > 1 ? 1 : 1.5)
+          elementalProjectile(f, start, end, p * p, 0, 'flame', count > 1 ? 1.25 : 1.7)
           const rock = pointBetween(start, end, p * p)
-          shard(ctx, rock, 18 * u, 0.8, '#6f3022', 1)
-          shard(ctx, rock, 11 * u, 0.4, profile.highlight, 0.8)
+          ctx.save()
+          ctx.globalCompositeOperation = 'source-over'
+          const r = (count > 1 ? 10 : 15) * u
+          const corners = Array.from({ length: 6 }, (_, index) => ({ x: rock.x + Math.cos(index / 6 * TAU + 0.3) * r, y: rock.y + Math.sin(index / 6 * TAU + 0.3) * r }))
+          polygon(f, corners, '#653324', 1)
+          polygon(f, [corners[0], corners[1], rock, corners[5]], '#a85a32', 1)
+          line(ctx, [corners[2], rock, corners[4]], profile.highlight, 0.9, 1.5 * u)
+          ctx.restore()
         }
       }
-      impact(f, target, age, 1.5)
       if (age >= 0) {
-        for (let i = 0; i < 7; i++) {
+        const expansion = easeOut(age / 500)
+        const flash = Math.max(0, 1 - age / 180)
+        glow(ctx, target, 38 * u, profile.color, flash * 0.7)
+        // A brief upward blast reads immediately, before the heavier debris has spread.
+        for (let ray = 0; ray < 5; ray++) {
+          shard(ctx, target, (18 + noise(ray, f.seed) * 10) * u, -Math.PI + ray / 4 * Math.PI, profile.color, flash * 0.85)
+        }
+        glow(ctx, target, 10 * u, profile.highlight, flash)
+        ring(ctx, { x: target.x, y: target.y + 18 * u }, (12 + expansion * 48) * u, profile.highlight, tail * tail * 0.7, 2 * u, 0.3)
+        burst(f, target, age, { count: detailCount(f, 12), radius: 52, ice: true })
+      }
+      if (age >= 0) {
+        for (let i = 0; i < detailCount(f, 7); i++) {
           const angle = noise(i + index * 10, f.seed) * TAU
           const d = 70 * u * easeOut(age / 500)
           line(ctx, [target, { x: target.x + Math.cos(angle) * d * 0.4, y: target.y + Math.sin(angle) * d * 0.15 }, { x: target.x + Math.cos(angle) * d, y: target.y + Math.sin(angle) * d * 0.4 }], profile.color, tail * 0.65, 1.6 * u)
@@ -79,11 +97,12 @@ export function drawMagicEffect(f: EffectFrame) {
     glow(ctx, center, spread * 0.8, profile.color, age < 0 ? expansion * 0.22 : tail * 0.2)
     for (const target of targets) {
       if (age >= 0) {
-        impact(f, target, age, 0.85)
-        burst(f, target, age, { ice: true, count: 15 })
+        snowflake(f, target, (18 + easeOut(age / 350) * 18) * u, tail * tail * 0.8)
+        burst(f, target, age, { ice: true, count: detailCount(f, 10), radius: 48 })
       }
-      for (let i = 0; i < 7; i++) {
-        const angle = i / 7 * TAU
+      const crystals = detailCount(f, 7)
+      for (let i = 0; i < crystals; i++) {
+        const angle = i / crystals * TAU
         const d = (18 + noise(i,f.seed)*16) * u * expansion
         const p = { x: target.x + Math.cos(angle) * d, y: target.y + Math.sin(angle) * d * 0.45 + 12 * u }
         shard(ctx, p, (12 + noise(i + 8,f.seed) * 20) * u * expansion, -Math.PI/2 + (i-3)*0.1, i%2 ? profile.color : profile.highlight, age < 0 ? expansion * 0.5 : tail * 0.75)
@@ -103,6 +122,28 @@ export function drawMagicEffect(f: EffectFrame) {
     return
   }
 
+  if (profile.family === 'summon') {
+    const companion = f.companion ?? source
+    const appear = age < 0 ? easeOut(ms / timing.hitMs) : tail
+    const ground = { x: companion.x, y: companion.y + 23 * u }
+    ring(ctx, ground, (20 + appear * 13) * u, profile.highlight, appear * 0.8, 1.5 * u, 0.35)
+    ring(ctx, ground, (26 + appear * 13) * u, profile.color, appear * 0.6, u, 0.35)
+    glow(ctx, companion, 35 * u, profile.color, appear * 0.35)
+    elementalGlyph(f, companion, 12 * u, appear * 0.8)
+    if (f.companion && flight >= 0 && age < 0) {
+      const end = pointBetween(source, companion, clamp01(flight), -16 * u)
+      line(ctx, [source, end], profile.color, 0.5, 1.4 * u)
+      glow(ctx, end, 9 * u, profile.highlight, 0.7)
+    }
+    for (let i = 0; i < 6; i++) {
+      const angle = i / 6 * TAU
+      const rise = easeOut(clamp01(ms / timing.durationMs))
+      const p = { x: companion.x + Math.cos(angle) * 29 * u, y: companion.y + Math.sin(angle) * 12 * u + 12 * u - rise * 32 * u }
+      shard(ctx, p, (3 + i % 2) * u, -Math.PI / 2, i % 2 ? profile.highlight : profile.color, appear * 0.75)
+    }
+    return
+  }
+
   if (profile.family === 'heal' || profile.family === 'shield' || profile.family === 'aura') {
     const p = source
     const appear = age < 0 ? easeOut(ms / timing.hitMs) : tail
@@ -110,7 +151,10 @@ export function drawMagicEffect(f: EffectFrame) {
     glow(ctx,p,radius*1.7,profile.color,appear*0.55)
     ring(ctx,{x:p.x,y:p.y+25*u},radius*(0.7+0.3*appear),profile.highlight,appear*0.8,1.6*u,0.34)
     if (profile.family === 'shield') {
-      shieldGlyph(f,p,radius,appear)
+      shieldGlyph(f,p,radius * 0.62,appear)
+      ring(ctx,p,radius,profile.highlight,appear * 0.65,1.4*u,1.12,-Math.PI * 0.95,Math.PI * 0.95)
+      const facets = Array.from({ length: 6 }, (_, i) => ({ x: p.x + Math.cos(i / 6 * TAU) * radius, y: p.y + Math.sin(i / 6 * TAU) * radius }))
+      line(ctx,[...facets,facets[0]],profile.color,appear * 0.42,u)
       ring(ctx,p,radius*1.1,profile.color,appear*0.6,2*u,1,-Math.PI*0.9,Math.PI*0.15)
       for (let i=0;i<6;i++) {
         const a=i/6*TAU
@@ -140,14 +184,14 @@ export function drawMagicEffect(f: EffectFrame) {
     targets.forEach(target=>{
       colors.forEach((color,i)=>{
         const variant={...f,profile:{...profile,color,highlight:i===1?'#edfeff':'#fff0df'}}
-        projectile(variant,source,target,flight,(i-1)*68*u,'orb',0.82)
+        elementalProjectile(variant,source,target,flight,(i-1)*58*u,i === 0 ? 'flame' : i === 1 ? 'crystal' : 'missile',0.8)
         if(age>=0) {
-          ring(ctx,target,(20+easeOut(age/650)*70+i*8)*u,color,tail*0.65,2*u,0.5)
-          burst(variant,target,age,{color,count:10,ice:i===1,radius:85})
+          ring(ctx,target,(16+easeOut(age/650)*38+i*6)*u,color,tail*tail*0.5,1.5*u,0.5,i * TAU/3 + age/900,i * TAU/3 + age/900 + 1.8)
+          burst(variant,target,age,{color,count:detailCount(f, 8),ice:i===1,radius:48})
         }
       })
       if(age>=0) {
-        glow(ctx,target,35*u,profile.highlight,Math.max(0,1-age/180))
+        glow(ctx,target,25*u,profile.highlight,Math.max(0,1-age/180)*0.6)
         bolt(f,{x:target.x,y:target.y-100*u},target,1,tail*0.7)
       }
     })

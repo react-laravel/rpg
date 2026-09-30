@@ -1,6 +1,6 @@
 import type { EffectProfile, SkillEffectType } from './effectRegistry'
 import type { EffectTiming } from './effectTimeline'
-import type { EffectPoint } from './types'
+import type { EffectPoint, EffectRect } from './types'
 
 export interface EffectFrame {
   ctx: CanvasRenderingContext2D
@@ -8,7 +8,9 @@ export interface EffectFrame {
   height: number
   unit: number
   source: EffectPoint
+  companion?: EffectPoint
   targets: EffectPoint[]
+  exclusions?: EffectRect[]
   elapsed: number
   timing: EffectTiming
   profile: EffectProfile

@@ -3,7 +3,14 @@ export type { SkillEffectType } from './effectRegistry'
 
 /** Coordinates relative to the rendered battlefield, in CSS pixels normalized to 0–1. */
 export interface EffectPoint { x: number; y: number }
-export interface EffectAnchors { source: EffectPoint; targets: EffectPoint[] }
+export interface EffectRect { x: number; y: number; width: number; height: number }
+export interface EffectAnchors {
+  source: EffectPoint
+  companion?: EffectPoint
+  targets: EffectPoint[]
+  /** Resource values and unit names stay legible through bright impacts. */
+  exclusions?: EffectRect[]
+}
 
 export interface EffectBaseProps {
   active: boolean

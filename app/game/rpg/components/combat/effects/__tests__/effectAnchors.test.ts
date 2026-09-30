@@ -45,3 +45,29 @@ describe('readBattleEffectAnchors', () => {
     expect(anchors.targets[0].x).toBeCloseTo(0.45)
   })
 })
+
+it('protects bounded resource/name rectangles with padding without masking the actor', () => {
+  const arena = mountArena([0])
+  for (let i = 0; i < 20; i++) {
+    const label = document.createElement('div')
+    label.setAttribute(i % 2 ? 'data-monster-name' : 'data-combat-resources', '')
+    label.getBoundingClientRect = () => ({ x: -1, y: 3, left: -1, top: 3, width: 20, height: 8, right: 19, bottom: 11, toJSON: () => ({}) })
+    arena.append(label)
+  }
+  const anchors = readBattleEffectAnchors(arena, [0], false)
+  expect(anchors.exclusions).toHaveLength(14)
+  expect(anchors.exclusions?.[0]).toMatchObject({ x: 0, y: 0.01, width: 0.21 })
+  expect(anchors.exclusions?.[0].height).toBeCloseTo(0.12)
+  expect(anchors.targets).toEqual([{ x: 0.15, y: 0.15 }])
+})
+
+it('anchors the summon to the actual pet next to the caster', () => {
+  const arena = mountArena([0])
+  const pet = document.createElement('div')
+  pet.dataset.combatUnitImage = 'pet'
+  pet.getBoundingClientRect = () => ({ x: 25, y: 80, left: 25, top: 80, width: 10, height: 10, right: 35, bottom: 90, toJSON: () => ({}) })
+  arena.append(pet)
+  const anchors = readBattleEffectAnchors(arena, [0], false)
+  expect(anchors.companion).toEqual({ x: 0.3, y: 0.85 })
+  expect(anchors.source).toEqual({ x: 0.5, y: 0.85 })
+})

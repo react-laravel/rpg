@@ -1,0 +1,4 @@
+# Generated offline QA evidence is delivered separately from the application patch.
+closeups/
+*.png
+/offline-render-report.json

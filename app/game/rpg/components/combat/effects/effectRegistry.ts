@@ -3,7 +3,7 @@ import type { SkillUsedEntry } from '../../../types'
 export type EffectFamily =
   | 'fire' | 'ice' | 'lightning' | 'meteor' | 'frost' | 'void' | 'arcane'
   | 'slash' | 'charge' | 'whirlwind' | 'slam' | 'arrow' | 'wind' | 'shadow'
-  | 'trap' | 'mark' | 'heal' | 'shield' | 'aura' | 'cataclysm'
+  | 'trap' | 'mark' | 'summon' | 'heal' | 'shield' | 'aura' | 'cataclysm'
 
 export interface EffectProfile {
   family: EffectFamily
@@ -51,6 +51,7 @@ export const EFFECT_PROFILES = {
   'trap-net': effect('trap', '#a0de9b', '#e8ffc5', 440, 1150),
   'hunters-mark': effect('mark', '#ffd476', '#fff6d6', 360, 1070),
   'arrow-rain': effect('arrow', '#efc384', '#fff2d0', 670, 1380),
+  'charm-light': effect('summon', '#ffc966', '#fff5cb', 450, 1120, 'self'),
   heal: effect('heal', '#59dba8', '#e3ffbc', 360, 1120, 'self'),
   shield: effect('shield', '#76aaff', '#d7edff', 350, 1130, 'self'),
 } satisfies Record<string, EffectProfile>

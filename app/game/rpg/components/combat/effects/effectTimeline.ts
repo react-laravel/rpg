@@ -20,7 +20,8 @@ export function createEffectTimeline(timing: EffectTiming, onHit: () => void, on
     advance(elapsed: number): EffectPhase {
       if (cancelled || complete) return 'complete'
       if (elapsed >= timing.hitMs && !hit) { hit = true; onHit() }
-      if (cancelled) return 'complete'
+      // A callback can cancel or synchronously advance this same timeline.
+      if (cancelled || complete) return 'complete'
       if (elapsed >= timing.durationMs) { complete = true; onComplete(); return 'complete' }
       if (elapsed < timing.castMs) return 'cast'
       if (elapsed < timing.hitMs) return 'travel'

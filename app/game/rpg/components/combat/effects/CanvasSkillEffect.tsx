@@ -36,16 +36,16 @@ export function CanvasSkillEffect({ type, active, duration, sourcePosition, targ
       if(width<=0||height<=0||!ctx) return
       // Keep retina detail while bounding the canvas to two million physical pixels.
       const dpr=Math.min(window.devicePixelRatio||1,2,Math.sqrt(2_000_000/(width*height)))
-      canvas.width=Math.max(1,Math.round(width*dpr));canvas.height=Math.max(1,Math.round(height*dpr))
+      canvas.width=Math.max(1,Math.floor(width*dpr));canvas.height=Math.max(1,Math.floor(height*dpr))
       ctx.setTransform(dpr,0,0,dpr,0,0)
       const p=positions.current
       const measured=p.resolveAnchors?.()
-      anchors={source:safePoint(measured?.source??p.sourcePosition??{x:0.5,y:0.85}),targets:(measured?.targets.length?measured.targets:p.targetPositions?.length?p.targetPositions:[p.targetPosition??{x:0.5,y:0.25}]).slice(0,5).map(safePoint)}
+      anchors={companion:measured?.companion?safePoint(measured.companion):undefined,exclusions:measured?.exclusions?.slice(0,14),source:safePoint(measured?.source??p.sourcePosition??{x:0.5,y:0.85}),targets:(measured?.targets.length?measured.targets:p.targetPositions?.length?p.targetPositions:[p.targetPosition??{x:0.5,y:0.25}]).slice(0,5).map(safePoint)}
     }
     const draw=(elapsed:number)=>{
       if(!ctx||width<=0||height<=0)return
       const pixel=(p:EffectPoint)=>({x:p.x*width,y:p.y*height})
-      const frame:EffectFrame={ctx,width,height,unit:Math.max(0.65,Math.min(1.35,Math.min(width,height)/420)),source:pixel(anchors.source),targets:anchors.targets.map(pixel),elapsed,timing,profile,type,seed,reducedMotion:preference.matches}
+      const frame:EffectFrame={ctx,width,height,unit:Math.max(0.65,Math.min(1.35,Math.min(width,height)/420)),source:pixel(anchors.source),companion:anchors.companion?pixel(anchors.companion):undefined,targets:anchors.targets.map(pixel),exclusions:anchors.exclusions?.map(r=>({x:r.x*width,y:r.y*height,width:r.width*width,height:r.height*height})),elapsed,timing,profile,type,seed,reducedMotion:preference.matches}
       renderSkillEffect(frame)
     }
     const finish=()=>{
