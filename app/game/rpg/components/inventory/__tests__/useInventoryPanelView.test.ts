@@ -46,8 +46,9 @@ describe('useInventoryPanelView', () => {
       result.current.setCategoryId('weapon')
     })
 
-    expect(result.current.displaySlots).toHaveLength(1)
+    expect(result.current.displaySlots).toHaveLength(3)
     expect(result.current.displaySlots[0]?.item?.id).toBe(1)
+    expect(result.current.displaySlots[1]?.item).toBeNull()
   })
 
   it('computes quality stats while excluding gem items', () => {

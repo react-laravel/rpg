@@ -56,6 +56,7 @@ export function InventoryPanel() {
     handleSellConfirm,
     handleSocketGem,
     handleUnsocketGem,
+    isSocketing,
     openGemSelector,
     selectedItem,
     selectedItemId,
@@ -108,6 +109,7 @@ export function InventoryPanel() {
         isOpen={showGemSelector}
         socketItem={selectedSocketItem}
         gems={gemsInInventory}
+        isSocketing={isSocketing}
         onClose={closeGemSelector}
         onSelect={handleSocketGem}
       />
@@ -120,8 +122,8 @@ export function InventoryPanel() {
         onClose={closeSellConfirm}
         onConfirm={handleSellConfirm}
       />
-      <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row">
-        <div className="bg-card border-border flex min-w-0 flex-1 flex-col rounded-lg border p-3 sm:p-4">
+      <div className="flex flex-col gap-3 sm:gap-4">
+        <div className="bg-card border-border rounded-lg border p-3 sm:p-4">
           <InventoryToolbar
             categoryId={categoryId}
             isLoading={isLoading}

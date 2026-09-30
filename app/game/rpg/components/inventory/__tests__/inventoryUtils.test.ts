@@ -39,6 +39,8 @@ describe('inventoryUtils', () => {
 
     expect(filterSlotsByCategory(slots, ['weapon'])).toEqual([
       { item: weapon, source: 'inventory' },
+      { item: null, source: 'inventory' },
+      { item: null, source: 'inventory' },
     ])
     expect(filterSlotsByCategory(slots, null)).toEqual(slots)
   })

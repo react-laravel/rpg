@@ -29,9 +29,10 @@ export const filterSlotsByCategory = (
 ) => {
   if (!types) return slots
 
-  return slots.filter(
-    (cell): cell is InventorySlotCell & { item: GameItem } =>
-      cell.item != null && itemMatchesCategory(cell.item, types)
+  return slots.map(cell =>
+    cell.item != null && itemMatchesCategory(cell.item, types)
+      ? cell
+      : { item: null, source: cell.source }
   )
 }
 
