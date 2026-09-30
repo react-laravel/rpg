@@ -10,9 +10,11 @@ import { getRpgItemImageUrl } from '@/app/game/rpg/utils/assetUrls'
 export const ItemIcon = memo(function ItemIcon({
   item,
   className,
+  sizes = '48px',
 }: {
   item: GameItem
   className?: string
+  sizes?: string
 }) {
   const definitionId = item.definition?.id
   const fallback = getItemIconFallback(item)
@@ -37,7 +39,7 @@ export const ItemIcon = memo(function ItemIcon({
     <span
       className={`relative inline-flex h-full w-full items-center justify-center ${className ?? ''}`}
     >
-      <Image src={src} alt="" fill className="object-contain" sizes="48px" onError={handleError} />
+      <Image src={src} alt="" fill className="object-contain" sizes={sizes} onError={handleError} />
     </span>
   )
 })

@@ -1,4 +1,4 @@
-export const COMPARE_EQUIPPED_PANEL_WIDTH = 156
+export const COMPARE_EQUIPPED_PANEL_WIDTH = 188
 export const COMPARE_NEW_ITEM_PANEL_WIDTH = 200
 export const COMPARE_TOGGLE_STRIP_WIDTH = 24
 
@@ -9,5 +9,5 @@ export function getFullComparePanelWidth(collapsed: boolean): number {
 }
 
 export function getFullComparePanelWidthClass(collapsed: boolean): string {
-  return collapsed ? 'w-[200px]' : 'w-[min(356px,calc(100vw-24px))]'
+  return collapsed ? 'w-[200px]' : 'w-[min(388px,calc(100vw-24px))]'
 }

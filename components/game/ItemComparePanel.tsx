@@ -29,7 +29,7 @@ export {
 
 function CompareItemIconSlot({
   item,
-  sizeClass = 'h-14 w-14 sm:h-16 sm:w-16',
+  sizeClass = 'h-20 w-20',
   showUpgradeIndicator = false,
 }: {
   item: GameItem
@@ -42,7 +42,7 @@ function CompareItemIconSlot({
       className={`relative flex shrink-0 ${sizeClass} items-center justify-center rounded border-2`}
       style={{ borderColor: QUALITY_COLORS[item.quality as ItemQuality] }}
     >
-      <ItemIcon item={item} className="drop-shadow-sm" />
+      <ItemIcon item={item} className="drop-shadow-sm" sizes="80px" />
       {showUpgradeIndicator && <ItemUpgradeIndicator />}
     </ItemImagePreview>
   )
@@ -52,7 +52,7 @@ function CompareItemHeader({
   item,
   name,
   nameColor,
-  sizeClass = 'h-14 w-14 sm:h-16 sm:w-16',
+  sizeClass = 'h-20 w-20',
   showUpgradeIndicator = false,
 }: {
   item?: GameItem
@@ -360,7 +360,7 @@ export function FullComparePanel({
   return (
     <div
       className={`relative grid max-w-full grid-rows-[auto_1fr_auto_auto] ${getFullComparePanelWidthClass(collapsed)} ${
-        collapsed ? 'grid-cols-1' : 'grid-cols-[minmax(0,156px)_minmax(0,200px)]'
+        collapsed ? 'grid-cols-1' : 'grid-cols-[minmax(0,188px)_minmax(0,200px)]'
       }`}
     >
       {!collapsed && (
