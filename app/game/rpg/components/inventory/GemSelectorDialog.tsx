@@ -8,6 +8,7 @@ interface GemSelectorDialogProps {
   isOpen: boolean
   socketItem: GameItem | null
   gems: GameItem[]
+  isSocketing?: boolean
   onClose: () => void
   onSelect: (gemItem: GameItem, socketIndex: number) => void
 }
@@ -27,6 +28,7 @@ export function GemSelectorDialog({
   isOpen,
   socketItem,
   gems,
+  isSocketing = false,
   onClose,
   onSelect,
 }: GemSelectorDialogProps) {
@@ -57,7 +59,7 @@ export function GemSelectorDialog({
                     onClick={() => {
                       if (emptyIndex >= 0) onSelect(gem, emptyIndex)
                     }}
-                    disabled={availableSocketCount <= 0}
+                    disabled={isSocketing || availableSocketCount <= 0}
                     className="hover:bg-muted flex w-full items-center gap-2 rounded-md border px-2 py-2 text-left disabled:opacity-50"
                   >
                     <span className="relative h-8 w-8 shrink-0">

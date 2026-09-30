@@ -41,6 +41,7 @@ export function EquipmentGrid({ equipment, onUnequip, characterSummary }: Equipm
     gemsInInventory,
     handleSocketGem,
     handleUnsocketGem,
+    isSocketing,
     openGemSelector,
     selectedSocketItem,
     showGemSelector,
@@ -108,6 +109,7 @@ export function EquipmentGrid({ equipment, onUnequip, characterSummary }: Equipm
         isOpen={showGemSelector}
         socketItem={selectedSocketItem}
         gems={gemsInInventory}
+        isSocketing={isSocketing}
         onClose={closeGemSelector}
         onSelect={handleSocketGem}
       />

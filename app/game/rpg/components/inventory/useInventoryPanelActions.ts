@@ -11,7 +11,7 @@ interface UseInventoryPanelActionsParams {
   equipItem: (itemId: number) => Promise<unknown>
   inventory: GameItem[]
   sellItem: (itemId: number, quantity?: number) => Promise<unknown>
-  socketGem: (itemId: number, gemItemId: number, socketIndex: number) => Promise<unknown>
+  socketGem: (itemId: number, gemItemId: number, socketIndex: number) => Promise<GameItem | null>
   unsocketGem: (itemId: number, socketIndex: number) => Promise<unknown>
 }
 
@@ -31,6 +31,7 @@ export function useInventoryPanelActions({
     gemsInInventory,
     handleSocketGem,
     handleUnsocketGem: handleInventoryUnsocketGem,
+    isSocketing,
     openGemSelector,
     selectedSocketItem,
     showGemSelector,
@@ -123,6 +124,7 @@ export function useInventoryPanelActions({
     handleSellConfirm,
     handleSocketGem,
     handleUnsocketGem,
+    isSocketing,
     openGemSelector,
     selectedItem,
     selectedItemId: selectedItem?.id ?? null,

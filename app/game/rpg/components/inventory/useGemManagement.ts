@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import type { GameItem } from '../../types'
 import { getEffectiveSocketCount } from '../../utils/itemUtils'
 
@@ -8,7 +8,7 @@ interface UseGemManagementParams {
   inventory: GameItem[]
   onSocketComplete?: () => void
   onUnsocketComplete?: () => void
-  socketGem: (itemId: number, gemItemId: number, socketIndex: number) => Promise<unknown>
+  socketGem: (itemId: number, gemItemId: number, socketIndex: number) => Promise<GameItem | null>
   unsocketGem: (itemId: number, socketIndex: number) => Promise<unknown>
 }
 
@@ -31,6 +31,8 @@ export function useGemManagement({
 }: UseGemManagementParams) {
   const [showGemSelector, setShowGemSelector] = useState(false)
   const [selectedSocketItem, setSelectedSocketItem] = useState<GameItem | null>(null)
+  const [isSocketing, setIsSocketing] = useState(false)
+  const socketingRef = useRef(false)
 
   const gemsInInventory = useMemo(() => getGemsInInventory(inventory), [inventory])
 
@@ -46,13 +48,28 @@ export function useGemManagement({
 
   const handleSocketGem = useCallback(
     async (gemItem: GameItem, socketIndex: number) => {
-      if (!selectedSocketItem) return
+      if (!selectedSocketItem || socketingRef.current) return
 
-      await socketGem(selectedSocketItem.id, gemItem.id, socketIndex)
-      closeGemSelector()
-      onSocketComplete?.()
+      socketingRef.current = true
+      setIsSocketing(true)
+      try {
+        const updated = await socketGem(selectedSocketItem.id, gemItem.id, socketIndex)
+        if (!updated) return
+
+        const gemsLeft = gemsInInventory.some(gem => gem.id !== gemItem.id)
+        if (canSocketItem(updated) && gemsLeft) {
+          setSelectedSocketItem(updated)
+          return
+        }
+
+        closeGemSelector()
+        onSocketComplete?.()
+      } finally {
+        socketingRef.current = false
+        setIsSocketing(false)
+      }
     },
-    [closeGemSelector, onSocketComplete, selectedSocketItem, socketGem]
+    [closeGemSelector, gemsInInventory, onSocketComplete, selectedSocketItem, socketGem]
   )
 
   const handleUnsocketGem = useCallback(
@@ -69,6 +86,7 @@ export function useGemManagement({
     closeGemSelector,
     gemsInInventory,
     handleSocketGem,
+    isSocketing,
     handleUnsocketGem,
     openGemSelector,
     selectedSocketItem,

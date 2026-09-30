@@ -139,7 +139,7 @@ interface GameState {
   sellItemsByQuality: (quality: string) => Promise<{ count: number; total_price: number }>
   moveItem: (itemId: number, toStorage: boolean, slotIndex?: number) => Promise<void>
   sortInventory: (sortBy: 'quality' | 'price' | 'default', inStorage?: boolean) => Promise<void>
-  socketGem: (itemId: number, gemItemId: number, socketIndex: number) => Promise<void>
+  socketGem: (itemId: number, gemItemId: number, socketIndex: number) => Promise<GameItem | null>
   unsocketGem: (itemId: number, socketIndex: number) => Promise<void>
 
   // 技能操作
@@ -614,7 +614,7 @@ const store: StateCreator<GameState> = (set, get) => ({
         context: 'socketGem',
         warn: false,
       })
-      if (!selectedId) return
+      if (!selectedId) return null
       const response = (await post('/rpg/gems/socket', {
         item_id: itemId,
         gem_item_id: gemItemId,
@@ -651,8 +651,11 @@ const store: StateCreator<GameState> = (set, get) => ({
           isLoading: false,
         }
       })
+
+      return response.equipment
     } catch (error) {
       setRequestError(set, error)
+      return null
     }
   },
 

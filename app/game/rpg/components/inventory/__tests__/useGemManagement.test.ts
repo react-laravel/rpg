@@ -126,10 +126,21 @@ describe('useGemManagement', () => {
     expect(result.current.showGemSelector).toBe(false)
   })
 
-  it('sockets a selected gem and clears selector state after completion', async () => {
-    const socketGem = vi.fn(async () => undefined)
+  it('sockets a selected gem and clears selector state when nothing remains', async () => {
+    const filled = createItem({
+      id: 31,
+      sockets: 1,
+      gems: [
+        {
+          id: 1,
+          socket_index: 0,
+          gemDefinition: { id: 32, name: 'Ruby', type: 'gem', base_stats: {}, required_level: 1 },
+        },
+      ],
+    })
+    const socketGem = vi.fn(async () => filled)
     const onSocketComplete = vi.fn()
-    const item = createItem({ id: 31, sockets: 2 })
+    const item = createItem({ id: 31, sockets: 1 })
     const gem = createItem({
       id: 32,
       definition: { id: 32, name: 'Ruby', type: 'gem', base_stats: {}, required_level: 1 },
@@ -149,13 +160,58 @@ describe('useGemManagement', () => {
     })
 
     await act(async () => {
-      await result.current.handleSocketGem(gem, 1)
+      await result.current.handleSocketGem(gem, 0)
     })
 
-    expect(socketGem).toHaveBeenCalledWith(item.id, gem.id, 1)
+    expect(socketGem).toHaveBeenCalledWith(item.id, gem.id, 0)
     expect(onSocketComplete).toHaveBeenCalledTimes(1)
     expect(result.current.showGemSelector).toBe(false)
     expect(result.current.selectedSocketItem).toBeNull()
+  })
+
+  it('keeps the selector open so the next gems can be socketed without reopening', async () => {
+    const gemDefinition = {
+      id: 32,
+      name: 'Ruby',
+      type: 'gem' as const,
+      base_stats: {},
+      required_level: 1,
+    }
+    const afterFirst = createItem({
+      id: 31,
+      sockets: 3,
+      gems: [{ id: 1, socket_index: 0, gemDefinition }],
+    })
+    const socketGem = vi.fn(async () => afterFirst)
+    const onSocketComplete = vi.fn()
+    const item = createItem({ id: 31, sockets: 3 })
+    const firstGem = createItem({ id: 32, definition: gemDefinition })
+    const secondGem = createItem({
+      id: 33,
+      definition: { ...gemDefinition, id: 33, name: 'Sapphire' },
+    })
+
+    const { result } = renderHook(() =>
+      useGemManagement({
+        inventory: [firstGem, secondGem],
+        onSocketComplete,
+        socketGem,
+        unsocketGem: vi.fn(async () => undefined),
+      })
+    )
+
+    act(() => {
+      result.current.openGemSelector(item)
+    })
+
+    await act(async () => {
+      await result.current.handleSocketGem(firstGem, 0)
+    })
+
+    expect(socketGem).toHaveBeenCalledWith(item.id, firstGem.id, 0)
+    expect(onSocketComplete).not.toHaveBeenCalled()
+    expect(result.current.showGemSelector).toBe(true)
+    expect(result.current.selectedSocketItem).toBe(afterFirst)
   })
 
   it('unsockets a gem and triggers completion callback', async () => {
