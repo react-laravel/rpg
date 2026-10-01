@@ -29,7 +29,7 @@ interface InventoryItemDetailCardProps {
 interface EquipmentDetailBodyProps {
   item: GameItem
   isLoading?: boolean
-  onInspectGem?: (socketIndex: number) => void
+  onUnsocketGem?: (socketIndex: number) => void
   showBuyPrice?: boolean
   showSellPrice?: boolean
 }
@@ -37,67 +37,134 @@ interface EquipmentDetailBodyProps {
 export function EquipmentGemSockets({
   item,
   isLoading = false,
-  onInspectGem,
-}: Pick<EquipmentDetailBodyProps, 'item' | 'isLoading' | 'onInspectGem'>) {
+  onUnsocketGem,
+}: Pick<EquipmentDetailBodyProps, 'item' | 'isLoading' | 'onUnsocketGem'>) {
   const socketCount = Math.max(
     getEffectiveSocketCount(item.sockets),
     ...(item.gems?.map(gem => gem.socket_index + 1) ?? [0])
   )
+  // Tie expansion to item.id so switching items collapses without an effect.
+  const [expansion, setExpansion] = useState<{ itemId: number; socketIndex: number } | null>(null)
+  const expandedSocketIndex =
+    expansion && expansion.itemId === item.id ? expansion.socketIndex : null
+
   if (socketCount <= 0) return null
 
   const gemsBySocket = new Map(item.gems?.map(gem => [gem.socket_index, gem]) ?? [])
+  const expandedGem =
+    expandedSocketIndex == null ? undefined : gemsBySocket.get(expandedSocketIndex)
+  const expandedDefinition = expandedGem ? getSocketedGemDefinition(expandedGem) : undefined
+  const canInteract = Boolean(onUnsocketGem)
+
+  const toggleSocket = (socketIndex: number) => {
+    setExpansion(current =>
+      current?.itemId === item.id && current.socketIndex === socketIndex
+        ? null
+        : { itemId: item.id, socketIndex }
+    )
+  }
+
+  const handleUnsocket = () => {
+    if (expandedSocketIndex == null || !onUnsocketGem) return
+    onUnsocketGem(expandedSocketIndex)
+    setExpansion(null)
+  }
 
   return (
-    <ul className="flex w-full flex-wrap justify-center gap-1">
-      {Array.from({ length: socketCount }, (_, index) => {
-        const gem = gemsBySocket.get(index)
-        const definition = gem ? getSocketedGemDefinition(gem) : undefined
-        const name = definition?.name || '宝石'
-        const statLine = formatGemStatLine(definition)
-        const iconItem = gem ? socketedGemIconItem(gem) : null
-        const detail = statLine ? `${name} ${statLine}` : name
+    <div className="flex w-full flex-col items-center gap-1.5">
+      <ul className="flex w-full flex-wrap justify-center gap-1">
+        {Array.from({ length: socketCount }, (_, index) => {
+          const gem = gemsBySocket.get(index)
+          const definition = gem ? getSocketedGemDefinition(gem) : undefined
+          const name = definition?.name || '宝石'
+          const statLine = formatGemStatLine(definition)
+          const iconItem = gem ? socketedGemIconItem(gem) : null
+          const detail = statLine ? `${name} ${statLine}` : name
+          const isExpanded = expandedSocketIndex === index
 
-        if (!gem || !iconItem) {
+          if (!gem || !iconItem) {
+            return (
+              <li key={`empty-${index}`}>
+                <span
+                  className="border-border text-muted-foreground flex h-7 w-7 items-center justify-center rounded border border-dashed text-[10px]"
+                  title="空孔"
+                >
+                  空
+                </span>
+              </li>
+            )
+          }
+
+          const icon = (
+            <span className="relative block h-7 w-7">
+              <ItemIcon item={iconItem} />
+            </span>
+          )
+
           return (
-            <li key={`empty-${index}`}>
-              <span
-                className="border-border text-muted-foreground flex h-7 w-7 items-center justify-center rounded border border-dashed text-[10px]"
-                title="空孔"
-              >
-                空
-              </span>
+            <li key={gem.id}>
+              {canInteract ? (
+                <button
+                  type="button"
+                  onClick={() => toggleSocket(gem.socket_index)}
+                  disabled={isLoading}
+                  aria-expanded={isExpanded}
+                  aria-label={isExpanded ? `收起 ${detail}` : `查看 ${detail}`}
+                  title={isExpanded ? `收起 ${detail}` : `查看 ${detail}`}
+                  className={`hover:bg-white/10 rounded p-0.5 disabled:opacity-50 ${
+                    isExpanded ? 'bg-white/15 ring-1 ring-white/30' : ''
+                  }`}
+                >
+                  {icon}
+                </button>
+              ) : (
+                <span className="block p-0.5" title={detail}>
+                  {icon}
+                </span>
+              )}
             </li>
           )
-        }
+        })}
+      </ul>
 
-        const icon = (
-          <span className="relative block h-7 w-7">
-            <ItemIcon item={iconItem} />
-          </span>
-        )
-
-        return (
-          <li key={gem.id}>
-            {onInspectGem ? (
-              <button
-                type="button"
-                onClick={() => onInspectGem(gem.socket_index)}
-                disabled={isLoading}
-                aria-label={`查看 ${detail}`}
-                title={`查看 ${detail}`}
-                className="hover:bg-white/10 rounded p-0.5 disabled:opacity-50"
-              >
-                {icon}
-              </button>
-            ) : (
-              <span className="block p-0.5" title={detail}>
-                {icon}
-              </span>
-            )}
-          </li>
-        )
-      })}
-    </ul>
+      {expandedGem && expandedDefinition ? (
+        <div
+          className="border-border bg-muted/40 w-full rounded border p-2 text-left"
+          data-testid="gem-expand-panel"
+        >
+          <div className="flex items-start justify-between gap-1">
+            <div className="min-w-0">
+              <p className="text-foreground text-xs font-medium break-words">
+                {expandedDefinition.name || '宝石'}
+              </p>
+              {Object.entries(
+                getDisplayableItemStats(expandedDefinition.gem_stats ?? {})
+              ).map(([stat, value]) => (
+                <p key={stat} className="text-xs text-green-600 dark:text-green-400">
+                  +{formatItemStatValue(Number(value), stat)} {STAT_NAMES[stat] || stat}
+                </p>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => setExpansion(null)}
+              className="text-muted-foreground hover:text-foreground shrink-0 p-0.5 text-xs"
+              aria-label="收起宝石详情"
+              title="收起"
+            >
+              ▴
+            </button>
+          </div>
+          {onUnsocketGem ? (
+            <div className="mt-1.5">
+              <ItemActionButton onClick={handleUnsocket} disabled={isLoading} variant="unequip">
+                卸下
+              </ItemActionButton>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
   )
 }
 
@@ -156,76 +223,6 @@ export function EquipmentDetailBody({
   )
 }
 
-function ItemDetailCardLayout({
-  item,
-  onClose,
-  footer,
-  gemSockets,
-  showBuyPrice = false,
-  showSellPrice = true,
-}: {
-  item: GameItem
-  onClose: () => void
-  footer?: ReactNode
-  gemSockets?: ReactNode
-  showBuyPrice?: boolean
-  showSellPrice?: boolean
-}) {
-  return (
-    <div className="flex flex-col">
-      <div
-        className="relative flex gap-3 p-3"
-        style={{
-          background: `linear-gradient(135deg, ${QUALITY_COLORS[item.quality]}20 0%, ${QUALITY_COLORS[item.quality]}10 100%)`,
-          borderBottom: `1px solid ${QUALITY_COLORS[item.quality]}30`,
-        }}
-      >
-        <div className="flex w-[100px] shrink-0 flex-col items-center gap-1">
-          <ItemTipIcon item={item} className="drop-shadow-lg" />
-          {gemSockets}
-        </div>
-
-        <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between">
-            <div>
-              <h5
-                className="min-w-0 text-sm leading-tight font-bold break-words sm:text-base"
-                style={{ color: QUALITY_COLORS[item.quality] }}
-              >
-                {getItemDisplayName(item)}
-              </h5>
-              <span className="text-xs" style={{ color: QUALITY_COLORS[item.quality] }}>
-                {QUALITY_NAMES[item.quality]}
-              </span>
-              <p className="text-muted-foreground mt-0.5 text-xs">
-                需求等级: {item.definition?.required_level ?? '—'}
-              </p>
-            </div>
-            <button
-              onClick={onClose}
-              className="text-muted-foreground hover:text-foreground ml-1 shrink-0 p-1"
-            >
-              ✕
-            </button>
-          </div>
-
-          <EquipmentDetailBody
-            item={item}
-            showBuyPrice={showBuyPrice}
-            showSellPrice={showSellPrice}
-          />
-        </div>
-      </div>
-
-      {footer ? (
-        <div className="border-border bg-muted/30 flex flex-wrap gap-1.5 border-t p-2.5">
-          {footer}
-        </div>
-      ) : null}
-    </div>
-  )
-}
-
 export function InventoryItemDetailCard({
   item,
   onClose,
@@ -234,62 +231,54 @@ export function InventoryItemDetailCard({
   onUnsocketGem,
   showBuyPrice = false,
 }: InventoryItemDetailCardProps) {
-  // Tie inspection to item.id so switching items clears gem detail without an effect.
-  const [inspection, setInspection] = useState<{ itemId: number; socketIndex: number } | null>(
-    null
-  )
-  const inspectedSocketIndex =
-    inspection && inspection.itemId === item.id ? inspection.socketIndex : null
-
-  const inspectedGem =
-    inspectedSocketIndex == null
-      ? undefined
-      : item.gems?.find(gem => gem.socket_index === inspectedSocketIndex)
-  const inspectedGemItem = inspectedGem ? socketedGemIconItem(inspectedGem) : null
-
-  if (inspectedGemItem && inspectedSocketIndex != null) {
-    return (
-      <ItemDetailCardLayout
-        item={inspectedGemItem}
-        onClose={() => setInspection(null)}
-        showSellPrice={false}
-        footer={
-          onUnsocketGem ? (
-            <ItemActionButton
-              onClick={() => {
-                onUnsocketGem(inspectedSocketIndex)
-                setInspection(null)
-              }}
-              disabled={isLoading}
-              variant="unequip"
-            >
-              卸下
-            </ItemActionButton>
-          ) : null
-        }
-      />
-    )
-  }
-
   return (
-    <ItemDetailCardLayout
-      item={item}
-      onClose={onClose}
-      footer={footer}
-      showBuyPrice={showBuyPrice}
-      gemSockets={
-        <EquipmentGemSockets
-          item={item}
-          isLoading={isLoading}
-          onInspectGem={
-            // Allow opening gem detail whenever the parent wired unsocket (equipment /
-            // inventory detail). Click inspects; only 卸下 on the gem view removes it.
-            onUnsocketGem
-              ? (socketIndex: number) => setInspection({ itemId: item.id, socketIndex })
-              : undefined
-          }
-        />
-      }
-    />
+    <div className="flex flex-col">
+      <div
+        className="relative flex flex-col gap-2 p-3"
+        style={{
+          background: `linear-gradient(135deg, ${QUALITY_COLORS[item.quality]}20 0%, ${QUALITY_COLORS[item.quality]}10 100%)`,
+          borderBottom: `1px solid ${QUALITY_COLORS[item.quality]}30`,
+        }}
+      >
+        <div className="flex gap-3">
+          <ItemTipIcon item={item} className="shrink-0 drop-shadow-lg" />
+
+          <div className="min-w-0 flex-1">
+            <div className="flex items-start justify-between">
+              <div>
+                <h5
+                  className="min-w-0 text-sm leading-tight font-bold break-words sm:text-base"
+                  style={{ color: QUALITY_COLORS[item.quality] }}
+                >
+                  {getItemDisplayName(item)}
+                </h5>
+                <span className="text-xs" style={{ color: QUALITY_COLORS[item.quality] }}>
+                  {QUALITY_NAMES[item.quality]}
+                </span>
+                <p className="text-muted-foreground mt-0.5 text-xs">
+                  需求等级: {item.definition?.required_level ?? '—'}
+                </p>
+              </div>
+              <button
+                onClick={onClose}
+                className="text-muted-foreground hover:text-foreground ml-1 shrink-0 p-1"
+              >
+                ✕
+              </button>
+            </div>
+
+            <EquipmentDetailBody item={item} showBuyPrice={showBuyPrice} />
+          </div>
+        </div>
+
+        <EquipmentGemSockets item={item} isLoading={isLoading} onUnsocketGem={onUnsocketGem} />
+      </div>
+
+      {footer ? (
+        <div className="border-border bg-muted/30 flex flex-wrap gap-1.5 border-t p-2.5">
+          {footer}
+        </div>
+      ) : null}
+    </div>
   )
 }
