@@ -1,11 +1,10 @@
+import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { CircularProgress } from '../CircularProgress'
 
 describe('CircularProgress', () => {
   it('should render without crashing', () => {
-    const { container } = require('@testing-library/react')
     const result = CircularProgress({ percent: 50, color: 'red' })
-    // Component returns JSX - just verify the component can be called
     expect(result).toBeDefined()
   })
 
@@ -48,5 +47,29 @@ describe('CircularProgress', () => {
     expect(result.props.role).toBe('progressbar')
     expect(result.props['aria-label']).toBe('生命')
     expect(result.props['aria-valuenow']).toBe(40)
+  })
+
+  it('animates liquid fill via translateY based on percent', () => {
+    const { rerender } = render(
+      <CircularProgress percent={100} color="red" size="md" label="生命" />
+    )
+    const liquid = screen.getByTestId('orb-liquid')
+    // md diameter = 28; full = 0 offset
+    expect(liquid.style.transform).toBe('translateY(0px)')
+
+    rerender(<CircularProgress percent={50} color="red" size="md" label="生命" />)
+    expect(liquid.style.transform).toBe('translateY(14px)')
+
+    rerender(<CircularProgress percent={0} color="red" size="md" label="生命" />)
+    expect(liquid.style.transform).toBe('translateY(28px)')
+  })
+
+  it('uses the same liquid animation treatment for mana orbs', () => {
+    render(<CircularProgress percent={25} color="blue" size="md" label="法力" />)
+    expect(screen.getByTestId('orb-liquid').style.transform).toBe('translateY(21px)')
+    expect(screen.getByRole('progressbar', { name: '法力' })).toHaveAttribute(
+      'aria-valuenow',
+      '25'
+    )
   })
 })
