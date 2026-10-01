@@ -1,6 +1,6 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { CopperDisplay } from '../shared/CopperDisplay'
 import { GameItem, QUALITY_COLORS, QUALITY_NAMES, STAT_NAMES } from '../../types'
 import {
@@ -15,6 +15,7 @@ import {
 } from '../../utils/itemUtils'
 import { ItemIcon } from '@/components/game/ItemIcon'
 import { ItemTipIcon } from '@/components/game/ItemTipIcon'
+import { ItemActionButton } from './ItemActionButton'
 
 interface InventoryItemDetailCardProps {
   item: GameItem
@@ -28,15 +29,16 @@ interface InventoryItemDetailCardProps {
 interface EquipmentDetailBodyProps {
   item: GameItem
   isLoading?: boolean
-  onUnsocketGem?: (socketIndex: number) => void
+  onInspectGem?: (socketIndex: number) => void
   showBuyPrice?: boolean
+  showSellPrice?: boolean
 }
 
 export function EquipmentGemSockets({
   item,
   isLoading = false,
-  onUnsocketGem,
-}: Pick<EquipmentDetailBodyProps, 'item' | 'isLoading' | 'onUnsocketGem'>) {
+  onInspectGem,
+}: Pick<EquipmentDetailBodyProps, 'item' | 'isLoading' | 'onInspectGem'>) {
   const socketCount = Math.max(
     getEffectiveSocketCount(item.sockets),
     ...(item.gems?.map(gem => gem.socket_index + 1) ?? [0])
@@ -76,13 +78,13 @@ export function EquipmentGemSockets({
 
         return (
           <li key={gem.id}>
-            {onUnsocketGem ? (
+            {onInspectGem ? (
               <button
                 type="button"
-                onClick={() => onUnsocketGem(gem.socket_index)}
+                onClick={() => onInspectGem(gem.socket_index)}
                 disabled={isLoading}
-                aria-label={`取下 ${detail}`}
-                title={`取下 ${detail}`}
+                aria-label={`查看 ${detail}`}
+                title={`查看 ${detail}`}
                 className="hover:bg-white/10 rounded p-0.5 disabled:opacity-50"
               >
                 {icon}
@@ -102,7 +104,8 @@ export function EquipmentGemSockets({
 export function EquipmentDetailBody({
   item,
   showBuyPrice = false,
-}: Pick<EquipmentDetailBodyProps, 'item' | 'showBuyPrice'>) {
+  showSellPrice = true,
+}: Pick<EquipmentDetailBodyProps, 'item' | 'showBuyPrice' | 'showSellPrice'>) {
   const displayStats = getDisplayableItemStats(getItemTotalStats(item))
   const hasBuyPrice =
     showBuyPrice && item.definition?.buy_price != null && item.definition.buy_price > 0
@@ -136,29 +139,38 @@ export function EquipmentDetailBody({
           )}
         </div>
       )}
-      <p
-        className={`text-muted-foreground flex items-center gap-1 text-xs ${hasStatBlock ? 'mt-1' : ''}`}
-      >
-        卖出:{' '}
-        <CopperDisplay
-          copper={item.sell_price ?? Math.floor((item.definition?.buy_price ?? 0) / 2)}
-          size="sm"
-          nowrap
-          className="font-medium"
-        />
-      </p>
+      {showSellPrice && (
+        <p
+          className={`text-muted-foreground flex items-center gap-1 text-xs ${hasStatBlock ? 'mt-1' : ''}`}
+        >
+          卖出:{' '}
+          <CopperDisplay
+            copper={item.sell_price ?? Math.floor((item.definition?.buy_price ?? 0) / 2)}
+            size="sm"
+            nowrap
+            className="font-medium"
+          />
+        </p>
+      )}
     </>
   )
 }
 
-export function InventoryItemDetailCard({
+function ItemDetailCardLayout({
   item,
   onClose,
   footer,
-  isLoading = false,
-  onUnsocketGem,
+  gemSockets,
   showBuyPrice = false,
-}: InventoryItemDetailCardProps) {
+  showSellPrice = true,
+}: {
+  item: GameItem
+  onClose: () => void
+  footer?: ReactNode
+  gemSockets?: ReactNode
+  showBuyPrice?: boolean
+  showSellPrice?: boolean
+}) {
   return (
     <div className="flex flex-col">
       <div
@@ -170,7 +182,7 @@ export function InventoryItemDetailCard({
       >
         <div className="flex w-[100px] shrink-0 flex-col items-center gap-1">
           <ItemTipIcon item={item} className="drop-shadow-lg" />
-          <EquipmentGemSockets item={item} isLoading={isLoading} onUnsocketGem={onUnsocketGem} />
+          {gemSockets}
         </div>
 
         <div className="min-w-0 flex-1">
@@ -197,7 +209,11 @@ export function InventoryItemDetailCard({
             </button>
           </div>
 
-          <EquipmentDetailBody item={item} showBuyPrice={showBuyPrice} />
+          <EquipmentDetailBody
+            item={item}
+            showBuyPrice={showBuyPrice}
+            showSellPrice={showSellPrice}
+          />
         </div>
       </div>
 
@@ -207,5 +223,73 @@ export function InventoryItemDetailCard({
         </div>
       ) : null}
     </div>
+  )
+}
+
+export function InventoryItemDetailCard({
+  item,
+  onClose,
+  footer,
+  isLoading = false,
+  onUnsocketGem,
+  showBuyPrice = false,
+}: InventoryItemDetailCardProps) {
+  // Tie inspection to item.id so switching items clears gem detail without an effect.
+  const [inspection, setInspection] = useState<{ itemId: number; socketIndex: number } | null>(
+    null
+  )
+  const inspectedSocketIndex =
+    inspection && inspection.itemId === item.id ? inspection.socketIndex : null
+
+  const inspectedGem =
+    inspectedSocketIndex == null
+      ? undefined
+      : item.gems?.find(gem => gem.socket_index === inspectedSocketIndex)
+  const inspectedGemItem = inspectedGem ? socketedGemIconItem(inspectedGem) : null
+
+  if (inspectedGemItem && inspectedSocketIndex != null) {
+    return (
+      <ItemDetailCardLayout
+        item={inspectedGemItem}
+        onClose={() => setInspection(null)}
+        showSellPrice={false}
+        footer={
+          onUnsocketGem ? (
+            <ItemActionButton
+              onClick={() => {
+                onUnsocketGem(inspectedSocketIndex)
+                setInspection(null)
+              }}
+              disabled={isLoading}
+              variant="unequip"
+            >
+              卸下
+            </ItemActionButton>
+          ) : null
+        }
+      />
+    )
+  }
+
+  return (
+    <ItemDetailCardLayout
+      item={item}
+      onClose={onClose}
+      footer={footer}
+      showBuyPrice={showBuyPrice}
+      gemSockets={
+        <EquipmentGemSockets
+          item={item}
+          isLoading={isLoading}
+          onInspectGem={
+            // Allow opening gem detail whenever the parent wired unsocket (equipment /
+            // inventory detail). Click inspects; only 卸下 on the gem view removes it.
+            onUnsocketGem
+              ? (socketIndex: number) => setInspection({ itemId: item.id, socketIndex })
+              : undefined
+          }
+        />
+      }
+    />
   )
 }
