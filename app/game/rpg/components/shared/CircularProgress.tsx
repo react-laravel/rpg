@@ -11,6 +11,12 @@ const SIZE_PX = {
 type OrbSize = keyof typeof SIZE_PX
 type OrbColor = 'red' | 'blue'
 
+/** Soft HUD fills: deep crimson / sapphire, not neon rose / cyan. */
+const ORB_FILL: Record<OrbColor, { top: string; mid: string; bottom: string }> = {
+  red: { top: '#e11d48', mid: '#9f1239', bottom: '#4c0519' },
+  blue: { top: '#38bdf8', mid: '#1d4ed8', bottom: '#172554' },
+}
+
 function buildLiquidClipPath(pct: number, cx: number, cy: number, r: number): string {
   if (pct <= 0) return 'M0 0L0 0Z'
   if (pct >= 100) {
@@ -25,7 +31,7 @@ function buildLiquidClipPath(pct: number, cx: number, cy: number, r: number): st
 }
 
 /**
- * 圆形生命/法力球：无金属外框，仅液面按百分比填充。
+ * 圆形生命/法力球：无金属外框，仅液面按百分比填充；液面高度 CSS 过渡。
  */
 export function CircularProgress({
   percent,
@@ -50,10 +56,11 @@ export function CircularProgress({
   const clipId = `${idBase}-clip`
   const fillGradId = `${idBase}-fill`
   const glossId = `${idBase}-gloss`
+  const wellClipId = `${idBase}-well`
 
   if (!isOrb) {
     const fillClass =
-      color === 'red' ? 'fill-red-500 dark:fill-red-400' : 'fill-blue-500 dark:fill-blue-400'
+      color === 'red' ? 'fill-red-600 dark:fill-red-500' : 'fill-blue-600 dark:fill-blue-500'
     const clipPathD = buildLiquidClipPath(pct, cx, cy, r)
     return (
       <svg
@@ -72,12 +79,7 @@ export function CircularProgress({
         <circle cx={cx} cy={cy} r={r} className="fill-muted" />
         {pct > 0 && (
           <g clipPath={`url(#${clipId})`}>
-            <circle
-              cx={cx}
-              cy={cy}
-              r={r}
-              className={`${fillClass} transition-[clip-path] duration-300`}
-            />
+            <circle cx={cx} cy={cy} r={r} className={fillClass} />
           </g>
         )}
       </svg>
@@ -85,18 +87,10 @@ export function CircularProgress({
   }
 
   const wellR = r - 0.5
-  const liquidClipD = buildLiquidClipPath(pct, cx, cy, wellR)
-  const level = cy + wellR - (2 * wellR * pct) / 100
-  const dy = level - cy
-  const dx2 = wellR * wellR - dy * dy
-  const surfaceRx = dx2 > 0 ? Math.sqrt(dx2) : wellR * 0.92
-
-  const fillStops =
-    color === 'red'
-      ? { top: '#fb7185', mid: '#e11d48', bottom: '#7f1d1d' }
-      : { top: '#67e8f9', mid: '#2563eb', bottom: '#1e3a8a' }
-
+  const fillStops = ORB_FILL[color]
   const glowClass = color === 'red' ? styles['hp-orb-glow'] : styles['mp-orb-glow']
+  // Full well = 0; empty = translated down by diameter so the liquid disk clears the clip.
+  const liquidOffsetY = ((100 - pct) / 100) * diameter
 
   return (
     <div
@@ -112,20 +106,20 @@ export function CircularProgress({
         <defs>
           <linearGradient id={fillGradId} x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor={fillStops.top} />
-            <stop offset="45%" stopColor={fillStops.mid} />
+            <stop offset="48%" stopColor={fillStops.mid} />
             <stop offset="100%" stopColor={fillStops.bottom} />
           </linearGradient>
           <radialGradient id={glossId} cx="32%" cy="28%" r="45%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.55" />
-            <stop offset="45%" stopColor="#ffffff" stopOpacity="0.12" />
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.34" />
+            <stop offset="50%" stopColor="#ffffff" stopOpacity="0.08" />
             <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
           </radialGradient>
-          <clipPath id={clipId}>
-            <path d={liquidClipD} />
+          <clipPath id={wellClipId}>
+            <circle cx={cx} cy={cy} r={wellR} />
           </clipPath>
         </defs>
 
-        {/* 无金属外框：仅暗底 + 液面 + 高光 */}
+        {/* 暗底井 */}
         <circle
           cx={cx}
           cy={cy}
@@ -133,23 +127,27 @@ export function CircularProgress({
           className="fill-[oklch(0.2_0.02_250)] dark:fill-[oklch(0.16_0.02_250)]"
         />
 
-        {pct > 0 && (
-          <g clipPath={`url(#${clipId})`}>
+        <g clipPath={`url(#${wellClipId})`}>
+          <g
+            className={styles['orb-liquid']}
+            style={{ transform: `translateY(${liquidOffsetY}px)` }}
+            data-testid="orb-liquid"
+          >
             <circle cx={cx} cy={cy} r={wellR} fill={`url(#${fillGradId})`} />
-            {pct < 100 && (
-              <ellipse
-                cx={cx}
-                cy={level}
-                rx={surfaceRx}
-                ry={Math.max(1.2, wellR * 0.12)}
-                fill="#ffffff"
-                fillOpacity="0.28"
-              />
-            )}
+            {/* 液面高光条：随液面一起移动 */}
+            <ellipse
+              cx={cx}
+              cy={cy - wellR * 0.92}
+              rx={wellR * 0.92}
+              ry={Math.max(1.1, wellR * 0.14)}
+              fill="#ffffff"
+              fillOpacity="0.18"
+            />
           </g>
-        )}
+        </g>
 
         <ellipse
+          className={styles['orb-gloss']}
           cx={cx - wellR * 0.22}
           cy={cy - wellR * 0.28}
           rx={wellR * 0.42}
